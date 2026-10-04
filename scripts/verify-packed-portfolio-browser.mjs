@@ -69,6 +69,41 @@ export async function verifyPackedPortfolioBrowser(directory) {
       await page.keyboard.press("Escape");
       await dialog.waitFor({ state: "hidden" });
       assert.equal(await trigger.evaluate((element) => element === document.activeElement), true);
+      await trigger.click();
+      await dialog.getByRole("button", { name: "Close", exact: true }).click();
+      await dialog.waitFor({ state: "hidden" });
+      const second = page.getByRole("button", {
+        name: "Open Second geometric study in the portfolio lightbox",
+      });
+      await second.click();
+      const secondDialog = page.getByRole("dialog", {
+        name: "Second geometric study",
+        exact: true,
+      });
+      await secondDialog.waitFor({ state: "visible" });
+      assert.deepEqual(
+        await secondDialog.locator("#portfolio-lightbox-tools li").allTextContents(),
+        ["SVG", "Geometry"],
+      );
+      await page.mouse.click(1, 1);
+      await secondDialog.waitFor({ state: "hidden" });
+      assert.equal(await second.evaluate((element) => element === document.activeElement), true);
+      await trigger.click();
+      await dialog.waitFor({ state: "visible" });
+      assert.equal(
+        await dialog.locator("#portfolio-lightbox-tools").evaluate((element) => element.hidden),
+        true,
+      );
+      await dialog.locator("img").evaluate((image) => {
+        image.src = "/deliberately-missing-fixture.svg";
+      });
+      await page.waitForFunction(() => {
+        const image = document.querySelector("#portfolio-lightbox-image");
+        return image.complete && image.naturalWidth === 0;
+      });
+      await page.keyboard.press("Escape");
+      await dialog.waitFor({ state: "hidden" });
+      assert.equal(await trigger.evaluate((element) => element === document.activeElement), true);
       assert.equal(
         await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
         true,
@@ -76,7 +111,7 @@ export async function verifyPackedPortfolioBrowser(directory) {
       await context.close();
     }
     console.log(
-      "Independent packed neutral portfolio: Enter/Escape, native focus return, image and narrow/wide theme checks passed",
+      "Independent packed neutral portfolio: multiple items, Enter/Escape/close/backdrop/repeat, optional tools reset, missing-image exit, focus and narrow/wide theme checks passed",
     );
   } finally {
     await browser.close();

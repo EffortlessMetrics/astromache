@@ -17,12 +17,14 @@
     "src/Portfolio.astro",
     "src/PortfolioLightbox.astro",
     "src/Document.astro",
-    "src/metadata.ts"
+    "src/metadata.ts",
+    "src/navigation.ts"
   ],
   "type": "module",
   "exports": {
     "./document": "./src/Document.astro",
     "./metadata": "./src/metadata.ts",
+    "./navigation": "./src/navigation.ts",
     "./fonts.css": "./src/fonts.css",
     "./portfolio": "./src/Portfolio.astro"
   },
