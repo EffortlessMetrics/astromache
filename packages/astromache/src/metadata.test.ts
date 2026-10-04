@@ -8,7 +8,14 @@ const base = {
   canonical: new URL("https://example.test/article/"),
 };
 
-test.each(["en_US", "en-x"])("rejects malformed language tags: %s", (language) => {
+test.each([
+  "en_US",
+  "en-x",
+  "sl-rozaj-rozaj",
+  "sl-rozaj-ROZAJ",
+  "en-u-ca-gregory-u-nu-latn",
+  "en-u-ca-gregory-U-nu-latn",
+])("rejects malformed language tags: %s", (language) => {
   expect(() => publicationMetadata({ ...base, language })).toThrow("BCP 47");
 });
 
