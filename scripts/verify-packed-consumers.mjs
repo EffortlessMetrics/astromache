@@ -4,6 +4,7 @@ import { execFileSync } from "node:child_process";
 import { cp, mkdir, mkdtemp, readFile, readdir, realpath, writeFile } from "node:fs/promises";
 import { isAbsolute, join, relative, resolve, sep } from "node:path";
 import { tmpdir } from "node:os";
+import { verifyPackedPortfolioBrowser } from "./verify-packed-portfolio-browser.mjs";
 
 // Windows hosted tmpdir can use a DOS alias (RUNNER~1). Astro/Vite CSS module
 // identities must use the same canonical path as the files they resolve.
@@ -28,6 +29,7 @@ const tarball = join(run, archive);
 const dir = join(run, "neutral");
 await mkdir(dir);
 await cp("consumers/neutral/src", join(dir, "src"), { recursive: true });
+await cp("consumers/neutral/public", join(dir, "public"), { recursive: true });
 await cp("patches", join(dir, "patches"), { recursive: true });
 const manifest = JSON.parse(await readFile("consumers/neutral/package.json", "utf8"));
 manifest.dependencies["@effortlessmetrics/astromache"] = `file:${tarball}`;
@@ -84,12 +86,39 @@ execFileSync(process.execPath, [manager, "build"], { cwd: dir, stdio: "inherit" 
 const html = await readFile(join(dir, "dist/index.html"));
 const workspace = await readFile("consumers/neutral/dist/index.html");
 assert.deepEqual(html, workspace, "Packed and workspace outputs must match");
+const gallery = await readFile(join(dir, "dist/portfolio/index.html"), "utf8");
+// Styled Astro components hash their compilation paths into scope identifiers.
+// Preserve every structure/style/script byte except consistently renaming those
+// identifiers; their CSS-to-element associations must still match exactly.
+const canonicalScopes = (value) => {
+  const scopes = new Map();
+  const normalized = value.replace(/data-astro-cid-[a-z0-9]+/g, (scope) => {
+    if (!scopes.has(scope)) scopes.set(scope, `data-astro-cid-module${scopes.size}`);
+    return scopes.get(scope);
+  });
+  assert.equal(scopes.size, 2, "Gallery and lightbox each retain a distinct CSS scope");
+  return normalized;
+};
+assert.equal(
+  canonicalScopes(gallery),
+  canonicalScopes(await readFile("consumers/neutral/dist/portfolio/index.html", "utf8")),
+  "Packed portfolio structure, styles and scripts must match after path-derived scope renaming",
+);
+assert.match(gallery, /data-portfolio-trigger="0"/);
+assert.match(gallery, /portfolio-placeholder\.svg/);
+assert.doesNotMatch(gallery, /Low Shot|Steven Zimmerman|effortlesssteven\.com|profile\.jpg/);
+assert.equal(
+  await readFile(join(dir, "dist/portfolio-placeholder.svg"), "utf8"),
+  await readFile("consumers/neutral/public/portfolio-placeholder.svg", "utf8"),
+);
 const receipt = {
   packageSha256: createHash("sha256")
     .update(await readFile(tarball))
     .digest("hex"),
   htmlBytes: html.length,
   htmlSha256: createHash("sha256").update(html).digest("hex"),
+  portfolioCanonicalSha256: createHash("sha256").update(canonicalScopes(gallery)).digest("hex"),
 };
+await verifyPackedPortfolioBrowser(dir);
 await writeFile(join(run, "receipt.json"), JSON.stringify(receipt, null, 2));
 console.log("Independent packed native consumer receipt", JSON.stringify(receipt));

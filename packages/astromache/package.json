@@ -14,6 +14,8 @@
     "LICENSE-APACHE",
     "fonts",
     "src/fonts.css",
+    "src/Portfolio.astro",
+    "src/PortfolioLightbox.astro",
     "src/Document.astro",
     "src/metadata.ts"
   ],
@@ -21,7 +23,8 @@
   "exports": {
     "./document": "./src/Document.astro",
     "./metadata": "./src/metadata.ts",
-    "./fonts.css": "./src/fonts.css"
+    "./fonts.css": "./src/fonts.css",
+    "./portfolio": "./src/Portfolio.astro"
   },
   "dependencies": {
     "bcp-47": "2.1.1"

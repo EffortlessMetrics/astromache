@@ -36,5 +36,12 @@ jobs:
       - run: pnpm exec vp --version
       - name: Required native and compatibility compilers, template diagnostics, lint, tests and output
         run: pnpm qualify
+      - name: Install checkout-scoped Chromium
+        run: pnpm exec playwright install chromium
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.qualification/browsers
       - name: Independent packed consumers
+        # Chromium is scoped to this hosted checkout, not global configuration.
         run: pnpm verify:packed
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.qualification/browsers
