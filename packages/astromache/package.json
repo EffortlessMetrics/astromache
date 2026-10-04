@@ -2,7 +2,7 @@
   "name": "@effortlessmetrics/astromache",
   "version": "0.0.0-private",
   "private": true,
-  "license": "MIT",
+  "license": "MIT OR Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/EffortlessMetrics/astromache.git",
@@ -10,13 +10,18 @@
   },
   "files": [
     "LICENSE",
+    "LICENSE-MIT",
+    "LICENSE-APACHE",
+    "fonts",
+    "src/fonts.css",
     "src/Document.astro",
     "src/metadata.ts"
   ],
   "type": "module",
   "exports": {
     "./document": "./src/Document.astro",
-    "./metadata": "./src/metadata.ts"
+    "./metadata": "./src/metadata.ts",
+    "./fonts.css": "./src/fonts.css"
   },
   "dependencies": {
     "bcp-47": "2.1.1"

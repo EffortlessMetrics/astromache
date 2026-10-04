@@ -1,5 +1,6 @@
 ---
 import Document from "@effortlessmetrics/astromache/document";
+import "@effortlessmetrics/astromache/fonts.css";
 ---
 
 <Document
@@ -12,3 +13,7 @@ import Document from "@effortlessmetrics/astromache/document";
   <h1>Neutral publication</h1>
   <p>This fixture supplies its own content and identity.</p>
 </Document>
+<style is:global>
+  body { font-family: "IBM Plex Sans", sans-serif; }
+  code, pre { font-family: "IBM Plex Mono", monospace; }
+</style>
