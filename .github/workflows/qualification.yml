@@ -1,0 +1,38 @@
+name: AstroMache clean slice
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: astromache-slice-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  publication:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.0
+      - name: Source and toolchain
+        run: |
+          git rev-parse HEAD
+          node --version
+          pnpm --version
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec vp --version
+      - name: Required native and compatibility compilers, template diagnostics, lint, tests and output
+        run: pnpm qualify
+      - name: Independent packed consumers
+        run: pnpm verify:packed

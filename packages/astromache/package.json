@@ -1,0 +1,19 @@
+{
+  "name": "@effortlessmetrics/astromache",
+  "version": "0.0.0-private",
+  "private": true,
+  "license": "MIT",
+  "files": [
+    "LICENSE",
+    "src/Document.astro",
+    "src/metadata.ts"
+  ],
+  "type": "module",
+  "exports": {
+    "./document": "./src/Document.astro",
+    "./metadata": "./src/metadata.ts"
+  },
+  "peerDependencies": {
+    "astro": "^7.3.5"
+  }
+}
