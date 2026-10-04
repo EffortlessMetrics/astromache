@@ -5,8 +5,15 @@ import { cp, mkdir, mkdtemp, readFile, readdir, realpath, writeFile } from "node
 import { isAbsolute, join, relative, resolve, sep } from "node:path";
 import { tmpdir } from "node:os";
 
-const root = await mkdtemp(
-  join(process.env.ASTROMACHE_QUALIFICATION_ROOT ?? tmpdir(), "astromache-qualification-"),
+// Windows hosted tmpdir can use a DOS alias (RUNNER~1). Astro/Vite CSS module
+// identities must use the same canonical path as the files they resolve.
+const root = await realpath(
+  await mkdtemp(
+    join(
+      process.env.ASTROMACHE_QUALIFICATION_ROOT ?? process.env.RUNNER_TEMP ?? tmpdir(),
+      "astromache-qualification-",
+    ),
+  ),
 );
 const manager = resolve("node_modules/pnpm/bin/pnpm.cjs");
 await mkdir(root, { recursive: true });
