@@ -1,11 +1,12 @@
 ---
 import { publicationMetadata, type PublicationMetadata } from "./metadata";
-type Props = PublicationMetadata;
+import type { HTMLAttributes } from "astro/types";
+type Props = PublicationMetadata & { htmlAttributes?: HTMLAttributes<"html"> };
 const metadata = publicationMetadata(Astro.props);
 ---
 
 <!doctype html>
-<html lang={metadata.language}>
+<html {...{ ...Astro.props.htmlAttributes, lang: metadata.language }}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
