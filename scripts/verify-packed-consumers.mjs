@@ -3,10 +3,12 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { cp, mkdir, mkdtemp, readFile, readdir, realpath, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
+import { tmpdir } from "node:os";
 
-const root = resolve(".qualification");
+const root = await mkdtemp(
+  join(process.env.ASTROMACHE_QUALIFICATION_ROOT ?? tmpdir(), "astromache-qualification-"),
+);
 const manager = resolve("node_modules/pnpm/bin/pnpm.cjs");
-const compiler = resolve("node_modules/typescript-native/bin/tsc");
 await mkdir(root, { recursive: true });
 const run = await mkdtemp(join(root, "packed-"));
 execFileSync(process.execPath, [manager, "pack", "--pack-destination", run], {
@@ -22,7 +24,13 @@ await cp("consumers/neutral/src", join(dir, "src"), { recursive: true });
 await cp("patches", join(dir, "patches"), { recursive: true });
 const manifest = JSON.parse(await readFile("consumers/neutral/package.json", "utf8"));
 manifest.dependencies["@effortlessmetrics/astromache"] = `file:${tarball}`;
-manifest.pnpm = JSON.parse(await readFile("package.json", "utf8")).pnpm;
+const workspacePackage = JSON.parse(await readFile("package.json", "utf8"));
+manifest.devDependencies = {
+  "@astrojs/ts-content-mapper": workspacePackage.devDependencies["@astrojs/ts-content-mapper"],
+  "@types/node": workspacePackage.devDependencies["@types/node"],
+  "typescript-native": workspacePackage.devDependencies["typescript-native"],
+};
+manifest.pnpm = workspacePackage.pnpm;
 await writeFile(join(dir, "package.json"), JSON.stringify(manifest, null, 2));
 await writeFile(join(dir, "pnpm-workspace.yaml"), "packages:\n  - .\n");
 const native = JSON.parse(await readFile("tsconfig.native.json", "utf8"));
@@ -42,7 +50,13 @@ const installed = await realpath(join(dir, "node_modules/@effortlessmetrics/astr
 assert.ok(installed.startsWith(dir), "Packed consumer must resolve an installed archive");
 execFileSync(
   process.execPath,
-  [compiler, "--noEmit", "-p", "tsconfig.native.json", "--runExternalCode"],
+  [
+    join(dir, "node_modules/typescript-native/bin/tsc"),
+    "--noEmit",
+    "-p",
+    "tsconfig.native.json",
+    "--runExternalCode",
+  ],
   { cwd: dir, stdio: "inherit" },
 );
 execFileSync(process.execPath, [manager, "build"], { cwd: dir, stdio: "inherit" });

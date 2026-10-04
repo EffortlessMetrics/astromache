@@ -18,6 +18,9 @@
     "./document": "./src/Document.astro",
     "./metadata": "./src/metadata.ts"
   },
+  "dependencies": {
+    "bcp-47": "2.1.1"
+  },
   "peerDependencies": {
     "astro": "^7.3.5"
   }

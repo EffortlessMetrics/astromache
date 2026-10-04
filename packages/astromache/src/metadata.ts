@@ -1,3 +1,5 @@
+import { parse, stringify } from "bcp-47";
+
 export interface PublicationMetadata {
   title: string;
   description: string;
@@ -8,6 +10,10 @@ export interface PublicationMetadata {
 export function publicationMetadata(input: PublicationMetadata): PublicationMetadata {
   if (!input.title.trim() || !input.description.trim() || !input.language.trim()) {
     throw new Error("Publication metadata requires a title, description and language");
+  }
+  const language = parse(input.language, { normalize: false });
+  if (stringify(language).toLowerCase() !== input.language.toLowerCase()) {
+    throw new Error("Publication language must be a well-formed BCP 47 tag");
   }
   if (!["http:", "https:"].includes(input.canonical.protocol)) {
     throw new Error("Canonical publication URLs must use HTTP or HTTPS");
