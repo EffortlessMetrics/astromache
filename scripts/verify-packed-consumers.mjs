@@ -52,7 +52,13 @@ native.include = ["src/**/*.astro", "src/**/*.ts"];
 await writeFile(join(dir, "tsconfig.native.json"), JSON.stringify(native, null, 2));
 execFileSync(
   process.execPath,
-  [manager, "install", "--ignore-scripts", "--store-dir", join(root, "store")],
+  [
+    manager,
+    "install",
+    "--ignore-scripts",
+    "--store-dir",
+    process.env.ASTROMACHE_QUALIFICATION_STORE ?? join(root, "store"),
+  ],
   { cwd: dir, stdio: "inherit" },
 );
 const installed = await realpath(join(dir, "node_modules/@effortlessmetrics/astromache"));

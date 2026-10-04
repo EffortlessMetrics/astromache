@@ -76,7 +76,7 @@ export function installNavigationPrefetch(
       url.search ||
       url.hash ||
       url.pathname === location.pathname ||
-      /^\/(api|contact|share)(\/|$)/.test(url.pathname) ||
+      /^\/(api|share)(\/|$)/.test(url.pathname) ||
       /\.[^/]+$/.test(url.pathname) ||
       options.include?.(url) === false ||
       requested.has(url.href)
