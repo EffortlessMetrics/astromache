@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { cp, mkdir, mkdtemp, readFile, readdir, realpath, writeFile } from "node:fs/promises";
-import { join, resolve } from "node:path";
+import { isAbsolute, join, relative, resolve, sep } from "node:path";
 import { tmpdir } from "node:os";
 
 const root = await mkdtemp(
@@ -47,7 +47,21 @@ execFileSync(
   { cwd: dir, stdio: "inherit" },
 );
 const installed = await realpath(join(dir, "node_modules/@effortlessmetrics/astromache"));
-assert.ok(installed.startsWith(dir), "Packed consumer must resolve an installed archive");
+const installedRelative = relative(await realpath(dir), installed);
+assert.ok(
+  installedRelative &&
+    installedRelative !== ".." &&
+    !installedRelative.startsWith(`..${sep}`) &&
+    !isAbsolute(installedRelative),
+  "Packed consumer must resolve an installed archive inside its own installation",
+);
+const checkoutRelative = relative(await realpath("."), await realpath(dir));
+assert.ok(
+  checkoutRelative === ".." ||
+    checkoutRelative.startsWith(`..${sep}`) ||
+    isAbsolute(checkoutRelative),
+  "Packed consumer must be outside the repository",
+);
 execFileSync(
   process.execPath,
   [
