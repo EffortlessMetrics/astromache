@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { cp, mkdtemp, readFile, realpath } from "node:fs/promises";
+import { mkdtemp, readFile, realpath } from "node:fs/promises";
 import { delimiter, dirname, join, relative, resolve, sep } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
@@ -19,15 +19,6 @@ assert.ok(
   !relative(producer, root).startsWith(`.${sep}`) && !root.startsWith(producer + sep),
   "Products must be copied outside producer",
 );
-const excluded = new Set([
-  "node_modules",
-  "dist",
-  ".astro",
-  ".git",
-  ".qualification",
-  "qualification-receipts",
-  "receipts",
-]);
 const products = [
   ["starters/publication", false],
   ["recipes/search-offline", true],
@@ -36,13 +27,18 @@ for (const [source, recipe] of products.filter(
   ([, recipe]) => !process.argv.includes("--recipe-only") || recipe,
 )) {
   const directory = resolve(root, recipe ? "recipe" : "starter");
-  await cp(join(producer, source), directory, {
-    recursive: true,
-    filter: (path) =>
-      !relative(join(producer, source), path)
-        .split(sep)
-        .some((part) => excluded.has(part)),
-  });
+  execFileSync(
+    process.execPath,
+    [
+      join(producer, "scripts/create-starter.mjs"),
+      recipe ? "search-offline" : "publication",
+      directory,
+    ],
+    {
+      cwd: producer,
+      stdio: "inherit",
+    },
+  );
   const manifest = JSON.parse(await readFile(join(directory, "package.json"), "utf8"));
   assert.equal(
     manifest.pnpm?.overrides,

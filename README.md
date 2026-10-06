@@ -1,5 +1,7 @@
 # AstroMache publication system
 
+For a small independent project without copying the producer development tree, see [standalone starter delivery](docs/starter-delivery.md). Run `node scripts/create-starter.mjs publication ../my-publication` or choose `search-offline` for the optional recipe; no producer installation is required.
+
 The current source expands the genuine reusable publication foundation and complete neutral starter: article/list/taxonomy typography and composition, responsive menu/theme, reading progress/focus/copy controls, and the existing native gallery/navigation machinery. The private personal site and neutral products are sibling consumers of the same exports. Content models, corpus, routes, ranking, metadata policy, fonts, assets, privacy-specific sharing and brand tokens remain adapters.
 
 This working **unpublished astromache 0.2.0 candidate** is distinct from immutable published npm 0.1.0. Its exact package source is 0504061d9292252f65336c9b90b1a63a04816d33 and archive SHA-256 is 53bf0fa41d2371c5941fa1422ae83563002744bd684e45c7b048b548d2182874. Never replace the registry version with these different bytes. See packages/astromache/README.md for the expanded API and release distinction.
