@@ -1,6 +1,6 @@
 {
   "name": "astromache-publication-starter",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "license": "MIT OR Apache-2.0",
   "type": "module",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "astro": "7.3.5",
-    "astromache": "file:vendor/astromache-0.1.0-foundation.tgz"
+    "astromache": "file:vendor/astromache-0.2.0.tgz"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",

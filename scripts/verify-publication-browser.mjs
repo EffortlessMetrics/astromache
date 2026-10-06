@@ -46,6 +46,18 @@ export async function verifyPublicationBrowser(directory, { recipe }) {
   try {
     for (const width of [320, 1440]) {
       const context = await browser.newContext({ viewport: { width, height: 900 } });
+      if (recipe)
+        await context.addInitScript(() => {
+          Object.defineProperty(navigator, "connection", {
+            configurable: true,
+            value: Object.assign(new EventTarget(), {
+              effectiveType: "4g",
+              downlink: 10,
+              rtt: 10,
+              saveData: false,
+            }),
+          });
+        });
       await context.route("**/*", (route) =>
         new URL(route.request().url()).origin === origin ? route.continue() : route.abort(),
       );

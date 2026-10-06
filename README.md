@@ -2,7 +2,7 @@
 
 The current source expands the genuine reusable publication foundation and complete neutral starter: article/list/taxonomy typography and composition, responsive menu/theme, reading progress/focus/copy controls, and the existing native gallery/navigation machinery. The private personal site and neutral products are sibling consumers of the same exports. Content models, corpus, routes, ranking, metadata policy, fonts, assets, privacy-specific sharing and brand tokens remain adapters.
 
-This working **unpublished expanded astromache 0.1.0 candidate** is distinct from immutable published npm 0.1.0. Its exact package source is aa372a898f868b5c70cbcb0e8cbd1a7ee2ce5bc5 and archive SHA-256 is 220ccfd848964fbd7e98893215c973a489e6f71de99b25ad31ba78d9349e45c5. Never replace the registry version with these different bytes. See packages/astromache/README.md for the expanded API and release distinction.
+This working **unpublished astromache 0.2.0 candidate** is distinct from immutable published npm 0.1.0. Its exact package source is 0504061d9292252f65336c9b90b1a63a04816d33 and archive SHA-256 is 53bf0fa41d2371c5941fa1422ae83563002744bd684e45c7b048b548d2182874. Never replace the registry version with these different bytes. See packages/astromache/README.md for the expanded API and release distinction.
 
 starters/publication is a complete independently installed neutral publication: two original articles, index, taxonomy, responsive theme/navigation, gallery, 404, RSS, robots and sitemap. recipes/search-offline adds shared static-search lifecycle and bounded Workbox offline support while preserving consumer-owned renderer, schema, engine and corpus policy. Neither real site depends on a starter artifact.
 
@@ -18,7 +18,7 @@ AstroMache is intended to become a reusable publication template product. This 0
 
 `astromache/portfolio` preserves the reusable photography presentation concept: a large-title hero, responsive gallery, image descriptions, and a keyboard-accessible native lightbox. Consumers supply images and their rights. The neutral example uses an original geometric SVG fixture under the owner code license; this package contains no personal photographs. One gallery instance per page is currently supported.
 
-The original narrower 0.1.0 is published and immutable. This expanded same-version working candidate is unpublished and must be installed by exact archive. The neutral fixture proves component integration; the separate complete `starters/publication` uses the same foundation as sibling publications.
+The original narrower 0.1.0 is published and immutable. This expanded 0.2.0 working candidate is unpublished and must be installed by exact archive. The neutral fixture proves component integration; the separate complete `starters/publication` uses the same foundation as sibling publications.
 
 Owner-authored machinery is available under **MIT OR Apache-2.0**, at your option. Dependencies retain their own licenses.
 
@@ -53,3 +53,5 @@ Enable native Astro prefetch with `prefetchAll:false`. Call the installer once; 
 After registry publication, install with `pnpm add astromache@0.1.0 astro@^7.3.5`. Before publication, install the reviewed archive path instead. Node >=24.19.0 <25 is the supported build runtime; Astro 7.3.5 is the qualified peer version. The broader declared Astro ^7.3.5 range is not exhaustively tested. Ordinary Astro compilation does not require this repository's native-TS7 qualification patch or Vite+ override.
 
 Do not import private paths. Preserve the prior archive and lockfile for consumer rollback. Release candidates are identified by commit and archive SHA-256.
+
+For a new independent consumer, copy the reviewed `astromache-0.2.0.tgz` into the `vendor` directory of that consumer project. From that consumer project directory, run `pnpm add ./vendor/astromache-0.2.0.tgz astro@7.3.5`. In either provided starter/recipe directory, use its existing exact pin with `pnpm install --frozen-lockfile`. The repository workflow runs on pull requests and pushes to main, checking the actual event SHA; it never publishes packages or deploys websites. Final candidate source commits use no CI skip marker.
