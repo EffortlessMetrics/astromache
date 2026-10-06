@@ -26,6 +26,32 @@ execFileSync(process.execPath, [manager, "pack", "--pack-destination", run], {
 const archive = (await readdir(run)).find((file) => file.endsWith(".tgz"));
 assert.ok(archive);
 const tarball = join(run, archive);
+const entries = execFileSync("tar", ["-tzf", tarball], { encoding: "utf8" })
+  .trim()
+  .split(/\r?\n/)
+  .filter((entry) => !entry.endsWith("/"));
+const expected = [
+  "LICENSE",
+  "LICENSE-MIT",
+  "LICENSE-APACHE",
+  "README.md",
+  "package.json",
+  "fonts/OFL.txt",
+  "fonts/provenance.json",
+  "fonts/IBMPlexSans-Regular.woff2",
+  "fonts/IBMPlexMono-Regular.woff2",
+  "src/fonts.css",
+  "src/Portfolio.astro",
+  "src/PortfolioLightbox.astro",
+  "src/Document.astro",
+  "src/metadata.ts",
+  "src/navigation.ts",
+];
+assert.deepEqual(
+  entries.sort(),
+  expected.map((entry) => "package/" + entry).sort(),
+  "Packed files must match the reviewed allowlist",
+);
 const dir = join(run, "neutral");
 await mkdir(dir);
 await cp("consumers/neutral/src", join(dir, "src"), { recursive: true });
