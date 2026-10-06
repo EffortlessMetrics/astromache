@@ -5,6 +5,7 @@ import { delimiter, dirname, join, relative, resolve, sep } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { verifyPublicationBrowser } from "./verify-publication-browser.mjs";
+import { verifyRecipeBFCache } from "./verify-recipe-bfcache.mjs";
 
 const producer = await realpath(fileURLToPath(new URL("../", import.meta.url)));
 const manager = join(producer, "node_modules/pnpm/bin/pnpm.cjs");
@@ -64,6 +65,7 @@ for (const [source, recipe] of products.filter(
   run(["install", "--frozen-lockfile", "--ignore-scripts"]);
   run(["qualify"]);
   await verifyPublicationBrowser(directory, { recipe });
+  if (recipe) await verifyRecipeBFCache(directory);
   console.log(
     `Independent ${source}: frozen installation, ordinary Astro qualification and browser flows passed (${directory})`,
   );

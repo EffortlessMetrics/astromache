@@ -12,8 +12,8 @@ importers:
         specifier: file:vendor/effortlessmetrics-astro-offline-0.1.0.tgz
         version: file:vendor/effortlessmetrics-astro-offline-0.1.0.tgz(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1))
       '@effortlessmetrics/static-search':
-        specifier: file:vendor/effortlessmetrics-static-search-0.1.0-isolation.tgz
-        version: file:vendor/effortlessmetrics-static-search-0.1.0-isolation.tgz
+        specifier: file:vendor/effortlessmetrics-static-search-0.1.0-fresh-audit.tgz
+        version: file:vendor/effortlessmetrics-static-search-0.1.0-fresh-audit.tgz
       astro:
         specifier: 7.3.5
         version: 7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1)
@@ -716,8 +716,8 @@ packages:
     peerDependencies:
       astro: ^7.3.5
 
-  '@effortlessmetrics/static-search@file:vendor/effortlessmetrics-static-search-0.1.0-isolation.tgz':
-    resolution: {integrity: sha512-NBj+nuPr/bH8SdIXH1gLJQj/ajpjgQAjVK/yi+O0rFQ3AbQiK10mmB4ZH8JnxZyHkLxJ+UIf80MjuzVNSSk/zQ==, tarball: file:vendor/effortlessmetrics-static-search-0.1.0-isolation.tgz}
+  '@effortlessmetrics/static-search@file:vendor/effortlessmetrics-static-search-0.1.0-fresh-audit.tgz':
+    resolution: {integrity: sha512-upkBVEIaOVsaqvPMa/+bUBki0LQuSnLIfPfnzkWvG1MhTEbExMa7pJdWcLP2FLzpxVhtTly0Lrj64CgMu3pMcA==, tarball: file:vendor/effortlessmetrics-static-search-0.1.0-fresh-audit.tgz}
     version: 0.1.0
     engines: {node: ^24.16.0}
 
@@ -4871,7 +4871,7 @@ snapshots:
       - '@types/babel__core'
       - supports-color
 
-  '@effortlessmetrics/static-search@file:vendor/effortlessmetrics-static-search-0.1.0-isolation.tgz': {}
+  '@effortlessmetrics/static-search@file:vendor/effortlessmetrics-static-search-0.1.0-fresh-audit.tgz': {}
 
   '@emmetio/abbreviation@2.3.3':
     dependencies:

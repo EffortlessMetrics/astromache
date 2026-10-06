@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@effortlessmetrics/astro-offline": "file:vendor/effortlessmetrics-astro-offline-0.1.0.tgz",
-    "@effortlessmetrics/static-search": "file:vendor/effortlessmetrics-static-search-0.1.0-isolation.tgz",
+    "@effortlessmetrics/static-search": "file:vendor/effortlessmetrics-static-search-0.1.0-fresh-audit.tgz",
     "astro": "7.3.5",
     "astromache": "file:vendor/astromache-0.2.0.tgz"
   },
