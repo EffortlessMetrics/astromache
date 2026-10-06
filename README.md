@@ -54,4 +54,4 @@ After registry publication, install with `pnpm add astromache@0.1.0 astro@^7.3.5
 
 Do not import private paths. Preserve the prior archive and lockfile for consumer rollback. Release candidates are identified by commit and archive SHA-256.
 
-Install the unpublished candidate by exact local archive: `pnpm add ./vendor/astromache-0.2.0.tgz astro@7.3.5`. The repository workflow runs on pull requests and pushes to main, checking the actual event SHA; it never publishes packages or deploys websites. Final candidate source commits use no CI skip marker.
+For a new independent consumer, copy the reviewed `astromache-0.2.0.tgz` into the `vendor` directory of that consumer project. From that consumer project directory, run `pnpm add ./vendor/astromache-0.2.0.tgz astro@7.3.5`. In either provided starter/recipe directory, use its existing exact pin with `pnpm install --frozen-lockfile`. The repository workflow runs on pull requests and pushes to main, checking the actual event SHA; it never publishes packages or deploys websites. Final candidate source commits use no CI skip marker.
