@@ -4,7 +4,7 @@ The next archive is prepared for npm review. Preparation and dry-run checks do n
 
 ## Supported contract
 
-Five exported subpaths: document, metadata, navigation, fonts.css and portfolio. Astro components and TypeScript modules remain source for the consumer compiler/bundler. No root export or precompiled JavaScript entry is promised. Astro ^7.3.5 is the peer range; exact 7.3.5 is qualified. Node 24.19.x is the qualified build runtime. Consumers own site identity, routes, styling, content, deployment, search, contact and workers. One gallery per page is supported.
+The immutable published 0.1.0 snapshot exports document, metadata, navigation, fonts.css and portfolio. The unpublished 0.2.0 candidate has 18 subpaths: those five plus publication, header, footer, article, post-list, taxonomy-section, tag-list, reading-progress, focus-mode, copy-link, reading-time, publication.css and search.css. Astro components and TypeScript modules remain source for the consumer compiler/bundler. No root export or precompiled JavaScript entry is promised. Astro ^7.3.5 is the peer range; exact 7.3.5 is qualified. Node 24.19.x is the qualified build runtime. The shared foundation owns actual publication structure, typography and reading mechanics. Consumers own site identity, routes, brand/font tokens, content models, metadata policy, deployment, search ranking/presentation policy, contact and offline corpus policy. One gallery per page is supported.
 
 ## Immutable candidate
 
@@ -15,8 +15,12 @@ Five exported subpaths: document, metadata, navigation, fonts.css and portfolio.
 
 ## Version and consumer lifecycle
 
-Before 1.0, breaking public exports, props, behavior or peer requirements require a minor version and conspicuous breaking notes. Compatible additions/fixes use a patch version. A future 1.0 adopts ordinary semantic versioning. No stability promise is inferred for unexported paths or unqualified toolchains.
+Before 1.0, breaking public exports, props, behavior or peer requirements require a minor version and conspicuous breaking notes. Compatible fixes use a patch version. A substantial additive exported foundation uses a minor version to identify the enlarged API surface. A future 1.0 adopts ordinary semantic versioning. No stability promise is inferred for unexported paths or unqualified toolchains.
 
 Each consumer upgrade records old/new commit and archive hashes, relevant interface changes and local acceptance. Preserve the old archive and lockfile. Restore those exact pins with frozen installation and repeat affected checks to demonstrate rollback. Production rollback remains the consumer's separate operation.
 
 The independent starters/publication project supplies a complete neutral publication with article/index/taxonomy routes, responsive shared typography/theme/navigation/reading mechanics, gallery, 404, RSS, robots and sitemap. recipes/search-offline adds optional static search and offline reading by consuming sibling packages directly. Real sites remain direct sibling package consumers. The expanded unpublished candidate exports generic publication presentation and reading mechanics; feed generation, content schemas, branding and metadata policies remain consumer-owned. Universal publication diagnostics are not an implemented export.
+
+## Actual source CI
+
+The repository qualification workflow runs for pull requests to main and pushes to main. Checkout uses the exact PR head or push SHA. Keep existing Linux/Windows runners and read-only permissions. Final release-preparation source must not use CI skip markers. Record actual workflow links and results for the final PR source and landed main; local qualification does not substitute for this execution. No package publication or deployment step exists.
