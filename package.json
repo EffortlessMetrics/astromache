@@ -16,6 +16,7 @@
     "format:check": "vp fmt . --check",
     "verify:offline": "node scripts/verify-offline.mjs",
     "verify:offline:claim": "node scripts/verify-offline.mjs --claim",
+    "verify:offline:api": "node scripts/verify-offline-api.mjs && node scripts/verify-offline-api.mjs --claim",
     "verify:offline:client": "node scripts/verify-offline-client.mjs"
   },
   "devDependencies": {

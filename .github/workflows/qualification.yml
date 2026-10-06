@@ -52,6 +52,7 @@ jobs:
           pnpm verify:offline
           pnpm verify:offline:claim
           pnpm verify:offline:client
+          pnpm verify:offline:api
         env:
           PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.qualification/browsers
       - name: Independent publication starter and search-offline recipe
