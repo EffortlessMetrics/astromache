@@ -6,12 +6,12 @@
   },
   "staticSearch": {
     "version": "0.1.0",
-    "sha256": "ccdcd96da60f4bb22c40fd14895b7c926e0a8165c2ebe34edfffd937dceff11c",
-    "packageSourceHead": "d9e59ea7c7c862512fc6d1ac398022461b0a0800"
+    "sha256": "01989cda90ec846dabc7766c258a86742ad062d6bf2efbfd5cd1e5ccb7db7736",
+    "packageSourceHead": "79d0b5525507124f5efe22ab3c2501e4e40c6c58"
   },
   "astroOffline": {
     "version": "0.1.0",
-    "sha256": "c70bb2cf76afb8fe82422bbd51b0e0444f5f9cbc19c57ab609713144d1ea1074",
-    "packageSourceHead": "a246737a93c8be62430a4aca3fce83c94f6b414a"
+    "sha256": "c2136af9b5dd1ebf012862010f1474d3784e80b271d1bdacb9f80c5e6c8e5d5d",
+    "packageSourceHead": "eb6a7c674f3a8c04729048dae7bbbb68249596bd"
   }
 }

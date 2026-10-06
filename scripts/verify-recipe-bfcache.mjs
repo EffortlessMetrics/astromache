@@ -50,8 +50,21 @@ export async function verifyRecipeBFCache(directory) {
     await context.addInitScript(() => {
       window.__recipeDocument = crypto.randomUUID();
       window.__recipeRestored = false;
+      window.__recipeRestores = 0;
+      window.__recipeHides = [];
+      window.addEventListener("pagehide", (event) => {
+        window.__recipeHides.push(event.persisted);
+        if (!event.persisted)
+          sessionStorage.setItem(
+            "__recipeDiscard",
+            JSON.stringify({ marker: window.__recipeDocument, hides: window.__recipeHides }),
+          );
+      });
       window.addEventListener("pageshow", (event) => {
-        if (event.persisted) window.__recipeRestored = true;
+        if (event.persisted) {
+          window.__recipeRestored = true;
+          window.__recipeRestores++;
+        }
       });
       Object.defineProperty(navigator, "connection", {
         configurable: true,
@@ -64,6 +77,7 @@ export async function verifyRecipeBFCache(directory) {
       });
     });
     const page = await context.newPage();
+
     await page.goto(origin + "/search/");
     await poll(
       page,
@@ -112,9 +126,65 @@ export async function verifyRecipeBFCache(directory) {
       0,
       "new query replaces old results",
     );
+    for (let cycle = 0; cycle < 3; cycle++) {
+      const restores = await page.evaluate(() => window.__recipeRestores);
+      await page.locator("#search-results a").click();
+      await page
+        .getByRole("heading", { name: /A quiet system|Making room for change/ })
+        .first()
+        .waitFor();
+      await page.goBack({ waitUntil: "commit" });
+      const end = Date.now() + 30000;
+      while (Date.now() < end && (await page.evaluate(() => window.__recipeRestores)) === restores)
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      assert.equal(
+        await page.evaluate(() => window.__recipeRestores),
+        restores + 1,
+        "Each Back really restores BFCache",
+      );
+      assert.equal(
+        await page.evaluate(() => window.__recipeDocument),
+        marker,
+        "Repeated Back retains the same document",
+      );
+      const title = cycle % 2 === 0 ? "A quiet system" : "Making room for change";
+      await page.getByLabel("Search", { exact: true }).fill(title);
+      await page.locator("#search-form button").click();
+      await page.locator("#search-results a").filter({ hasText: title }).waitFor();
+      assert.equal(await page.locator("#search-results a").textContent(), title);
+      assert.equal(
+        await page.locator("#search-results a").count(),
+        1,
+        "One result after repeated restoration",
+      );
+    }
+    assert.deepEqual(
+      await page.evaluate(() => window.__recipeHides),
+      [true, true, true, true],
+      "Four real persisted exits recorded in the original live document",
+    );
+    await context.setOffline(false);
+    await page.reload();
+    assert.notEqual(
+      await page.evaluate(() => window.__recipeDocument),
+      marker,
+      "Reload genuinely discards the previous document",
+    );
+    const discarded = await page.evaluate(() =>
+      JSON.parse(sessionStorage.getItem("__recipeDiscard")),
+    );
+    assert.equal(discarded.marker, marker, "Discard receipt is from the original document");
+    assert.deepEqual(
+      discarded.hides,
+      [true, true, true, true, false],
+      "Genuine reload emits nonpersisted hide after four persisted exits",
+    );
+    await page.getByLabel("Search", { exact: true }).fill("A quiet system");
+    await page.locator("#search-form button").click();
+    await page.locator('#search-results a[href="/notes/a-quiet-system/"]').waitFor();
     await context.close();
     console.log(
-      "Actual recipe BFCache passed: persisted document restore, second search, replaced results.",
+      "Actual recipe BFCache passed: four persisted offline restores, query replacement and genuine reload.",
     );
   } finally {
     await browser.close();

@@ -7,6 +7,8 @@ import { fileURLToPath } from "node:url";
 import { verifyPublicationBrowser } from "./verify-publication-browser.mjs";
 import { verifyRecipeBFCache } from "./verify-recipe-bfcache.mjs";
 
+await import("./verify-recipe-request-contracts.mjs");
+
 const producer = await realpath(fileURLToPath(new URL("../", import.meta.url)));
 const manager = join(producer, "node_modules/pnpm/bin/pnpm.cjs");
 assert.match(process.version, /^v24\./, "Use the qualification Node 24 toolchain");
