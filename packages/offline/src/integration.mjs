@@ -47,6 +47,7 @@ export async function generateOfflineWorker(directory, options) {
     paths.set(url, join(directory, url.slice(1), "index.html"));
   }
   const excluded = (path) =>
+    path === "/api" ||
     ["/api/", ...(worker.excludedPrefixes ?? [])].some((prefix) => path.startsWith(prefix));
   const entries = [];
   let bytes = 0,

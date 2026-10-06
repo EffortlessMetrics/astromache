@@ -61,6 +61,7 @@ export function installWorker(policy, entries, revision, prefix) {
   );
   if (policy.claimClients) clientsClaim();
   const excluded = (path) =>
+    path === "/api" ||
     ["/api/", ...(policy.excludedPrefixes ?? [])].some((prefix) => path.startsWith(prefix));
   const candidates = (url) => {
     const clean = new URL(url);
