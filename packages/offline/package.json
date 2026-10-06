@@ -1,0 +1,49 @@
+{
+  "name": "@effortlessmetrics/astro-offline",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Workbox-based static Astro corpus builds and deferred service-worker registration",
+  "license": "MIT OR Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EffortlessMetrics/astromache.git",
+    "directory": "packages/offline"
+  },
+  "files": [
+    "src",
+    "LICENSE",
+    "LICENSE-MIT",
+    "LICENSE-APACHE",
+    "README.md",
+    "CHANGELOG.md",
+    "WORKBOX-LICENSE"
+  ],
+  "type": "module",
+  "exports": {
+    "./integration": {
+      "types": "./src/integration.d.ts",
+      "import": "./src/integration.mjs"
+    },
+    "./client": {
+      "types": "./src/client.d.ts",
+      "import": "./src/client.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "esbuild": "0.28.2",
+    "workbox-build": "7.4.1",
+    "workbox-core": "7.4.1",
+    "workbox-precaching": "7.4.1",
+    "workbox-routing": "7.4.1"
+  },
+  "peerDependencies": {
+    "astro": "^7.3.5"
+  },
+  "engines": {
+    "node": ">=24.19.0 <25"
+  }
+}
