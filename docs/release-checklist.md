@@ -19,4 +19,4 @@ Before 1.0, breaking public exports, props, behavior or peer requirements requir
 
 Each consumer upgrade records old/new commit and archive hashes, relevant interface changes and local acceptance. Preserve the old archive and lockfile. Restore those exact pins with frozen installation and repeat affected checks to demonstrate rollback. Production rollback remains the consumer's separate operation.
 
-Feed helpers, content adapters, a complete starter, theme configuration and universal publication diagnostics are future ideas, not current exports.
+The independent starters/publication project supplies a small neutral publication sample; recipes/search-offline adds optional static search and offline reading by consuming sibling packages directly. These projects do not make a real site depend on a starter. Feed helpers, content adapters, theme configuration and universal publication diagnostics remain future ideas rather than current package exports.
