@@ -1,10 +1,24 @@
+# AstroMache publication system
+
+The current source expands the genuine reusable publication foundation and complete neutral starter: article/list/taxonomy typography and composition, responsive menu/theme, reading progress/focus/copy controls, and the existing native gallery/navigation machinery. The private personal site and neutral products are sibling consumers of the same exports. Content models, corpus, routes, ranking, metadata policy, fonts, assets, privacy-specific sharing and brand tokens remain adapters.
+
+This working **unpublished expanded astromache 0.1.0 candidate** is distinct from immutable published npm 0.1.0. Its exact package source is aa372a898f868b5c70cbcb0e8cbd1a7ee2ce5bc5 and archive SHA-256 is 220ccfd848964fbd7e98893215c973a489e6f71de99b25ad31ba78d9349e45c5. Never replace the registry version with these different bytes. See packages/astromache/README.md for the expanded API and release distinction.
+
+starters/publication is a complete independently installed neutral publication: two original articles, index, taxonomy, responsive theme/navigation, gallery, 404, RSS, robots and sitemap. recipes/search-offline adds shared static-search lifecycle and bounded Workbox offline support while preserving consumer-owned renderer, schema, engine and corpus policy. Neither real site depends on a starter artifact.
+
+Qualification includes compiler/packed allowlist/native-gallery checks, both offline claim policies and client disposal contracts, and clean frozen independent starter/recipe builds with real keyboard/article/reading/gallery and online/fresh offline search/navigation checks. These tests do not publish packages or deploy websites.
+
+## Original published snapshot reference
+
+The following documents the narrower original release. Candidate APIs and complete product scope above supersede its preparation descriptions.
+
 # AstroMache
 
 AstroMache is intended to become a reusable publication template product. This 0.1.0 npm candidate supplies its extracted Astro publication machinery; the small initial starter lives separately in `starters/publication`. Site identity, routes, content, styling, deployment and independently versioned integrations belong to consumers.
 
 `astromache/portfolio` preserves the reusable photography presentation concept: a large-title hero, responsive gallery, image descriptions, and a keyboard-accessible native lightbox. Consumers supply images and their rights. The neutral example uses an original geometric SVG fixture under the owner code license; this package contains no personal photographs. One gallery instance per page is currently supported.
 
-Version 0.1.0 is prepared as the first npm release candidate. It has not been published. The neutral example proves component integration. The separate `starters/publication` is the initial product starter and uses the same package as sibling consumer publications.
+The original narrower 0.1.0 is published and immutable. This expanded same-version working candidate is unpublished and must be installed by exact archive. The neutral fixture proves component integration; the separate complete `starters/publication` uses the same foundation as sibling publications.
 
 Owner-authored machinery is available under **MIT OR Apache-2.0**, at your option. Dependencies retain their own licenses.
 

@@ -1,10 +1,38 @@
+# AstroMache publication foundation candidate
+
+This working source is an expanded, **unpublished** 0.1.0 candidate. The existing npm astromache@0.1.0 release remains immutable and does not contain these new publication exports. Consumers of this candidate must use its exact local archive and SHA-256 receipt. Do not publish this candidate over the existing version.
+
+The foundation supplies real publication typography, responsive navigation, article presentation, cards, taxonomy lists, theme initialization/toggle, reading progress, focus mode, copy-link feedback, and gallery mechanics. The complete neutral starter and optional search/offline recipe consume these same exports. Content collection schemas, routes, dates, related-content selection, metadata policy, branding, font assets, privacy/share behavior, and search ranking remain consumer-owned.
+
+## Added exports
+
+- `astromache/publication`: document composition; metadata props match `document`; optional htmlAttributes, themeStorageKey (theme), themeToggleId (theme-toggle); head/header/footer/body-end/default slots.
+- `astromache/header`: brand, brandHref, links[{label,href,current?}], navigationLabel, itemsId, overlaySelector; menu-icon/close-icon/controls slots. One header per document.
+- `astromache/footer`: label; social/default slots.
+- `astromache/article`: title, published{datetime,label}, readingTime, lens/tags/related/previous/next links, backHref/backLabel, returnStorageKey, backId/topButtonId; source/actions/reading-tools/back-icon/date-icon/default slots. Consumers derive records; no collection dependency.
+- `astromache/post-list`: items[{title,href,description}], headingLevel (2 or 3), optional pagination{current,total,previous,next}, returnStorageKey.
+- `astromache/taxonomy-section`: label, href, id, items, itemHeadingLevel (2 or 3).
+- `astromache/tag-list`: items[{label,href}], optional class (tag-list).
+- `astromache/reading-progress`: wordsPerMinute (200), contentSelector (.post-content), indicatorId (reading-time), barId (myBar).
+- `astromache/focus-mode`: toggleId (focus-mode-toggle), storageKey (focus-mode), bodyClass (focus-mode). Custom body classes need consumer styling.
+- `astromache/copy-link`: url, text, class, resetMs (2000), copiedText, failedText.
+- `astromache/reading-time`: readingTime(text, wordsPerMinute=200), formatReadingTime(minutes).
+- `astromache/publication.css`: actual shared publication design; consumer font overrides are --publication-font-sans and --publication-font-mono. Consumers supply brand tokens, font files, and assets.
+- `astromache/search.css`: generic search tokens/presentation; consumer Tailwind build directives and source paths remain consumer-owned.
+
+Reading controls and theme/header controllers assume a single publication instance per document. Source exports compile with ordinary Astro 7.3.5 on Node >=24.19.0 <25; no compiler patch or Vite override is required. This candidate adds no dependency, network service, site content, or package publication.
+
+## Published snapshot documentation
+
+The following describes the original published snapshot and its original narrower API. It is retained for release lineage; the candidate additions above are not available from that registry artifact.
+
 # AstroMache
 
-AstroMache is intended to become a reusable publication template product. This 0.1.0 npm candidate supplies its extracted Astro publication machinery; a complete starter is not included yet. Site identity, routes, content, styling, deployment and independently versioned integrations belong to consumers.
+The original published 0.1.0 snapshot supplied the initial document, metadata, navigation, font and gallery machinery. The expanded candidate and complete neutral products described above extend that foundation. Site identity, routes, content policy, brand tokens, deployment and independently versioned integrations remain consumer-owned.
 
 `astromache/portfolio` preserves the reusable photography presentation concept: a large-title hero, responsive gallery, image descriptions, and a keyboard-accessible native lightbox. Consumers supply images and their rights. The neutral example uses an original geometric SVG fixture under the owner code license; this package contains no personal photographs. One gallery instance per page is currently supported.
 
-Version 0.1.0 is prepared as the first npm release candidate. It has not been published. The neutral example proves component integration; it is not the complete intended publication starter.
+The original version 0.1.0 has been published. Its immutable archive differs from this expanded unpublished candidate. The older neutral test fixture remains a component integration test; starters/publication is now the complete neutral publication product.
 
 Owner-authored machinery is available under **MIT OR Apache-2.0**, at your option. Dependencies retain their own licenses.
 
@@ -42,6 +70,6 @@ See the repository release checklist before proposing a public version.
 
 ## Install and supported toolchain
 
-After registry publication, install with `pnpm add astromache@0.1.0 astro@^7.3.5`. Before publication, install the reviewed archive path instead. Node >=24.19.0 <25 is the supported build runtime; Astro 7.3.5 is the qualified peer version. The broader declared Astro ^7.3.5 range is not exhaustively tested. Ordinary Astro compilation does not require this repository's native-TS7 qualification patch or Vite+ override.
+The original narrower registry snapshot installs with `pnpm add astromache@0.1.0 astro@^7.3.5`. To use this expanded unpublished candidate, install its exact reviewed archive instead. Node >=24.19.0 <25 is the supported build runtime; Astro 7.3.5 is the qualified peer version. The broader declared Astro ^7.3.5 range is not exhaustively tested. Ordinary Astro compilation does not require this repository's native-TS7 qualification patch or Vite+ override.
 
 Do not import private paths. Preserve the prior archive and lockfile for consumer rollback. Release candidates are identified by commit and archive SHA-256.

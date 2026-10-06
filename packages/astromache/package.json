@@ -24,7 +24,20 @@
     "src/PortfolioLightbox.astro",
     "src/Document.astro",
     "src/metadata.ts",
-    "src/navigation.ts"
+    "src/navigation.ts",
+    "src/Publication.astro",
+    "src/Header.astro",
+    "src/Footer.astro",
+    "src/Article.astro",
+    "src/PostList.astro",
+    "src/TaxonomySection.astro",
+    "src/ReadingProgress.astro",
+    "src/FocusMode.astro",
+    "src/CopyLink.astro",
+    "src/reading-time.ts",
+    "src/publication.css",
+    "src/search.css",
+    "src/TagList.astro"
   ],
   "type": "module",
   "exports": {
@@ -32,7 +45,20 @@
     "./metadata": "./src/metadata.ts",
     "./navigation": "./src/navigation.ts",
     "./fonts.css": "./src/fonts.css",
-    "./portfolio": "./src/Portfolio.astro"
+    "./portfolio": "./src/Portfolio.astro",
+    "./publication": "./src/Publication.astro",
+    "./header": "./src/Header.astro",
+    "./footer": "./src/Footer.astro",
+    "./article": "./src/Article.astro",
+    "./post-list": "./src/PostList.astro",
+    "./taxonomy-section": "./src/TaxonomySection.astro",
+    "./reading-progress": "./src/ReadingProgress.astro",
+    "./focus-mode": "./src/FocusMode.astro",
+    "./copy-link": "./src/CopyLink.astro",
+    "./reading-time": "./src/reading-time.ts",
+    "./publication.css": "./src/publication.css",
+    "./search.css": "./src/search.css",
+    "./tag-list": "./src/TagList.astro"
   },
   "publishConfig": {
     "access": "public",

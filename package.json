@@ -3,10 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "pnpm -r --filter './consumers/*' run build",
+    "build": "pnpm -r --filter \"./consumers/*\" run build",
     "typecheck": "node scripts/check-compiler.mjs compatibility",
     "typecheck:native": "node scripts/check-compiler.mjs native",
-    "check:astro": "pnpm -r --filter './consumers/*' exec astro check",
+    "check:astro": "pnpm -r --filter \"./consumers/*\" exec astro check",
     "lint": "vp lint packages/ consumers/ scripts/",
     "test": "vp test --run",
     "verify:output": "node scripts/verify-output.mjs",

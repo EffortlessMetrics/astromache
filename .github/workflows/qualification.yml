@@ -15,7 +15,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
@@ -43,5 +43,16 @@ jobs:
       - name: Independent packed consumers
         # Chromium is scoped to this hosted checkout, not global configuration.
         run: pnpm verify:packed
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.qualification/browsers
+      - name: Offline worker default and opt-in claim contracts
+        run: |
+          pnpm verify:offline
+          pnpm verify:offline:claim
+          pnpm verify:offline:client
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.qualification/browsers
+      - name: Independent publication starter and search-offline recipe
+        run: node scripts/verify-publication-products.mjs
         env:
           PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.qualification/browsers

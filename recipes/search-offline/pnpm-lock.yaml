@@ -12,14 +12,14 @@ importers:
         specifier: file:vendor/effortlessmetrics-astro-offline-0.1.0.tgz
         version: file:vendor/effortlessmetrics-astro-offline-0.1.0.tgz(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1))
       '@effortlessmetrics/static-search':
-        specifier: file:vendor/effortlessmetrics-static-search-0.1.0.tgz
-        version: file:vendor/effortlessmetrics-static-search-0.1.0.tgz
+        specifier: file:vendor/effortlessmetrics-static-search-0.1.0-isolation.tgz
+        version: file:vendor/effortlessmetrics-static-search-0.1.0-isolation.tgz
       astro:
         specifier: 7.3.5
         version: 7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1)
       astromache:
-        specifier: file:vendor/astromache-0.1.0.tgz
-        version: file:vendor/astromache-0.1.0.tgz(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1))
+        specifier: file:vendor/astromache-0.1.0-foundation.tgz
+        version: file:vendor/astromache-0.1.0-foundation.tgz(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1))
     devDependencies:
       '@astrojs/check':
         specifier: 0.9.10
@@ -716,8 +716,8 @@ packages:
     peerDependencies:
       astro: ^7.3.5
 
-  '@effortlessmetrics/static-search@file:vendor/effortlessmetrics-static-search-0.1.0.tgz':
-    resolution: {integrity: sha512-Zy7QQJKmE1XiOv+/QVV3YMciZTwLgugQN7ps/HECz5dRgk6bPD7uVgzhltlBznAF9unTHPzvjIpP9qs9F7YSJA==, tarball: file:vendor/effortlessmetrics-static-search-0.1.0.tgz}
+  '@effortlessmetrics/static-search@file:vendor/effortlessmetrics-static-search-0.1.0-isolation.tgz':
+    resolution: {integrity: sha512-NBj+nuPr/bH8SdIXH1gLJQj/ajpjgQAjVK/yi+O0rFQ3AbQiK10mmB4ZH8JnxZyHkLxJ+UIf80MjuzVNSSk/zQ==, tarball: file:vendor/effortlessmetrics-static-search-0.1.0-isolation.tgz}
     version: 0.1.0
     engines: {node: ^24.16.0}
 
@@ -2130,8 +2130,8 @@ packages:
       '@astrojs/markdown-remark':
         optional: true
 
-  astromache@file:vendor/astromache-0.1.0.tgz:
-    resolution: {integrity: sha512-cZ9Jf/nFKLgOrUSWAcJ0HHiUmZY3JmqrKCv072fW4vRAVkqN77fLt9m5bH2qJFQAxgscRz/YiSt9/KsUQ2GIww==, tarball: file:vendor/astromache-0.1.0.tgz}
+  astromache@file:vendor/astromache-0.1.0-foundation.tgz:
+    resolution: {integrity: sha512-Luqhzc7n5RziwH1cn8vbupOMfmwbMsT5nYzs6OQ3YX+Ymxavf7TbvT+F59T37XzaUdaCdq1sWbXKC1SfN1hXQQ==, tarball: file:vendor/astromache-0.1.0-foundation.tgz}
     version: 0.1.0
     engines: {node: '>=24.19.0 <25'}
     peerDependencies:
@@ -4871,7 +4871,7 @@ snapshots:
       - '@types/babel__core'
       - supports-color
 
-  '@effortlessmetrics/static-search@file:vendor/effortlessmetrics-static-search-0.1.0.tgz': {}
+  '@effortlessmetrics/static-search@file:vendor/effortlessmetrics-static-search-0.1.0-isolation.tgz': {}
 
   '@emmetio/abbreviation@2.3.3':
     dependencies:
@@ -5970,7 +5970,7 @@ snapshots:
       - uploadthing
       - yaml
 
-  astromache@file:vendor/astromache-0.1.0.tgz(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1)):
+  astromache@file:vendor/astromache-0.1.0-foundation.tgz(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1)):
     dependencies:
       astro: 7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1)
       bcp-47: 2.1.1

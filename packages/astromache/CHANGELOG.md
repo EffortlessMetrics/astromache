@@ -1,3 +1,7 @@
+## Unpublished publication foundation expansion
+
+Distinct local 0.1.0 candidate; immutable published 0.1.0 is preserved. Adds the actual shared publication layout/theme, responsive header/footer, article/list/taxonomy/tag presentation, portable typography/search CSS, reading progress, focus mode, copy-link controls, and generic reading-time helper. Consumers own content schemas, routes, dates, metadata, ranking, privacy-specific sharing, font files and branding. No package publication or new version is part of this change.
+
 # Changelog
 
 ## 0.1.0 — first release candidate
