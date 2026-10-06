@@ -96,7 +96,10 @@ export async function generateOfflineWorker(directory, options) {
     ";\n";
   await writeFile(
     join(directory, workerFile),
-    "/*! Workbox7.4.1 — MIT license\n" +
+    "/*! @effortlessmetrics/astro-offline owner code - MIT alternative\n" +
+      ownerNotice +
+      "\n*/\n" +
+      "/*! Workbox7.4.1 — MIT license\n" +
       workboxNotice +
       "\n*/\n" +
       diagnostics +
