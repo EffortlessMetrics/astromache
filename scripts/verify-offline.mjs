@@ -62,6 +62,13 @@ await assert.rejects(
   generateOfflineWorker(root + "/one", { ...policy, maxResources: 1 }),
   /budget/,
 );
+async function poll(predicate, message) {
+  const deadline = Date.now() + 30000;
+  while (!(await predicate())) {
+    if (Date.now() > deadline) throw new Error(message);
+    await new Promise((resolve) => setTimeout(resolve, 25));
+  }
+}
 const server = createServer(async (req, res) => {
   try {
     const url = new URL(req.url, "http://localhost");
@@ -113,8 +120,9 @@ try {
   await page.evaluate(async () => {
     await (await navigator.serviceWorker.getRegistration()).update();
   });
-  await page.waitForFunction(
-    async () => !(await navigator.serviceWorker.getRegistration()).installing,
+  await poll(
+    () => page.evaluate(async () => !(await navigator.serviceWorker.getRegistration()).installing),
+    "Rejected worker install did not settle",
   );
   assert.equal(
     await page.evaluate(async () =>
@@ -130,8 +138,13 @@ try {
   await page.evaluate(async () => {
     await (await navigator.serviceWorker.getRegistration()).update();
   });
-  await page.waitForFunction(
-    async () => (await navigator.serviceWorker.getRegistration()).waiting?.state === "installed",
+  await poll(
+    () =>
+      page.evaluate(
+        async () =>
+          (await navigator.serviceWorker.getRegistration()).waiting?.state === "installed",
+      ),
+    "New revision did not become an installed waiting worker",
   );
   await context.setOffline(true);
   await page.goto(origin + "/work/");
