@@ -1,0 +1,50 @@
+html {
+  color-scheme: light dark;
+  background: Canvas;
+  color: CanvasText;
+}
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans", sans-serif;
+  line-height: 1.6;
+}
+header,
+main,
+footer {
+  max-width: 64rem;
+  margin: auto;
+  padding: 1.5rem;
+}
+nav {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+}
+a:focus-visible {
+  outline: 3px solid Highlight;
+  outline-offset: 4px;
+}
+article {
+  max-width: 42rem;
+  padding-block: 3rem;
+}
+h1 {
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  line-height: 1.15;
+}
+code,
+pre {
+  font-family: "IBM Plex Mono", monospace;
+}
+footer {
+  border-top: 1px solid GrayText;
+  font-size: 0.9rem;
+}
+.eyebrow {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
