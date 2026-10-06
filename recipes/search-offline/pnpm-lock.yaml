@@ -717,7 +717,7 @@ packages:
       astro: ^7.3.5
 
   '@effortlessmetrics/static-search@file:vendor/effortlessmetrics-static-search-0.1.0.tgz':
-    resolution: {integrity: sha512-dERG0yW7Z23gLDFy82SMZLkRLNprl5DT37lFfxFPQ/fZ2oZpcL91/Kh4tiEzL2r3jemry9RcCZtxN7P8mSLwMA==, tarball: file:vendor/effortlessmetrics-static-search-0.1.0.tgz}
+    resolution: {integrity: sha512-Zy7QQJKmE1XiOv+/QVV3YMciZTwLgugQN7ps/HECz5dRgk6bPD7uVgzhltlBznAF9unTHPzvjIpP9qs9F7YSJA==, tarball: file:vendor/effortlessmetrics-static-search-0.1.0.tgz}
     version: 0.1.0
     engines: {node: ^24.16.0}
 
