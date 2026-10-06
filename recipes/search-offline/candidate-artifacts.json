@@ -1,13 +1,13 @@
 {
   "astromache": {
     "version": "0.1.0",
-    "sha256": "e0806e38e62c6589ebc4f11334b4ee6c57ccc535bfe5854fabc1cbbff3d683bf",
-    "packageSourceHead": "2b697a0e015796819b12e6bec37c45e68ab54c8b"
+    "sha256": "220ccfd848964fbd7e98893215c973a489e6f71de99b25ad31ba78d9349e45c5",
+    "packageSourceHead": "aa372a898f868b5c70cbcb0e8cbd1a7ee2ce5bc5"
   },
   "staticSearch": {
     "version": "0.1.0",
-    "sha256": "1397a808d9306cbc2f6ef18b80979e5c86f89ddb794bf182b62c3f508efc6956",
-    "packageSourceHead": "3a5a2439dc6159475f21dc6431f52eb00cbe4625"
+    "sha256": "dc2491121d02e42c79d49b7d175320140fe58231c558176d997962d6093f9b2e",
+    "packageSourceHead": "9b91b49282165b9c09e9ac5fa848aa98b281fa3f"
   },
   "astroOffline": {
     "version": "0.1.0",

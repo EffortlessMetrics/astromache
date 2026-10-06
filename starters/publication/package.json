@@ -15,10 +15,11 @@
   },
   "dependencies": {
     "astro": "7.3.5",
-    "astromache": "file:vendor/astromache-0.1.0.tgz"
+    "astromache": "file:vendor/astromache-0.1.0-foundation.tgz"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
+    "@types/node": "24.10.1",
     "typescript": "6.0.3",
     "vite-plus": "1.0.0"
   },
