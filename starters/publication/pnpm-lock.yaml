@@ -8,12 +8,12 @@ importers:
 
   .:
     dependencies:
-      '@effortlessmetrics/astromache':
-        specifier: file:vendor/effortlessmetrics-astromache-0.1.0.tgz
-        version: file:vendor/effortlessmetrics-astromache-0.1.0.tgz(astro@7.3.5(yaml@2.9.1))
       astro:
         specifier: 7.3.5
         version: 7.3.5(yaml@2.9.1)
+      astromache:
+        specifier: file:vendor/astromache-0.1.0.tgz
+        version: file:vendor/astromache-0.1.0.tgz(astro@7.3.5(yaml@2.9.1))
     devDependencies:
       '@astrojs/check':
         specifier: 0.9.10
@@ -217,13 +217,6 @@ packages:
   '@clack/prompts@1.8.1':
     resolution: {integrity: sha512-dlT1m5e/0yUL0kRNcQn7yGLVThkgbB0Ga/1AmfDDC/8ik6AIiSf2QLQO2zPYvefsHP0aFgxO93cVLCCfDp7kzQ==}
     engines: {node: '>= 20.12.0'}
-
-  '@effortlessmetrics/astromache@file:vendor/effortlessmetrics-astromache-0.1.0.tgz':
-    resolution: {integrity: sha512-yxOU5Gb6i+SJ7zhHdKWr73h9d+t1KYUCBFst1L3Mc9q3whjAIIq3GdTM7WWPMFxrFwRvnI5WVw3/eBHQ7k4UGQ==, tarball: file:vendor/effortlessmetrics-astromache-0.1.0.tgz}
-    version: 0.1.0
-    engines: {node: '>=24.19.0 <25'}
-    peerDependencies:
-      astro: ^7.3.5
 
   '@emmetio/abbreviation@2.3.3':
     resolution: {integrity: sha512-mgv58UrU3rh4YgbE/TzgLQwJ3pFsHHhCLqY20aJq+9comytTXUDNGG/SMtSeMJdkpxgXSXunBGLD8Boka3JyVA==}
@@ -1414,6 +1407,13 @@ packages:
     peerDependenciesMeta:
       '@astrojs/markdown-remark':
         optional: true
+
+  astromache@file:vendor/astromache-0.1.0.tgz:
+    resolution: {integrity: sha512-cZ9Jf/nFKLgOrUSWAcJ0HHiUmZY3JmqrKCv072fW4vRAVkqN77fLt9m5bH2qJFQAxgscRz/YiSt9/KsUQ2GIww==, tarball: file:vendor/astromache-0.1.0.tgz}
+    version: 0.1.0
+    engines: {node: '>=24.19.0 <25'}
+    peerDependencies:
+      astro: ^7.3.5
 
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
@@ -2713,11 +2713,6 @@ snapshots:
       fast-wrap-ansi: 0.2.2
       sisteransi: 1.0.5
 
-  '@effortlessmetrics/astromache@file:vendor/effortlessmetrics-astromache-0.1.0.tgz(astro@7.3.5(yaml@2.9.1))':
-    dependencies:
-      astro: 7.3.5(yaml@2.9.1)
-      bcp-47: 2.1.1
-
   '@emmetio/abbreviation@2.3.3':
     dependencies:
       '@emmetio/scanner': 1.0.4
@@ -3642,6 +3637,11 @@ snapshots:
       - tsx
       - uploadthing
       - yaml
+
+  astromache@file:vendor/astromache-0.1.0.tgz(astro@7.3.5(yaml@2.9.1)):
+    dependencies:
+      astro: 7.3.5(yaml@2.9.1)
+      bcp-47: 2.1.1
 
   axobject-query@4.1.0: {}
 

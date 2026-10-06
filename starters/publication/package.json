@@ -14,8 +14,8 @@
     "qualify": "vp run check && vp run lint && vp run format:check && vp run build"
   },
   "dependencies": {
-    "@effortlessmetrics/astromache": "file:vendor/effortlessmetrics-astromache-0.1.0.tgz",
-    "astro": "7.3.5"
+    "astro": "7.3.5",
+    "astromache": "file:vendor/astromache-0.1.0.tgz"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
