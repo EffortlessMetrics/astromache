@@ -10,6 +10,10 @@ import { verifyRecipeBFCache } from "./verify-recipe-bfcache.mjs";
 await import("./verify-recipe-request-contracts.mjs");
 
 const producer = await realpath(fileURLToPath(new URL("../", import.meta.url)));
+execFileSync(process.execPath, [join(producer, "scripts/verify-starter-paths.mjs")], {
+  cwd: producer,
+  stdio: "inherit",
+});
 const manager = join(producer, "node_modules/pnpm/bin/pnpm.cjs");
 assert.match(process.version, /^v24\./, "Use the qualification Node 24 toolchain");
 const root = await realpath(

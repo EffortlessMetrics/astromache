@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, realpath, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
-import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
+import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const producer = fileURLToPath(new URL("../", import.meta.url));
+const producer = await realpath(fileURLToPath(new URL("../", import.meta.url)));
 assert.match(process.version, /^v24\./, "Use Node 24.19 or newer within major 24");
 assert(Number(process.versions.node.split(".")[1]) >= 19, "Use Node 24.19 or newer");
 assert.equal(
@@ -19,7 +19,9 @@ const projects = {
 };
 const source = projects[process.argv[2]];
 assert(source, "Choose publication or search-offline");
-const destination = resolve(process.argv[3]);
+const requested = resolve(process.argv[3]);
+// mkdir below requires an existing parent; resolve that parent's symlinks first.
+const destination = join(await realpath(dirname(requested)), basename(requested));
 const location = relative(producer, destination);
 assert(
   location.startsWith(`..${sep}`) || isAbsolute(location),
