@@ -1,0 +1,50 @@
+{
+  "name": "astromache",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Astro publication components, metadata validation and bounded native navigation helpers",
+  "homepage": "https://github.com/EffortlessMetrics/astromache#readme",
+  "bugs": {
+    "url": "https://github.com/EffortlessMetrics/astromache/issues"
+  },
+  "license": "MIT OR Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EffortlessMetrics/astromache.git",
+    "directory": "packages/astromache"
+  },
+  "files": [
+    "CHANGELOG.md",
+    "LICENSE",
+    "LICENSE-MIT",
+    "LICENSE-APACHE",
+    "fonts",
+    "src/fonts.css",
+    "src/Portfolio.astro",
+    "src/PortfolioLightbox.astro",
+    "src/Document.astro",
+    "src/metadata.ts",
+    "src/navigation.ts"
+  ],
+  "type": "module",
+  "exports": {
+    "./document": "./src/Document.astro",
+    "./metadata": "./src/metadata.ts",
+    "./navigation": "./src/navigation.ts",
+    "./fonts.css": "./src/fonts.css",
+    "./portfolio": "./src/Portfolio.astro"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "bcp-47": "2.1.1"
+  },
+  "peerDependencies": {
+    "astro": "^7.3.5"
+  },
+  "engines": {
+    "node": ">=24.19.0 <25"
+  }
+}

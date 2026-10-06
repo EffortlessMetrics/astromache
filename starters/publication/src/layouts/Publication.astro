@@ -1,0 +1,17 @@
+---
+import Document from "astromache/document";
+import "astromache/fonts.css";
+import "../styles/publication.css";
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+---
+<Document title={title} description={description} canonical={new URL(Astro.url.pathname, Astro.site)} language="en">
+  <nav slot="header" aria-label="Primary"><a href="/">Field Notes</a><a href="/portfolio/">Gallery</a></nav>
+  <slot />
+  <footer slot="footer">An independent publication.</footer>
+</Document>
+<script>
+  import { prefetch } from "astro:prefetch";
+  import { installNavigationPrefetch } from "astromache/navigation";
+  installNavigationPrefetch(prefetch);
+</script>

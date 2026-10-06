@@ -1,10 +1,10 @@
 # AstroMache
 
-AstroMache is intended to become a reusable publication template product. This 0.1.0 npm candidate supplies its extracted Astro publication machinery; the small initial starter lives separately in `starters/publication`. Site identity, routes, content, styling, deployment and independently versioned integrations belong to consumers.
+AstroMache is intended to become a reusable publication template product. This 0.1.0 npm candidate supplies its extracted Astro publication machinery; a complete starter is not included yet. Site identity, routes, content, styling, deployment and independently versioned integrations belong to consumers.
 
 `astromache/portfolio` preserves the reusable photography presentation concept: a large-title hero, responsive gallery, image descriptions, and a keyboard-accessible native lightbox. Consumers supply images and their rights. The neutral example uses an original geometric SVG fixture under the owner code license; this package contains no personal photographs. One gallery instance per page is currently supported.
 
-Version 0.1.0 is prepared as the first npm release candidate. It has not been published. The neutral example proves component integration. The separate `starters/publication` is the initial product starter and uses the same package as sibling consumer publications.
+Version 0.1.0 is prepared as the first npm release candidate. It has not been published. The neutral example proves component integration; it is not the complete intended publication starter.
 
 Owner-authored machinery is available under **MIT OR Apache-2.0**, at your option. Dependencies retain their own licenses.
 
@@ -33,6 +33,12 @@ import Document from "astromache/document";
 `navigation` exports `backgroundDownloadsAllowed(connection?, online = true)` and `installNavigationPrefetch(prefetch, options)`. Consumers inject Astro's native `prefetch` function; the module does not implement a second fetch/cache stack. Options are `maxTargets` (default 6, allowed 0-12), `delayMs` (default 120, allowed 0-2000) and an additional `include(URL)` restriction. Only debounced hover/focus intent triggers same-origin document targets, with per-document deduplication. API/share, query/hash, downloads, file targets and external links are excluded. Static public contact HTML is eligible: native HTML prefetch does not execute its CAPTCHA scripts or submit its form. A consumer may restrict that route with `include`. Offline, Save-Data, 2G/3G, downlink below 1.5Mbps and RTT at least 500ms suppress background requests. Missing connection hints use the bounded normal policy.
 
 Enable native Astro prefetch with `prefetchAll:false`. Call the installer once; it returns a disposer. A consumer with ClientRouter must dispose/reinstall on its navigation lifecycle; static consumers initialize on direct document load. Consumers own worker scope/cache names, route allowlist, static manifest, byte/file budgets, online-only contact and the registration lifecycle. Gate explicit bulk registration with the same connection predicate, but existing browser-managed worker update checks are not fully controllable by application code. No persistent preferences, new storage permission, provider or analytics is introduced.
+
+## Installation and runtime boundary
+
+This source package requires Astro ^7.3.5 and an Astro-compatible TypeScript compiler/bundler. The metadata and navigation entry points ship TypeScript source, not precompiled JavaScript; plain Node consumers need TypeScript loading support. Navigation imports are safe during SSR and installation becomes a no-op without browser globals. Astro components are compiled by the consumer. Only the five documented subpaths are supported; no root export is provided.
+
+See the repository release checklist before proposing a public version.
 
 ## Install and supported toolchain
 
