@@ -46,12 +46,12 @@ importers:
 
   consumers/neutral:
     dependencies:
-      '@effortlessmetrics/astromache':
-        specifier: workspace:*
-        version: link:../../packages/astromache
       astro:
         specifier: 7.3.5
         version: 7.3.5(patch_hash=d299c96b06e1caa7bb6c07d1989e373b4d1e87bd9c30547ce417b2469bcf64df)(@types/node@24.10.1)(typescript@6.0.3)(yaml@2.9.1)
+      astromache:
+        specifier: workspace:*
+        version: link:../../packages/astromache
 
   packages/astromache:
     dependencies:

@@ -59,7 +59,7 @@ await cp("consumers/neutral/src", join(dir, "src"), { recursive: true });
 await cp("consumers/neutral/public", join(dir, "public"), { recursive: true });
 await cp("patches", join(dir, "patches"), { recursive: true });
 const manifest = JSON.parse(await readFile("consumers/neutral/package.json", "utf8"));
-manifest.dependencies["@effortlessmetrics/astromache"] = `file:${tarball}`;
+manifest.dependencies["astromache"] = `file:${tarball}`;
 const workspacePackage = JSON.parse(await readFile("package.json", "utf8"));
 manifest.devDependencies = {
   "@astrojs/ts-content-mapper": workspacePackage.devDependencies["@astrojs/ts-content-mapper"],
@@ -88,7 +88,7 @@ execFileSync(
   ],
   { cwd: dir, stdio: "inherit" },
 );
-const installed = await realpath(join(dir, "node_modules/@effortlessmetrics/astromache"));
+const installed = await realpath(join(dir, "node_modules/astromache"));
 const installedRelative = relative(await realpath(dir), installed);
 assert.ok(
   installedRelative &&

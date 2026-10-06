@@ -6,7 +6,7 @@
     "build": "astro build"
   },
   "dependencies": {
-    "@effortlessmetrics/astromache": "workspace:*",
-    "astro": "7.3.5"
+    "astro": "7.3.5",
+    "astromache": "workspace:*"
   }
 }

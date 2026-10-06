@@ -2,13 +2,13 @@
 
 AstroMache is intended to become a reusable publication template product. This 0.1.0 npm candidate supplies its extracted Astro publication machinery; a complete starter is not included yet. Site identity, routes, content, styling, deployment and independently versioned integrations belong to consumers.
 
-`@effortlessmetrics/astromache/portfolio` preserves the reusable photography presentation concept: a large-title hero, responsive gallery, image descriptions, and a keyboard-accessible native lightbox. Consumers supply images and their rights. The neutral example uses an original geometric SVG fixture under the owner code license; this package contains no personal photographs. One gallery instance per page is currently supported.
+`astromache/portfolio` preserves the reusable photography presentation concept: a large-title hero, responsive gallery, image descriptions, and a keyboard-accessible native lightbox. Consumers supply images and their rights. The neutral example uses an original geometric SVG fixture under the owner code license; this package contains no personal photographs. One gallery instance per page is currently supported.
 
 Version 0.1.0 is prepared as the first npm release candidate. It has not been published. The neutral example proves component integration; it is not the complete intended publication starter.
 
 Owner-authored machinery is available under **MIT OR Apache-2.0**, at your option. Dependencies retain their own licenses.
 
-Public templates may opt into `@effortlessmetrics/astromache/fonts.css` for unmodified IBM Plex Sans and IBM Plex Mono regular faces. Choose the families in consumer CSS. The package retains IBM's OFL notice and source hashes in `fonts/`; the neutral packed consumer exercises this import. The personal publication's fonts and identity remain consumer-owned.
+Public templates may opt into `astromache/fonts.css` for unmodified IBM Plex Sans and IBM Plex Mono regular faces. Choose the families in consumer CSS. The package retains IBM's OFL notice and source hashes in `fonts/`; the neutral packed consumer exercises this import. The personal publication's fonts and identity remain consumer-owned.
 
 ## Publication and lifecycle contract
 
@@ -16,7 +16,7 @@ Public templates may opt into `@effortlessmetrics/astromache/fonts.css` for unmo
 
 ```astro
 ---
-import Document from "@effortlessmetrics/astromache/document";
+import Document from "astromache/document";
 ---
 <Document title="Example" description="Consumer-owned publication" canonical={new URL("https://example.com/")} language="en">
   <link slot="head" rel="stylesheet" href="/publication.css" />
@@ -42,6 +42,6 @@ See the repository release checklist before proposing a public version.
 
 ## Install and supported toolchain
 
-After registry publication, install with `pnpm add @effortlessmetrics/astromache@0.1.0 astro@^7.3.5`. Before publication, install the reviewed archive path instead. Node >=24.19.0 <25 is the supported build runtime; Astro 7.3.5 is the qualified peer version. The broader declared Astro ^7.3.5 range is not exhaustively tested. Ordinary Astro compilation does not require this repository's native-TS7 qualification patch or Vite+ override.
+After registry publication, install with `pnpm add astromache@0.1.0 astro@^7.3.5`. Before publication, install the reviewed archive path instead. Node >=24.19.0 <25 is the supported build runtime; Astro 7.3.5 is the qualified peer version. The broader declared Astro ^7.3.5 range is not exhaustively tested. Ordinary Astro compilation does not require this repository's native-TS7 qualification patch or Vite+ override.
 
 Do not import private paths. Preserve the prior archive and lockfile for consumer rollback. Release candidates are identified by commit and archive SHA-256.

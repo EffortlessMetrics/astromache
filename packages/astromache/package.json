@@ -1,5 +1,5 @@
 {
-  "name": "@effortlessmetrics/astromache",
+  "name": "astromache",
   "version": "0.1.0",
   "private": false,
   "description": "Astro publication components, metadata validation and bounded native navigation helpers",
