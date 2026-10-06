@@ -1,12 +1,21 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { access, mkdir, mkdtemp, readFile, realpath, symlink, unlink } from "node:fs/promises";
-import { basename, join } from "node:path";
+import { access, mkdir, mkdtemp, readFile, realpath, rm, symlink, unlink } from "node:fs/promises";
+import { basename, isAbsolute, join, relative, sep } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 
 const producer = await realpath(fileURLToPath(new URL("../", import.meta.url)));
-const fixture = await realpath(await mkdtemp(join(tmpdir(), "starter-paths-")));
+const temporary = await realpath(tmpdir());
+const fixture = await realpath(await mkdtemp(join(temporary, "starter-paths-")));
+const scope = relative(temporary, fixture);
+assert(
+  scope &&
+    !isAbsolute(scope) &&
+    scope !== ".." &&
+    !scope.startsWith(`..${sep}`) &&
+    basename(fixture).startsWith("starter-paths-"),
+);
 const outsideAlias = join(fixture, "into-producer");
 const insideAlias = join(producer, "node_modules", basename(fixture));
 const leaf = `rejected-${basename(fixture)}`;
@@ -44,4 +53,6 @@ try {
   }
 } finally {
   await unlink(outsideAlias);
+  assert.equal(await realpath(fixture), fixture);
+  await rm(fixture, { recursive: true, force: true });
 }

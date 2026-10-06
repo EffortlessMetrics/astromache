@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { copyFile, mkdir, readFile, realpath, writeFile } from "node:fs/promises";
+import { copyFile, lstat, mkdir, readFile, realpath, rm, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -42,45 +42,61 @@ const tracked = execFileSync("git", ["ls-files", "-z", "--", source], {
 assert(tracked.length > 0, "Run from a Git clone of the reviewed producer");
 // Refuse an existing consumer. Only tracked product files and active archives travel.
 await mkdir(destination);
-const hashes = {};
-for (const file of tracked) {
-  const local = file.slice(source.length + 1);
-  if (local.startsWith("vendor/") && !activeVendor.has(local)) continue;
-  const target = join(destination, local);
-  await mkdir(dirname(target), { recursive: true });
-  await copyFile(join(producer, file), target);
-  if (activeVendor.has(local))
-    hashes[local] = createHash("sha256")
-      .update(await readFile(target))
-      .digest("hex");
+const created = await lstat(destination);
+try {
+  const hashes = {};
+  for (const file of tracked) {
+    const local = file.slice(source.length + 1);
+    if (local.startsWith("vendor/") && !activeVendor.has(local)) continue;
+    const target = join(destination, local);
+    await mkdir(dirname(target), { recursive: true });
+    await copyFile(join(producer, file), target);
+    if (activeVendor.has(local))
+      hashes[local] = createHash("sha256")
+        .update(await readFile(target))
+        .digest("hex");
+  }
+  assert.equal(
+    Object.keys(hashes).length,
+    activeVendor.size,
+    "Every active archive must be saved in source",
+  );
+  await writeFile(
+    join(destination, "STARTER-DELIVERY.json"),
+    JSON.stringify(
+      {
+        project: process.argv[2],
+        archives: hashes,
+        publication: "unpublished candidates; keep vendor archives and frozen lockfile",
+        install: "pnpm install --frozen-lockfile",
+        qualify: "pnpm qualify",
+      },
+      null,
+      2,
+    ) + "\n",
+  );
+  console.log(
+    JSON.stringify(
+      {
+        destination,
+        archives: hashes,
+        next: "pnpm install --frozen-lockfile, pnpm qualify, pnpm dev",
+      },
+      null,
+      2,
+    ),
+  );
+} catch (error) {
+  const current = await lstat(destination);
+  assert(
+    !current.isSymbolicLink() && current.dev === created.dev && current.ino === created.ino,
+    "Export destination ownership changed; preserve it for review",
+  );
+  assert.equal(
+    await realpath(destination),
+    destination,
+    "Refuse cleanup outside the exact newly created destination",
+  );
+  await rm(destination, { recursive: true, force: true });
+  throw error;
 }
-assert.equal(
-  Object.keys(hashes).length,
-  activeVendor.size,
-  "Every active archive must be saved in source",
-);
-await writeFile(
-  join(destination, "STARTER-DELIVERY.json"),
-  JSON.stringify(
-    {
-      project: process.argv[2],
-      archives: hashes,
-      publication: "unpublished candidates; keep vendor archives and frozen lockfile",
-      install: "pnpm install --frozen-lockfile",
-      qualify: "pnpm qualify",
-    },
-    null,
-    2,
-  ) + "\n",
-);
-console.log(
-  JSON.stringify(
-    {
-      destination,
-      archives: hashes,
-      next: "pnpm install --frozen-lockfile, pnpm qualify, pnpm dev",
-    },
-    null,
-    2,
-  ),
-);
