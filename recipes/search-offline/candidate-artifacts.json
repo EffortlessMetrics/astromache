@@ -6,8 +6,8 @@
   },
   "staticSearch": {
     "version": "0.1.0",
-    "sha256": "dc2491121d02e42c79d49b7d175320140fe58231c558176d997962d6093f9b2e",
-    "packageSourceHead": "9b91b49282165b9c09e9ac5fa848aa98b281fa3f"
+    "sha256": "ccdcd96da60f4bb22c40fd14895b7c926e0a8165c2ebe34edfffd937dceff11c",
+    "packageSourceHead": "d9e59ea7c7c862512fc6d1ac398022461b0a0800"
   },
   "astroOffline": {
     "version": "0.1.0",
