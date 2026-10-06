@@ -97,6 +97,7 @@ export async function verifyRecipeBFCache(directory) {
     const marker = await page.evaluate(() => window.__recipeDocument);
     await page.locator('#search-results a[href="/notes/a-quiet-system/"]').click();
     await page.getByRole("heading", { name: "A quiet system", exact: true }).waitFor();
+    await context.setOffline(true);
     await page.goBack({ waitUntil: "commit" });
     await poll(page, () => window.__recipeRestored === true, "actual persisted pageshow");
     assert.equal(
@@ -105,7 +106,6 @@ export async function verifyRecipeBFCache(directory) {
       "Back restores the same live document",
     );
     console.log("BFCache proof: persisted pageshow and identical live document marker.");
-    await context.setOffline(true);
     await page.getByLabel("Search", { exact: true }).fill("Making room for change");
     await page.locator("#search-form button").click();
     await poll(
@@ -133,6 +133,7 @@ export async function verifyRecipeBFCache(directory) {
         .getByRole("heading", { name: /A quiet system|Making room for change/ })
         .first()
         .waitFor();
+      await context.setOffline(true);
       await page.goBack({ waitUntil: "commit" });
       const end = Date.now() + 30000;
       while (Date.now() < end && (await page.evaluate(() => window.__recipeRestores)) === restores)
