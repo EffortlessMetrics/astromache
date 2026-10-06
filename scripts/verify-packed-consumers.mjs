@@ -31,6 +31,7 @@ const entries = execFileSync("tar", ["-tzf", tarball], { encoding: "utf8" })
   .split(/\r?\n/)
   .filter((entry) => !entry.endsWith("/"));
 const expected = [
+  "CHANGELOG.md",
   "LICENSE",
   "LICENSE-MIT",
   "LICENSE-APACHE",

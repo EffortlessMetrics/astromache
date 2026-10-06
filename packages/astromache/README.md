@@ -1,10 +1,10 @@
 # AstroMache
 
-Small reusable Astro publication machinery. Site identity, routes, content, styling, deployment and independently versioned integrations belong to consumers.
+AstroMache is intended to become a reusable publication template product. This 0.1.0 npm candidate supplies its extracted Astro publication machinery; a complete starter is not included yet. Site identity, routes, content, styling, deployment and independently versioned integrations belong to consumers.
 
 `@effortlessmetrics/astromache/portfolio` preserves the reusable photography presentation concept: a large-title hero, responsive gallery, image descriptions, and a keyboard-accessible native lightbox. Consumers supply images and their rights. The neutral example uses an original geometric SVG fixture under the owner code license; this package contains no personal photographs. One gallery instance per page is currently supported.
 
-Public source does not imply package publication. The package remains private while its boundary and consumer contracts are reviewed.
+Version 0.1.0 is prepared as the first npm release candidate. It has not been published. The neutral example proves component integration; it is not the complete intended publication starter.
 
 Owner-authored machinery is available under **MIT OR Apache-2.0**, at your option. Dependencies retain their own licenses.
 
@@ -36,6 +36,12 @@ Enable native Astro prefetch with `prefetchAll:false`. Call the installer once; 
 
 ## Installation and runtime boundary
 
-This private source package requires Astro ^7.3.5 and an Astro-compatible TypeScript compiler/bundler. The metadata and navigation entry points ship TypeScript source, not precompiled JavaScript; plain Node consumers need TypeScript loading support. Navigation imports are safe during SSR and installation becomes a no-op without browser globals. Astro components are compiled by the consumer. Only the five documented subpaths are supported; no root export is provided.
+This source package requires Astro ^7.3.5 and an Astro-compatible TypeScript compiler/bundler. The metadata and navigation entry points ship TypeScript source, not precompiled JavaScript; plain Node consumers need TypeScript loading support. Navigation imports are safe during SSR and installation becomes a no-op without browser globals. Astro components are compiled by the consumer. Only the five documented subpaths are supported; no root export is provided.
 
 See the repository release checklist before proposing a public version.
+
+## Install and supported toolchain
+
+After registry publication, install with `pnpm add @effortlessmetrics/astromache@0.1.0 astro@^7.3.5`. Before publication, install the reviewed archive path instead. Node >=24.19.0 <25 is the supported build runtime; Astro 7.3.5 is the qualified peer version. The broader declared Astro ^7.3.5 range is not exhaustively tested. Ordinary Astro compilation does not require this repository's native-TS7 qualification patch or Vite+ override.
+
+Do not import private paths. Preserve the prior archive and lockfile for consumer rollback. Release candidates are identified by commit and archive SHA-256.
