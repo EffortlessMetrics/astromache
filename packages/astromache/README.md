@@ -1,6 +1,6 @@
 # AstroMache publication foundation candidate
 
-This working source is an expanded, **unpublished** 0.1.0 candidate. The existing npm astromache@0.1.0 release remains immutable and does not contain these new publication exports. Consumers of this candidate must use its exact local archive and SHA-256 receipt. Do not publish this candidate over the existing version.
+This working source is an expanded, **unpublished** 0.2.0 candidate. The existing npm astromache@0.1.0 release remains immutable and does not contain these new publication exports. Consumers of this candidate must use its exact local archive and SHA-256 receipt. The additive publication API uses a new minor-version identity. Publication of 0.2.0 still requires separate authorization; no registry release is performed here.
 
 The foundation supplies real publication typography, responsive navigation, article presentation, cards, taxonomy lists, theme initialization/toggle, reading progress, focus mode, copy-link feedback, and gallery mechanics. The complete neutral starter and optional search/offline recipe consume these same exports. Content collection schemas, routes, dates, related-content selection, metadata policy, branding, font assets, privacy/share behavior, and search ranking remain consumer-owned.
 
