@@ -52,11 +52,13 @@ export async function generateOfflineWorker(directory, options) {
   let bytes = 0,
     largestHtmlBytes = 0;
   const workboxNotice = await readFile(new URL("../WORKBOX-LICENSE", import.meta.url), "utf8");
+  const ownerNotice = await readFile(new URL("../LICENSE-MIT", import.meta.url), "utf8");
   const revisionHash = createHash("sha256")
     .update(await readFile(workerSource))
     .update(await readFile(fileURLToPath(import.meta.url)))
     .update(JSON.stringify(options))
-    .update(workboxNotice);
+    .update(workboxNotice)
+    .update(ownerNotice);
   for (const [url, path] of [...paths].sort(([a], [b]) => a.localeCompare(b))) {
     if (excluded(url)) throw new Error("Offline corpus includes excluded endpoint");
     const body = await readFile(path);

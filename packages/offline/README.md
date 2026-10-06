@@ -13,3 +13,5 @@ Registration waits for load, checks online/SaveData/slow2G2G3G/downlink<1.5Mbps/
 Qualified Node24.19.x and Astro7.3.5. Source package owner code is MIT OR Apache-2.0. Workbox and esbuild remain dependencies under their own licenses; no vendor CDN worker imports are emitted. Scope/policy changes require consumer qualification and exact previous archive/lock retention for rollback. A successfully installed corpus is required for offline support; no live delivery or production acceptance is claimed.
 
 Generated workers retain the complete pinned Workbox MIT copyright and permission notice. WORKBOX-LICENSE matches all three runtime modules' license SHA-256 aee9670e09b75ca8a2a1fe62d545ae38a6797970caf0335628e3a4dd15bc9b6c. The notice and actual bundled runtime bytes participate in corpus revision identity.
+
+Generated workers also retain the complete owner-code MIT alternative notice, preserving Steven Zimmerman attribution and permission terms. Both complete notices are hashed into worker revision identity.

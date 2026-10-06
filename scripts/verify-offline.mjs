@@ -45,6 +45,18 @@ const one = await generateOfflineWorker(root + "/one", policy),
 assert.notEqual(one.revision, two.revision);
 assert.match(await readFile(root + "/one/sw.js", "utf8"), /Copyright 2018 Google LLC/);
 assert.match(await readFile(root + "/one/sw.js", "utf8"), /Permission is hereby granted/);
+assert.ok(
+  (await readFile(root + "/one/sw.js", "utf8")).includes(
+    (await readFile(join(packageRoot, "LICENSE-MIT"), "utf8")).trim(),
+  ),
+  "Complete owner permission notice retained",
+);
+assert.ok(
+  (await readFile(root + "/one/sw.js", "utf8")).includes(
+    (await readFile(join(packageRoot, "WORKBOX-LICENSE"), "utf8")).trim(),
+  ),
+  "Complete Workbox permission notice retained",
+);
 await assert.rejects(generateOfflineWorker(root + "/one", { ...policy, maxBytes: 1 }), /budget/);
 await assert.rejects(
   generateOfflineWorker(root + "/one", { ...policy, maxResources: 1 }),
