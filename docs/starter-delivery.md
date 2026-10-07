@@ -9,7 +9,7 @@ node scripts/create-starter.mjs publication ../my-publication
 node scripts/create-starter.mjs search-offline ../my-search-publication
 ```
 
-No producer dependency installation is needed. The command refuses an existing destination and exports only tracked product files, its independent lockfile, licenses, and currently referenced vendor archives. Historical rollback archives stay in the producer. The delivery receipt records SHA256 for every active archive. In the exported directory, use pnpm10.28.0, run `pnpm install --frozen-lockfile`, `pnpm qualify`, then `pnpm dev`.
+No producer dependency installation is needed. The command refuses an existing destination and exports only tracked product files, its independent lockfile, licenses, and currently referenced vendor archives. Source files must resolve directly inside the checkout: symbolic links and linked parent directories are refused, so an outside asset cannot enter the delivery through a tracked path. A failed export removes only its newly created destination. Historical rollback archives stay in the producer. The delivery receipt records SHA256 for every active archive. In the exported directory, use pnpm10.28.0, run `pnpm install --frozen-lockfile`, `pnpm qualify`, then `pnpm dev`.
 
 These are complete neutral starters, including sample articles and gallery, not packages for private sites to depend on. Private sites consume foundation/contact/search/offline libraries directly as siblings. Replace neutral origin, content, assets, fonts and identity in the consumer; search schema/engine/routes and offline coverage policy also belong to that consumer. No private personal source or assets are copied. Preserve MIT OR Apache-2.0 and the IBM Plex OFL notices.
 
