@@ -1,6 +1,18 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { access, mkdir, mkdtemp, readFile, realpath, rm, symlink, unlink } from "node:fs/promises";
+import {
+  access,
+  cp,
+  mkdir,
+  mkdtemp,
+  readFile,
+  realpath,
+  rename,
+  rm,
+  symlink,
+  unlink,
+  writeFile,
+} from "node:fs/promises";
 import { basename, isAbsolute, join, relative, sep } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
@@ -50,6 +62,31 @@ try {
     );
   } finally {
     await unlink(insideAlias);
+  }
+  const assets = join(producer, "starters/publication/public");
+  const savedAssets = join(producer, "node_modules", `${basename(fixture)}-saved-assets`);
+  const outsideAssets = join(fixture, "outside-assets");
+  const rejectedDelivery = join(fixture, "linked-source-consumer");
+  await cp(assets, outsideAssets, { recursive: true });
+  await writeFile(join(outsideAssets, "favicon.svg"), "outside-source sentinel\n");
+  await rename(assets, savedAssets);
+  try {
+    await symlink(outsideAssets, assets, "junction");
+    try {
+      const rejected = run(rejectedDelivery);
+      assert.notEqual(rejected.status, 0, "Linked source assets must not travel into a delivery");
+      assert.match(rejected.stderr, /Source file must not resolve through a link/);
+      await assert.rejects(access(rejectedDelivery), { code: "ENOENT" });
+      assert.equal(
+        await readFile(join(outsideAssets, "favicon.svg"), "utf8"),
+        "outside-source sentinel\n",
+      );
+      console.log("Linked source refused; partial delivery removed; outside source preserved.");
+    } finally {
+      await unlink(assets);
+    }
+  } finally {
+    await rename(savedAssets, assets);
   }
 } finally {
   await unlink(outsideAlias);

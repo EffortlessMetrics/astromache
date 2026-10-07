@@ -48,9 +48,15 @@ try {
   for (const file of tracked) {
     const local = file.slice(source.length + 1);
     if (local.startsWith("vendor/") && !activeVendor.has(local)) continue;
+    const original = join(producer, file);
+    assert.equal(
+      await realpath(original),
+      original,
+      `Source file must not resolve through a link: ${file}`,
+    );
     const target = join(destination, local);
     await mkdir(dirname(target), { recursive: true });
-    await copyFile(join(producer, file), target);
+    await copyFile(original, target);
     if (activeVendor.has(local))
       hashes[local] = createHash("sha256")
         .update(await readFile(target))
