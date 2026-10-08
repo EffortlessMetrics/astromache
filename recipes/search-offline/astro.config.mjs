@@ -13,6 +13,7 @@ export default defineConfig({
       maxFileBytes: 2 * 1024 * 1024,
       maxHtmlBytes: 256 * 1024,
       worker: {
+        navigationStrategy: "network-first",
         stripQuery: false,
         excludedPrefixes: ["/api/"],
         navigationFallback: "/offline/index.html",
