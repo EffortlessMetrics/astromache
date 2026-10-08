@@ -13,4 +13,15 @@ const links=[{label:'Posts',href:'/posts/'},{label:'Gallery',href:'/portfolio/'}
 </Publication>
 <script>import {prefetch} from 'astro:prefetch';import {installNavigationPrefetch} from 'astromache/navigation';installNavigationPrefetch(prefetch);</script>
 
-<script>import {installOfflineRegistration} from "@effortlessmetrics/astro-offline/client";installOfflineRegistration({workerURL:"/reading-worker.js",scope:"/",requireVisible:true,idle:true,ownershipGuard:true,reuseExisting:true});</script>
+<script>
+import {installOfflineRegistration} from "@effortlessmetrics/astro-offline/client";
+installOfflineRegistration({
+  workerURL:"/reading-worker.js",scope:"/",requireVisible:true,idle:true,ownershipGuard:true,reuseExisting:true,
+  onState(state) { document.documentElement.dataset.offlineRegistration = state; },
+  onLifecycle(state, details) {
+    document.documentElement.dataset.offlineLifecycle = state;
+    document.documentElement.dataset.offlineHasActiveWorker = String(details.hasActiveWorker);
+    document.documentElement.dataset.offlineControlsPage = String(details.controlsPage);
+  },
+});
+</script>

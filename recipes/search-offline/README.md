@@ -1,6 +1,6 @@
 # Search and offline publication recipe
 
-An optional standalone sibling to the complete starters/publication project. It consumes astromache 0.2.0, @effortlessmetrics/static-search 0.1.0 and @effortlessmetrics/astro-offline 0.1.2 directly from exact vendored candidate archives. It is private, not an npm package and does not change either real site's dependency on the starter.
+An optional standalone sibling to the complete starters/publication project. It consumes astromache 0.2.0, @effortlessmetrics/static-search 0.1.0 and @effortlessmetrics/astro-offline 0.1.3 directly from exact vendored candidate archives. It is private, not an npm package and does not change either real site's dependency on the starter.
 
 Use Node 24.19.x / pnpm 10.28.0. Copy this directory independently, run pnpm install --frozen-lockfile and pnpm qualify, then pnpm dev. Set your site URL and replace the sample notes/gallery. Search corpus schema, substring matching, results and routes are local recipe policy; the static-search package owns loader/backend lifecycle. The corpus version is a SHA-256 of serialized notes. No MiniSearch or worker engine is implied.
 
@@ -12,4 +12,8 @@ The complete foundation starter remains available separately. Owner code and SVG
 
 Expanded foundation archive SHA-256: 53bf0fa41d2371c5941fa1422ae83563002744bd684e45c7b048b548d2182874; package source: 0504061d9292252f65336c9b90b1a63a04816d33. This 0.2.0 candidate cannot be substituted with the existing 0.1.0 registry snapshot. Both neutral products consume the same publication components and portable styles; collection schemas, routes, sample content and search engine remain consumer-owned.
 
-Offline source is owned by the independent https://github.com/EffortlessMetrics/astro-offline repository, head 78692bf2e8dbba923eb00d6189748396375b3202. AstroMache consumes its exact archive; no offline source is embedded in this producer.
+Offline source is owned by the independent https://github.com/EffortlessMetrics/astro-offline repository, head 5a9bd121533981d9e5fed8ab2db88012908d6ede. AstroMache consumes its exact archive; no offline source is embedded in this producer.
+
+The example keeps registration acceptance and offline readiness separate. Its existing registration policy is preserved. On the document root, `data-offline-registration` records `onState`, while `data-offline-lifecycle`, `data-offline-has-active-worker` and `data-offline-controls-page` record lifecycle/controller snapshots from the optional `onLifecycle` callback. `registered` alone does not certify offline support. A failed update can leave an older activated worker available; an installed update can wait naturally. These diagnostics add no visible UI or style changes.
+
+Hosted corpus responses, including Workbox revision-query requests, must remain byte-identical to selected build output. Deployment-time HTML rewriting correctly rejects installation. Qualification exercises the actual bundled recipe callbacks against both byte-stable responses and simulated hosted HTML rewriting; the latter reports failure with zero registrations/caches. The producer retains the prior offline 0.1.2 archive (SHA256 9869fbdc20567504e6f97dafb2e7830e0b2e11fc242229f26f7988f435654e83) for rollback, while clean exports include only the active 0.1.3 archive. No live consumer acceptance or deployment is implied.
