@@ -10,8 +10,8 @@
     "packageSourceHead": "79d0b5525507124f5efe22ab3c2501e4e40c6c58"
   },
   "astroOffline": {
-    "version": "0.1.0",
-    "sha256": "c2136af9b5dd1ebf012862010f1474d3784e80b271d1bdacb9f80c5e6c8e5d5d",
-    "packageSourceHead": "eb6a7c674f3a8c04729048dae7bbbb68249596bd"
+    "version": "0.1.1",
+    "sha256": "1b4e46c5723a627e1f8b8bf3209a84584a29eed296f4b6b51c1fc12c9d85a167",
+    "packageSourceHead": "33ef5f4cf840de070cc20ddee2b21cc70f2f9715"
   }
 }
