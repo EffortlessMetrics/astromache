@@ -62,6 +62,8 @@ export async function verifyRecipeLifecycle(directory) {
           registration: document.documentElement.dataset.offlineRegistration,
           lifecycle: document.documentElement.dataset.offlineLifecycle,
           hasActiveWorker: document.documentElement.dataset.offlineHasActiveWorker,
+          controlsPage: document.documentElement.dataset.offlineControlsPage,
+          nativePageControl: Boolean(navigator.serviceWorker.controller),
           registrations: (await navigator.serviceWorker.getRegistrations()).length,
           caches: await caches.keys(),
         }));
@@ -71,6 +73,12 @@ export async function verifyRecipeLifecycle(directory) {
           "Registration acceptance stays distinct from readiness",
         );
         assert.equal(result.hasActiveWorker, String(!transform));
+        assert.equal(result.controlsPage, String(result.nativePageControl));
+        assert.equal(
+          result.nativePageControl,
+          false,
+          "First installation must not claim this existing page",
+        );
         assert.equal(result.registrations, transform ? 0 : 1);
         if (transform)
           assert.deepEqual(result.caches, [], "Transformed corpus leaves no usable cache");
