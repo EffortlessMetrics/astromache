@@ -7,7 +7,9 @@ import { tmpdir } from "node:os";
 import assert from "node:assert/strict";
 const packageRoot =
   process.env.OFFLINE_PACKAGE_ROOT ??
-  fileURLToPath(new URL("../packages/offline/", import.meta.url));
+  fileURLToPath(
+    new URL("../", import.meta.resolve("@effortlessmetrics/astro-offline/integration")),
+  );
 const clientPath = join(packageRoot, "src/client.js");
 const { installOfflineRegistration } = await import(pathToFileURL(clientPath).href);
 assert.equal(typeof installOfflineRegistration({ workerURL: "/sw.js" }), "function");

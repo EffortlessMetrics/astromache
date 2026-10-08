@@ -22,6 +22,9 @@ importers:
       '@astrojs/ts-content-mapper':
         specifier: 0.2.0
         version: 0.2.0(@emnapi/runtime@1.11.3)
+      '@effortlessmetrics/astro-offline':
+        specifier: file:vendor/effortlessmetrics-astro-offline-0.1.2.tgz
+        version: file:vendor/effortlessmetrics-astro-offline-0.1.2.tgz(astro@7.3.5(patch_hash=d299c96b06e1caa7bb6c07d1989e373b4d1e87bd9c30547ce417b2469bcf64df)(@types/node@24.10.1)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))
       '@playwright/test':
         specifier: 1.58.2
         version: 1.58.2
@@ -61,27 +64,6 @@ importers:
       bcp-47:
         specifier: 2.1.1
         version: 2.1.1
-
-  packages/offline:
-    dependencies:
-      astro:
-        specifier: ^7.3.5
-        version: 7.3.5(patch_hash=d299c96b06e1caa7bb6c07d1989e373b4d1e87bd9c30547ce417b2469bcf64df)(@types/node@24.10.1)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1)
-      esbuild:
-        specifier: 0.28.2
-        version: 0.28.2
-      workbox-build:
-        specifier: 7.4.1
-        version: 7.4.1
-      workbox-core:
-        specifier: 7.4.1
-        version: 7.4.1
-      workbox-precaching:
-        specifier: 7.4.1
-        version: 7.4.1
-      workbox-routing:
-        specifier: 7.4.1
-        version: 7.4.1
 
 packages:
 
@@ -760,6 +742,13 @@ packages:
   '@clack/prompts@1.8.1':
     resolution: {integrity: sha512-dlT1m5e/0yUL0kRNcQn7yGLVThkgbB0Ga/1AmfDDC/8ik6AIiSf2QLQO2zPYvefsHP0aFgxO93cVLCCfDp7kzQ==}
     engines: {node: '>= 20.12.0'}
+
+  '@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.2.tgz':
+    resolution: {integrity: sha512-2kqr9RUUxdk/l3DcUAgOBwvzzkyi/qXxU3zQv9secKqG70/YkKC5lR0YrUVSVJck7TqeKFXjdRG22JkuoeLaFg==, tarball: file:vendor/effortlessmetrics-astro-offline-0.1.2.tgz}
+    version: 0.1.2
+    engines: {node: '>=24.19.0 <25'}
+    peerDependencies:
+      astro: ^7.3.5
 
   '@emmetio/abbreviation@2.3.3':
     resolution: {integrity: sha512-mgv58UrU3rh4YgbE/TzgLQwJ3pFsHHhCLqY20aJq+9comytTXUDNGG/SMtSeMJdkpxgXSXunBGLD8Boka3JyVA==}
@@ -4819,6 +4808,18 @@ snapshots:
       fast-string-width: 3.0.2
       fast-wrap-ansi: 0.2.2
       sisteransi: 1.0.5
+
+  '@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.2.tgz(astro@7.3.5(patch_hash=d299c96b06e1caa7bb6c07d1989e373b4d1e87bd9c30547ce417b2469bcf64df)(@types/node@24.10.1)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))':
+    dependencies:
+      astro: 7.3.5(patch_hash=d299c96b06e1caa7bb6c07d1989e373b4d1e87bd9c30547ce417b2469bcf64df)(@types/node@24.10.1)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1)
+      esbuild: 0.28.2
+      workbox-build: 7.4.1
+      workbox-core: 7.4.1
+      workbox-precaching: 7.4.1
+      workbox-routing: 7.4.1
+    transitivePeerDependencies:
+      - '@types/babel__core'
+      - supports-color
 
   '@emmetio/abbreviation@2.3.3':
     dependencies:

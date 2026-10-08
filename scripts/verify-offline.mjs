@@ -7,7 +7,9 @@ import { chromium } from "@playwright/test";
 import { fileURLToPath, pathToFileURL } from "node:url";
 const packageRoot =
   process.env.OFFLINE_PACKAGE_ROOT ??
-  fileURLToPath(new URL("../packages/offline/", import.meta.url));
+  fileURLToPath(
+    new URL("../", import.meta.resolve("@effortlessmetrics/astro-offline/integration")),
+  );
 const { generateOfflineWorker } = await import(
   pathToFileURL(join(packageRoot, "src/integration.mjs")).href
 );

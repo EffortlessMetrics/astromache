@@ -10,8 +10,9 @@
     "packageSourceHead": "79d0b5525507124f5efe22ab3c2501e4e40c6c58"
   },
   "astroOffline": {
-    "version": "0.1.1",
-    "sha256": "1b4e46c5723a627e1f8b8bf3209a84584a29eed296f4b6b51c1fc12c9d85a167",
-    "packageSourceHead": "33ef5f4cf840de070cc20ddee2b21cc70f2f9715"
+    "version": "0.1.2",
+    "sha256": "9869fbdc20567504e6f97dafb2e7830e0b2e11fc242229f26f7988f435654e83",
+    "packageSourceHead": "78692bf2e8dbba923eb00d6189748396375b3202",
+    "repository": "EffortlessMetrics/astro-offline"
   }
 }

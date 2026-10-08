@@ -14,7 +14,7 @@
     "qualify:native": "vp run typecheck:native && node scripts/verify-native-diagnostics.mjs",
     "qualify": "vp run typecheck && pnpm qualify:native && vp run check:astro && vp run lint && vp run format:check && vp run test && vp run build && vp run verify:output",
     "format:check": "vp fmt . --check",
-    "verify:offline": "node scripts/verify-offline.mjs",
+    "verify:offline": "node scripts/verify-offline-ownership.mjs && node scripts/verify-offline.mjs",
     "verify:offline:freshness": "node scripts/verify-offline-freshness.mjs",
     "verify:offline:claim": "node scripts/verify-offline.mjs --claim",
     "verify:offline:api": "node scripts/verify-offline-api.mjs && node scripts/verify-offline-api.mjs --claim",
@@ -23,6 +23,7 @@
   "devDependencies": {
     "@astrojs/check": "0.9.10",
     "@astrojs/ts-content-mapper": "0.2.0",
+    "@effortlessmetrics/astro-offline": "file:vendor/effortlessmetrics-astro-offline-0.1.2.tgz",
     "@playwright/test": "1.58.2",
     "@types/node": "24.10.1",
     "astro": "7.3.5",

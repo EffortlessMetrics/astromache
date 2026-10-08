@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@effortlessmetrics/astro-offline':
-        specifier: file:vendor/effortlessmetrics-astro-offline-0.1.1.tgz
-        version: file:vendor/effortlessmetrics-astro-offline-0.1.1.tgz(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1))
+        specifier: file:vendor/effortlessmetrics-astro-offline-0.1.2.tgz
+        version: file:vendor/effortlessmetrics-astro-offline-0.1.2.tgz(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1))
       '@effortlessmetrics/static-search':
         specifier: file:vendor/effortlessmetrics-static-search-0.1.0-adversarial.tgz
         version: file:vendor/effortlessmetrics-static-search-0.1.0-adversarial.tgz
@@ -709,9 +709,9 @@ packages:
     resolution: {integrity: sha512-dlT1m5e/0yUL0kRNcQn7yGLVThkgbB0Ga/1AmfDDC/8ik6AIiSf2QLQO2zPYvefsHP0aFgxO93cVLCCfDp7kzQ==}
     engines: {node: '>= 20.12.0'}
 
-  '@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.1.tgz':
-    resolution: {integrity: sha512-UPbPE13+TbVZUaPXG6UloRwiJ8FkEo7+oAT3N9mNjhk9vNH5e/5hnJRnmZ3hIKSotn1Yn2BIG4ajSUDfYktIqA==, tarball: file:vendor/effortlessmetrics-astro-offline-0.1.1.tgz}
-    version: 0.1.1
+  '@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.2.tgz':
+    resolution: {integrity: sha512-2kqr9RUUxdk/l3DcUAgOBwvzzkyi/qXxU3zQv9secKqG70/YkKC5lR0YrUVSVJck7TqeKFXjdRG22JkuoeLaFg==, tarball: file:vendor/effortlessmetrics-astro-offline-0.1.2.tgz}
+    version: 0.1.2
     engines: {node: '>=24.19.0 <25'}
     peerDependencies:
       astro: ^7.3.5
@@ -4859,7 +4859,7 @@ snapshots:
       fast-wrap-ansi: 0.2.2
       sisteransi: 1.0.5
 
-  '@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.1.tgz(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1))':
+  '@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.2.tgz(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1))':
     dependencies:
       astro: 7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1)
       esbuild: 0.28.2

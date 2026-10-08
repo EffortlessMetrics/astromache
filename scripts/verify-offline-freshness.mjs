@@ -8,7 +8,7 @@ import { chromium } from "@playwright/test";
 const { generateOfflineWorker } = await import(
   process.env.OFFLINE_PACKAGE_ROOT
     ? pathToFileURL(join(process.env.OFFLINE_PACKAGE_ROOT, "src/integration.mjs")).href
-    : "../packages/offline/src/integration.mjs"
+    : "@effortlessmetrics/astro-offline/integration"
 );
 
 // Use the actual immutable business archive implementation for migration.

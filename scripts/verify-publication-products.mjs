@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { verifyPublicationBrowser } from "./verify-publication-browser.mjs";
 import { verifyRecipeBFCache } from "./verify-recipe-bfcache.mjs";
+import { verifyRecipeFreshness } from "./verify-recipe-freshness.mjs";
 
 await import("./verify-recipe-request-contracts.mjs");
 
@@ -67,7 +68,10 @@ for (const [source, recipe] of products.filter(
   run(["install", "--frozen-lockfile", "--ignore-scripts"]);
   run(["qualify"]);
   await verifyPublicationBrowser(directory, { recipe });
-  if (recipe) await verifyRecipeBFCache(directory);
+  if (recipe) {
+    await verifyRecipeBFCache(directory);
+    await verifyRecipeFreshness(directory);
+  }
   console.log(
     `Independent ${source}: frozen installation, ordinary Astro qualification and browser flows passed (${directory})`,
   );
