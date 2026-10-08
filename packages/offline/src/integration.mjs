@@ -25,6 +25,11 @@ export async function generateOfflineWorker(directory, options) {
     !(maxBytes > 0)
   )
     throw new Error("Offline requires an owned cache prefix, worker filename and byte budget");
+  if (
+    worker.navigationStrategy !== undefined &&
+    !["cache-first", "network-first"].includes(worker.navigationStrategy)
+  )
+    throw new Error("Unknown offline navigation strategy");
   const manifest = await getManifest({
     globDirectory: directory,
     globPatterns,

@@ -79,6 +79,19 @@ export function installWorker(policy, entries, revision, prefix) {
       (policy.stripQuery || !url.search) &&
       candidates(url).some((path) => controller.getCacheKeyForURL(path)),
     async ({ request, url }) => {
+      // Keep verified precaches immutable. Online documents revalidate through
+      // HTTP; only a transport failure/timeout falls back to this worker's build.
+      if (request.mode === "navigate" && policy.navigationStrategy === "network-first") {
+        const abort = new AbortController();
+        const deadline = setTimeout(() => abort.abort(), policy.navigationTimeoutMs ?? 1000);
+        try {
+          return await fetch(request, { cache: "no-cache", signal: abort.signal });
+        } catch {
+          // A real HTTP error response is returned above, never hidden by HTML.
+        } finally {
+          clearTimeout(deadline);
+        }
+      }
       for (const path of candidates(url)) {
         const response = await controller.matchPrecache(path);
         if (response) return response;
