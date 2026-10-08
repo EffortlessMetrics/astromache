@@ -1,10 +1,14 @@
 # @effortlessmetrics/astro-offline
 
-Unpublished 0.1.0 candidate: reusable Workbox7.4.1 static Astro corpus builds and browser registration. No deployment or registry publication is implied.
+Unpublished 0.1.1 candidate: reusable Workbox7.4.1 static Astro corpus builds and browser registration. No deployment or registry publication is implied.
 
 Import astroOffline (default) or generateOfflineWorker(directory, policy) from /integration. Import installOfflineRegistration(options) and backgroundDownloadsAllowed from /client. These are separate Node build and browser/SSR-safe entry points; no Node/Workbox build dependencies are imported by the client entry.
 
 Consumers own cache prefixes, clean page allowlists, static asset globs, byte/resource/file/HTML budgets, worker URL/scope, query matching, fallback route/timeout, legacy exact cache names and scope restrictions. They retain contact validation/submission and site identity. API paths are excluded by default; external resources, runtime cache growth, POSTs and queues are not supported. Contact HTML may be part of a corpus without executing CAPTCHA or submitting it.
+
+`worker.navigationStrategy: "network-first"` opts matching document navigations into HTTP revalidation, falling back to the active worker's integrity-checked corpus only on network failure or timeout (`navigationTimeoutMs`, default 1000). Genuine HTTP errors, including 404 and 5xx, remain network responses. Successful online HTML never mutates the offline corpus. The default remains `"cache-first"`. Query and API exclusions remain in force. Static resources remain revision-pinned; new hashed URLs pass through to the network. Mutable resource URLs such as favicons keep the active corpus version until natural activation.
+
+Migration from an already active cache-first worker requires closing its controlled tabs once so the replacement can activate naturally. Merely downloading the new worker or force-reloading one tab cannot change the old worker's fetch policy. No forced activation, draft reload or cache clearing is performed. During a later deployment, an active network-first worker serves current online HTML but offline fallback remains its own verified build until replacement activation.
 
 The generator uses Workbox getManifest and a bundled local PrecacheController. Build revision covers policy, worker implementation and every selected byte. Installation checks SHA-256 for each fetched resource, uses no credentials/redirects, rejects mixed or incomplete builds and deletes only the failed new cache. Cache naming is consumerPrefix+revision; Workbox cache keys have revision queries. New workers wait naturally; no skipWaiting, forced reload or update message capability exists. Optional claimClients preserves a consumer's existing control of open pages after natural activation; it runs only in the activate event and cannot activate a waiting worker. Business leaves it false; personal retains its established behavior. Activation removes only older owned-prefix caches and explicitly listed legacy caches under the configured scope guard.
 

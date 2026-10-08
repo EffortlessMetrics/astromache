@@ -7,6 +7,7 @@ export interface WorkerPolicy {
   legacyScopePrefixes?: string[];
   legacyRootScopeOnly?: boolean;
   navigationFallback?: string;
+  navigationStrategy?: "cache-first" | "network-first";
   navigationTimeoutMs?: number;
 }
 export interface OfflineOptions {

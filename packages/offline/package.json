@@ -1,6 +1,6 @@
 {
   "name": "@effortlessmetrics/astro-offline",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "description": "Workbox-based static Astro corpus builds and deferred service-worker registration",
   "license": "MIT OR Apache-2.0",
