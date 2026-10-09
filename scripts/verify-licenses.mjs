@@ -15,10 +15,10 @@ assert.match(
 );
 for (const name of [
   "astromache",
-  "@effortlessmetrics/still",
   "@effortlessmetrics/astro-offline",
   "@effortlessmetrics/static-search",
-].filter((name) => name in application.dependencies)) {
+]) {
+  assert.ok(name in application.dependencies, `${name} dependency is required by this starter`);
   const dependency = JSON.parse(
     await readFile(join(root, "node_modules", name, "package.json"), "utf8"),
   );
