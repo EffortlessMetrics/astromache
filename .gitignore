@@ -1,5 +1,4 @@
 node_modules/
-.qualification/
-consumers/*/dist/
-consumers/*/.astro/
-.qualification-output.json
+dist/
+.astro/
+recipe-browser-receipt.json
