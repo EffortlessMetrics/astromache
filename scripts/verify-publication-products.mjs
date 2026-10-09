@@ -8,6 +8,7 @@ import { verifyPublicationBrowser } from "./verify-publication-browser.mjs";
 import { verifyRecipeBFCache } from "./verify-recipe-bfcache.mjs";
 import { verifyRecipeFreshness } from "./verify-recipe-freshness.mjs";
 import { verifyRecipeLifecycle } from "./verify-recipe-lifecycle.mjs";
+import { verifyRecipeCanonical } from "./verify-recipe-canonical.mjs";
 
 await import("./verify-recipe-request-contracts.mjs");
 
@@ -73,6 +74,7 @@ for (const [source, recipe] of products.filter(
     await verifyRecipeBFCache(directory);
     await verifyRecipeFreshness(directory);
     await verifyRecipeLifecycle(directory);
+    await verifyRecipeCanonical(directory);
   }
   console.log(
     `Independent ${source}: frozen installation, ordinary Astro qualification and browser flows passed (${directory})`,
