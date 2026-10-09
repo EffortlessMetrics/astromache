@@ -1,0 +1,24 @@
+{
+  "scope": "Unpublished starter delivery candidate; exact vendored archives",
+  "archives": {
+    "@effortlessmetrics/astro-offline": {
+      "file": "vendor/effortlessmetrics-astro-offline-0.1.4.tgz",
+      "sha256": "55d880bfa3fc9dcd650df94a1354040db899130edfb471d8caf45b6fa96e257e"
+    },
+    "@effortlessmetrics/static-search": {
+      "file": "vendor/effortlessmetrics-static-search-0.1.0-adversarial.tgz",
+      "sha256": "01989cda90ec846dabc7766c258a86742ad062d6bf2efbfd5cd1e5ccb7db7736"
+    },
+    "astromache": {
+      "file": "vendor/astromache-0.2.2.tgz",
+      "sha256": "8405030ede7a4c71be9d2b021c8ab91b1125d2039f6fad53d5b352d1b4d8da28"
+    }
+  },
+  "offline": true,
+  "intentPrefetch": true,
+  "hostedAcceptance": "NOT RUN",
+  "sourceCommits": {
+    "astromache-core": "de3da5d856522de278b0501af7d966cb028cd916"
+  },
+  "localBrowserAcceptance": "PASS exact relocated archive: navigation/prefetch/offline/reconnect/integrity/cache-byte checks"
+}

@@ -1,0 +1,29 @@
+{
+  "pass": true,
+  "fixturePolicy": "canonical-pages variant; default recipe policy unchanged",
+  "revision": "52e65bd7d1795bcf4b87",
+  "states": [
+    {
+      "path": "/posts/",
+      "offlineBuild": "a",
+      "canonicalURL": "/posts/"
+    },
+    {
+      "path": "/posts",
+      "offlineBuild": "a",
+      "canonicalURL": "/posts/"
+    },
+    {
+      "path": "/posts/",
+      "reconnectBuild": "b",
+      "canonicalURL": "/posts/"
+    },
+    {
+      "path": "/posts",
+      "reconnectBuild": "b",
+      "canonicalURL": "/posts/"
+    }
+  ],
+  "exclusions": true,
+  "immutableCorpus": true
+}
