@@ -101,7 +101,9 @@ export async function verifyRecipeCanonical(directory) {
         { timeout: 10000 },
       );
       await page.goto(origin + "/posts/");
-      await page.waitForFunction(() => navigator.serviceWorker.controller);
+      await page.waitForFunction(() => navigator.serviceWorker.controller, null, {
+        timeout: 10000,
+      });
       const snapshot = () =>
         page.evaluate(async (name) => {
           const cache = await caches.open(name);
