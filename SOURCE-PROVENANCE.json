@@ -5,5 +5,6 @@
   "deniedStillPR4Included": false,
   "localBrowserQualification": "PASS exact relocated archive; final assembled browser acceptance",
   "hostedAcceptance": "NOT RUN",
-  "licenseSeparation": "Application UNLICENSED; original MIT/Apache notices scoped, no blanket site/content grant"
+  "licenseSeparation": "Application UNLICENSED; original MIT/Apache notices scoped, no blanket site/content grant",
+  "reviewRepairs": "Category and tag routes, collision diagnostics, registration follows editable worker configuration, native-control theme behavior from final core, independent vendor license assertions"
 }

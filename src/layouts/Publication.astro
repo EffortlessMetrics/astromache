@@ -15,8 +15,9 @@ const links=[{label:'Posts',href:'/posts/'},{label:'Gallery',href:'/portfolio/'}
 
 <script>
 import {installOfflineRegistration} from "@effortlessmetrics/astro-offline/client";
+import {offlinePolicy} from "../../site.config.mjs";
 installOfflineRegistration({
-  workerURL:"/reading-worker.js",scope:"/",requireVisible:true,idle:true,ownershipGuard:true,reuseExisting:true,
+  workerURL:`/${offlinePolicy.workerFile}`,scope:"/",requireVisible:true,idle:true,ownershipGuard:true,reuseExisting:true,
   onState(state) { document.documentElement.dataset.offlineRegistration = state; },
   onLifecycle(state, details) {
     document.documentElement.dataset.offlineLifecycle = state;

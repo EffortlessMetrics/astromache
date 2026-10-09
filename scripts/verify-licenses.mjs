@@ -13,9 +13,12 @@ assert.match(
   await readFile(join(root, "licenses/template/README.md"), "utf8"),
   /does not license.*replacement content/,
 );
-for (const name of ["astromache", "@effortlessmetrics/still"].filter(
-  (name) => name in application.dependencies,
-)) {
+for (const name of [
+  "astromache",
+  "@effortlessmetrics/still",
+  "@effortlessmetrics/astro-offline",
+  "@effortlessmetrics/static-search",
+].filter((name) => name in application.dependencies)) {
   const dependency = JSON.parse(
     await readFile(join(root, "node_modules", name, "package.json"), "utf8"),
   );

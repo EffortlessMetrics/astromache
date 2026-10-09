@@ -18,8 +18,8 @@ importers:
         specifier: 7.3.5
         version: 7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1)
       astromache:
-        specifier: file:vendor/astromache-0.2.4.tgz
-        version: file:vendor/astromache-0.2.4.tgz(@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.4.tgz(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1)))(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1))
+        specifier: file:vendor/astromache-0.2.6.tgz
+        version: file:vendor/astromache-0.2.6.tgz(@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.4.tgz(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1)))(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1))
     devDependencies:
       '@astrojs/check':
         specifier: 0.9.10
@@ -2130,9 +2130,9 @@ packages:
       '@astrojs/markdown-remark':
         optional: true
 
-  astromache@file:vendor/astromache-0.2.4.tgz:
-    resolution: {integrity: sha512-DLmOIwi7CSQqpLvkndOCtOLbxSkI3JX3M2wdIDIA84G09Co9OJWhPrWvkPtFL3VTHZtXu6ev/HOLeEeVOF/NpA==, tarball: file:vendor/astromache-0.2.4.tgz}
-    version: 0.2.4
+  astromache@file:vendor/astromache-0.2.6.tgz:
+    resolution: {integrity: sha512-5b100tJi1qMOD/4GUbwaEqyP0pdwV/bK/F8D5gkoTJI4EHnE5FAgXWLhGZrf8FK9UIvwwo1vnHHRlFX4hZDuJw==, tarball: file:vendor/astromache-0.2.6.tgz}
+    version: 0.2.6
     engines: {node: '>=24.19.0 <25'}
     peerDependencies:
       '@effortlessmetrics/astro-offline': '>=0.1.4 <0.2.0'
@@ -5974,7 +5974,7 @@ snapshots:
       - uploadthing
       - yaml
 
-  astromache@file:vendor/astromache-0.2.4.tgz(@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.4.tgz(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1)))(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1)):
+  astromache@file:vendor/astromache-0.2.6.tgz(@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.4.tgz(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1)))(astro@7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1)):
     dependencies:
       astro: 7.3.5(@types/node@24.10.1)(terser@5.51.2)(yaml@2.9.1)
       bcp-47: 2.1.1

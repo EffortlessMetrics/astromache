@@ -1,7 +1,7 @@
 {
   "pass": true,
   "fixturePolicy": "canonical-pages variant; default recipe policy unchanged",
-  "revision": "e7838b864834736b77d5",
+  "revision": "e3c3419d8e7dcdd96aec",
   "states": [
     {
       "path": "/posts/",
