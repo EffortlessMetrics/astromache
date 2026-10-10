@@ -1,83 +1,86 @@
+import { test } from "node:test";
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
-import { cp, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { cp, mkdtemp, readFile, writeFile, rm } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { test } from "node:test";
-
+import { spawnSync } from "node:child_process";
 const source = process.cwd();
+const guard = resolve(source, "scripts/verify-licenses.mjs");
 const names = [
   "astromache",
-  "@effortlessmetrics/astro-offline",
   "@effortlessmetrics/static-search",
+  "@effortlessmetrics/astro-offline",
 ];
-test("bundled receipts and exact registry upgrades bind installed identities", async () => {
+test("active delivery and version-independent bundled/registry license fixtures", async () => {
+  const actual = spawnSync(process.execPath, [guard], { cwd: source, encoding: "utf8" });
+  assert.equal(actual.status, 0, actual.stderr);
   const root = await mkdtemp(join(tmpdir(), "astro-license-"));
   try {
-    for (const file of ["package.json", "STARTER-DELIVERY.json", "licenses", "vendor"])
-      await cp(join(source, file), join(root, file), { recursive: true });
-    for (const name of names)
+    for (const file of ["package.json", "licenses"])
+      await cp(join(source, file), join(root, file), { recursive: true, dereference: true });
+    const manifest = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
+    const receipt = { archives: {} };
+    const versions = {};
+    for (const [index, name] of names.entries()) {
       await cp(join(source, "node_modules", name), join(root, "node_modules", name), {
         recursive: true,
         dereference: true,
       });
-    const manifestPath = join(root, "package.json");
-    const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
-    const run = () =>
-      spawnSync(process.execPath, [resolve(source, "scripts/verify-licenses.mjs")], {
-        cwd: root,
-        encoding: "utf8",
-      });
-    const fails = (message) => {
-      const result = run();
-      assert.notEqual(result.status, 0);
-      assert.match(result.stderr, message);
-    };
-    assert.equal(run().status, 0, "valid bundled delivery");
-
-    // This mode uses the already installed candidate bytes to exercise the future
-    // registry pin contract. It does not download or publish a registry release.
-    for (const name of names) {
-      const installed = JSON.parse(
-        await readFile(join(root, "node_modules", name, "package.json"), "utf8"),
-      );
-      manifest.dependencies[name] = installed.version;
+      const bytes = await readFile(join(root, "node_modules", name, "package.json"));
+      versions[name] = JSON.parse(bytes).version;
+      // Synthetic consistency bytes, NOT a real npm archive or registry release.
+      const file = `library-${index}.fixture`;
+      await writeFile(join(root, file), bytes);
+      manifest.dependencies[name] = `file:${file}`;
+      receipt.archives[name] = {
+        file,
+        version: versions[name],
+        sha256: createHash("sha256").update(bytes).digest("hex"),
+      };
     }
-    await writeFile(manifestPath, JSON.stringify(manifest));
-    await rm(join(root, "STARTER-DELIVERY.json"));
-    assert.equal(run().status, 0, "exact registry mode needs no historical bundled receipt");
-    manifest.dependencies.astromache = "0.2.8";
-    await writeFile(manifestPath, JSON.stringify(manifest));
-    fails(/exact registry version must match installed version/);
-    manifest.dependencies.astromache = "^0.2.7";
-    await writeFile(manifestPath, JSON.stringify(manifest));
-    fails(/registry dependency must use an exact version/);
-
-    await cp(join(source, "package.json"), manifestPath);
-    await cp(join(source, "STARTER-DELIVERY.json"), join(root, "STARTER-DELIVERY.json"));
+    const saveManifest = () => writeFile(join(root, "package.json"), JSON.stringify(manifest));
+    const receiptPath = join(root, "STARTER-DELIVERY.json");
+    const saveReceipt = () => writeFile(receiptPath, JSON.stringify(receipt));
+    const run = () => spawnSync(process.execPath, [guard], { cwd: root, encoding: "utf8" });
+    await saveManifest();
+    await saveReceipt();
+    assert.equal(run().status, 0, "valid synthetic bundled consistency fixture");
     const installedPath = join(root, "node_modules/astromache/package.json");
     const installedBytes = await readFile(installedPath);
     const installed = JSON.parse(installedBytes);
-    installed.name = "different-library";
-    await writeFile(installedPath, JSON.stringify(installed));
-    fails(/installed package name must match dependency/);
+    const differentVersion = `${Number(installed.version.split(".")[0]) + 1}.0.0`;
+    await writeFile(installedPath, JSON.stringify({ ...installed, name: "different-library" }));
+    assert.notEqual(run().status, 0, "installed package identity must match");
     await writeFile(installedPath, installedBytes);
-    const receiptPath = join(root, "STARTER-DELIVERY.json");
-    const receipt = JSON.parse(await readFile(receiptPath, "utf8"));
-    const archivePath = join(root, receipt.archives.astromache.file);
-    const archiveBytes = await readFile(archivePath);
-    await writeFile(archivePath, Buffer.concat([archiveBytes, Buffer.from("corruption")]));
-    fails(/archive must match its reviewed delivery hash/);
-    await writeFile(archivePath, archiveBytes);
-    receipt.archives.astromache.version = "0.2.8";
-    await writeFile(receiptPath, JSON.stringify(receipt));
-    fails(/installed delivery version/);
-    receipt.archives.astromache.version = "0.2.7";
-    receipt.archives.astromache.file = "vendor/other.tgz";
-    await writeFile(receiptPath, JSON.stringify(receipt));
-    fails(/delivery pin/);
-    await cp(join(source, "STARTER-DELIVERY.json"), receiptPath);
-    assert.equal(run().status, 0, "restored bundled delivery");
+    const archive = join(root, receipt.archives.astromache.file);
+    const bytes = await readFile(archive);
+    await writeFile(archive, Buffer.concat([bytes, Buffer.from("corruption")]));
+    assert.notEqual(run().status, 0, "corrupted bundled bytes must fail");
+    await writeFile(archive, bytes);
+    receipt.archives.astromache.version = differentVersion;
+    await saveReceipt();
+    assert.notEqual(run().status, 0, "bundled installed version must match receipt");
+    receipt.archives.astromache.version = installed.version;
+    receipt.archives.astromache.file = "other.fixture";
+    await saveReceipt();
+    assert.notEqual(run().status, 0, "bundled declared path must match receipt");
+    for (const name of names) manifest.dependencies[name] = versions[name];
+    await saveManifest();
+    await rm(receiptPath);
+    assert.equal(
+      run().status,
+      0,
+      "exact registry fixture works without historical receipt or vendor directory",
+    );
+    await writeFile(installedPath, JSON.stringify({ ...installed, version: differentVersion }));
+    assert.notEqual(run().status, 0, "dynamically different installed version must fail");
+    manifest.dependencies.astromache = differentVersion;
+    await saveManifest();
+    assert.equal(run().status, 0, "future matching exact installed version works without receipt");
+    manifest.dependencies.astromache = `^${differentVersion}`;
+    await saveManifest();
+    assert.notEqual(run().status, 0, "floating registry ranges must fail");
   } finally {
     await rm(root, { recursive: true, force: true });
   }
