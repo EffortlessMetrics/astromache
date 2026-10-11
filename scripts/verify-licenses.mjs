@@ -1,8 +1,13 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
 const root = process.cwd();
+const outputMode = process.argv[2];
+assert.ok(
+  outputMode === undefined || ["--emit-output", "--check-output"].includes(outputMode),
+  "Use --emit-output to retain build notices or --check-output to verify them",
+);
 const application = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
 assert.equal(application.private, true);
 for (const name of ["LICENSE", "LICENSE-MIT", "LICENSE-APACHE"]) {
@@ -65,6 +70,45 @@ assert.match(
   /Permission is hereby granted, free of charge/,
   "Preserve packaged Workbox MIT terms independently",
 );
+if (outputMode) {
+  const groups = [
+    ["licenses/template", "template", ["README.md", "LICENSE", "LICENSE-MIT", "LICENSE-APACHE"]],
+    [
+      "node_modules/astromache",
+      "astromache",
+      ["LICENSE", "LICENSE-MIT", "LICENSE-APACHE", "fonts/OFL.txt"],
+    ],
+    [
+      "node_modules/@effortlessmetrics/static-search",
+      "static-search",
+      ["LICENSE-MIT", "LICENSE-APACHE"],
+    ],
+    [
+      "node_modules/@effortlessmetrics/astro-offline",
+      "astro-offline",
+      ["LICENSE", "LICENSE-MIT", "LICENSE-APACHE", "WORKBOX-LICENSE"],
+    ],
+    ["node_modules/astro", "astro", ["LICENSE"]],
+  ];
+  for (const [source, scope, files] of groups) {
+    for (const file of files) {
+      const bytes = await readFile(join(root, source, file));
+      const target = join(root, "dist/licenses", scope, file);
+      if (outputMode === "--emit-output") {
+        await mkdir(dirname(target), { recursive: true });
+        await writeFile(target, bytes);
+      }
+      assert.deepEqual(
+        await readFile(target),
+        bytes,
+        `${scope}/${file} output notice must be retained`,
+      );
+    }
+  }
+  console.log(
+    "Bundled notices retained under dist/licenses by upstream scope; consumer terms unchanged.",
+  );
+}
 console.log(
   `Active dependency identities verified; application license ${application.license}; scoped upstream, font and Workbox notices retained.`,
 );

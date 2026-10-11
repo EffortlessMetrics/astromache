@@ -22,6 +22,8 @@ When creating your application, choose its package metadata and code/content lic
 
 The application package starts as `UNLICENSED`. There is no blanket root site license. Required upstream template notices are retained under `licenses/template/`; those terms license upstream template material only.
 
+`pnpm build` also retains and verifies notices under `dist/licenses/`, grouped by upstream template, library, font and dependency scope. Deploy that directory with the build. These notices do not license your replacement content; `node scripts/verify-licenses.mjs --check-output` checks their retention without rewriting them.
+
 ## Customizing your publication
 
 - Edit `site.config.mjs` for the origin and offline policy; change the worker path in `public/_headers` when renaming it.
