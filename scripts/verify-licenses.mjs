@@ -1,13 +1,11 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { access, readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 const root = process.cwd();
 const application = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
 assert.equal(application.private, true);
-assert.equal(application.license, "UNLICENSED", "Application/content license belongs to its owner");
 for (const name of ["LICENSE", "LICENSE-MIT", "LICENSE-APACHE"]) {
-  await assert.rejects(access(join(root, name)), { code: "ENOENT" });
   assert.ok((await readFile(join(root, "licenses/template", name), "utf8")).length > 100);
 }
 assert.match(
@@ -54,6 +52,19 @@ for (const name of [
   for (const notice of ["LICENSE-MIT", "LICENSE-APACHE"])
     assert.ok((await readFile(join(root, "node_modules", name, notice), "utf8")).length > 1000);
 }
+assert.match(
+  await readFile(join(root, "node_modules/astromache/fonts/OFL.txt"), "utf8"),
+  /SIL OPEN FONT LICENSE Version 1\.1/,
+  "Preserve packaged font terms independently",
+);
+assert.match(
+  await readFile(
+    join(root, "node_modules/@effortlessmetrics/astro-offline/WORKBOX-LICENSE"),
+    "utf8",
+  ),
+  /Permission is hereby granted, free of charge/,
+  "Preserve packaged Workbox MIT terms independently",
+);
 console.log(
-  "Active dependency identities verified; application UNLICENSED; upstream notices and dependency grants retained.",
+  `Active dependency identities verified; application license ${application.license}; scoped upstream, font and Workbox notices retained.`,
 );

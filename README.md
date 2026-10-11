@@ -22,13 +22,22 @@ When creating your application, choose its package metadata and code/content lic
 
 The application package starts as `UNLICENSED`. There is no blanket root site license. Required upstream template notices are retained under `licenses/template/`; those terms license upstream template material only.
 
+## Customizing your publication
+
+- Edit `site.config.mjs` for the origin and offline policy; change the worker path in `public/_headers` when renaming it.
+- Add Markdown under `src/content/notes/`, including nested folders. Each note needs `title`, `description`, `published`, `tags` and `category` frontmatter, as defined in `src/content.config.ts`. Categories and tags share `/tags/` routes; labels must produce distinct, nonempty URL slugs.
+- Replace branding and navigation in `src/layouts/Publication.astro`, page copy in `src/pages/`, and feed branding in `src/pages/rss.xml.ts`.
+- Replace gallery items in `src/pages/portfolio.astro`, assets in `public/`, and site styling in `src/styles/publication.css`.
+
+Run `pnpm qualify` and `pnpm verify:licenses` after customization. License verification retains upstream terms independently of your application's chosen license.
+
 ## Upgrading shared libraries
 
 Upgrade each dependency independently when its relevant behavior changes. Preserve your application's routes, content, styling, site policy and scoped upstream notices. The application version is independent of library versions; copying a new starter over an existing site is not required.
 
 Current expanded candidates are unpublished. For a bundled update, obtain the accepted archive and SHA256 receipt, retain the previous bytes, replace its `vendor/` file and exact manifest path, and update `STARTER-DELIVERY.json` with the reviewed path, version and hash. Regenerate `pnpm-lock.yaml` with `pnpm install --ignore-scripts`, then run `pnpm install --frozen-lockfile --ignore-scripts`, `pnpm verify:licenses`, `pnpm test:licenses` and `pnpm qualify`. Review pins, receipt and lock together; never overwrite a candidate with different bytes under the same version. The guard binds the active file pin to its receipt and installed package identity. Frozen installation verifies the lock against the manifest.
 
-After a registry release is confirmed, verify its archive identity against the accepted receipt. Use `pnpm add --save-exact astromache@<confirmed-version>` (or the independent package being upgraded), then repeat frozen installation and qualification. Exact registry pins bind directly to installed names and versions; historical bundled receipts remain unchanged. Floating ranges and tags are rejected. Regression tests use already installed candidate bytes to exercise this future mode; they do not establish registry availability.
+After a registry release is confirmed, verify its archive identity against the accepted receipt. Use `pnpm add --save-exact --ignore-scripts astromache@<confirmed-version>` (or the independent package being upgraded), then repeat frozen installation and qualification. Exact registry pins bind directly to installed names and versions; historical bundled receipts remain unchanged. Floating ranges and tags are rejected. Regression tests use already installed candidate bytes to exercise this future mode; they do not establish registry availability.
 
 Worker revisions follow emitted output digests. A package version change alone may leave output and revision unchanged. Build the worker and output together, preserve the site-owned worker/cache prefix, network budget, query policy and exclusions, and qualify natural activation, offline reading and reconnect on the actual host. Existing controlled clients may keep the old worker until they leave; a passing test must not depend on forced activation.
 
