@@ -1,9 +1,10 @@
 import { getCollection } from "astro:content";
+import { noteLink } from "./publication-urls";
+export { noteLink } from "./publication-urls";
 export const notes = async () =>
   (await getCollection("notes")).sort(
     (a, b) => b.data.published.getTime() - a.data.published.getTime(),
   );
-export const noteLink = (id: string) => "/notes/" + id + "/";
 export const tagSlug = (tag: string) =>
   tag
     .toLowerCase()

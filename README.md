@@ -33,6 +33,10 @@ The application package starts as `UNLICENSED`. There is no blanket root site li
 
 Run `pnpm qualify` and `pnpm verify:licenses` after customization. License verification retains upstream terms independently of your application's chosen license.
 
+Note IDs must have distinct canonical paths. The content loader rejects duplicate IDs, including collisions from filename normalization and Unicode NFC normalization, before replacing collection entries. Nested paths, Unicode, spaces, ampersands, `?` and `#` are serialized consistently across note links, HTML canonicals, RSS and sitemap output. IDs containing percent signs, dot path segments, empty path segments, backslashes or control characters are rejected; use decoded slugs rather than percent escapes because Astro decodes escapes before matching static paths.
+
+Run `node --test scripts/publication-serialization.test.mjs` for disposable Markdown build fixtures and strict XML/canonical checks. These tests require Python 3 for its standard XML parser and use already installed dependencies. The description schema remains unchanged: it accepts empty strings, while the shared page metadata component requires nonempty descriptions. Use a nonempty description for a buildable note.
+
 ## Upgrading shared libraries
 
 Upgrade each dependency independently when its relevant behavior changes. Preserve your application's routes, content, styling, site policy and scoped upstream notices. The application version is independent of library versions; copying a new starter over an existing site is not required.

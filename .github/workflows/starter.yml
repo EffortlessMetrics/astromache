@@ -24,3 +24,4 @@ jobs:
       - run: pnpm qualify
       - run: node scripts/verify-licenses.mjs
       - run: pnpm test:licenses
+      - run: node --test scripts/publication-serialization.test.mjs
