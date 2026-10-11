@@ -1,13 +1,16 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { access, readFile } from "node:fs/promises";
-import { join } from "node:path";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
 const root = process.cwd();
+const outputMode = process.argv[2];
+assert.ok(
+  outputMode === undefined || ["--emit-output", "--check-output"].includes(outputMode),
+  "Use --emit-output to retain build notices or --check-output to verify them",
+);
 const application = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
 assert.equal(application.private, true);
-assert.equal(application.license, "UNLICENSED", "Application/content license belongs to its owner");
 for (const name of ["LICENSE", "LICENSE-MIT", "LICENSE-APACHE"]) {
-  await assert.rejects(access(join(root, name)), { code: "ENOENT" });
   assert.ok((await readFile(join(root, "licenses/template", name), "utf8")).length > 100);
 }
 assert.match(
@@ -54,6 +57,58 @@ for (const name of [
   for (const notice of ["LICENSE-MIT", "LICENSE-APACHE"])
     assert.ok((await readFile(join(root, "node_modules", name, notice), "utf8")).length > 1000);
 }
+assert.match(
+  await readFile(join(root, "node_modules/astromache/fonts/OFL.txt"), "utf8"),
+  /SIL OPEN FONT LICENSE Version 1\.1/,
+  "Preserve packaged font terms independently",
+);
+assert.match(
+  await readFile(
+    join(root, "node_modules/@effortlessmetrics/astro-offline/WORKBOX-LICENSE"),
+    "utf8",
+  ),
+  /Permission is hereby granted, free of charge/,
+  "Preserve packaged Workbox MIT terms independently",
+);
+if (outputMode) {
+  const groups = [
+    ["licenses/template", "template", ["README.md", "LICENSE", "LICENSE-MIT", "LICENSE-APACHE"]],
+    [
+      "node_modules/astromache",
+      "astromache",
+      ["LICENSE", "LICENSE-MIT", "LICENSE-APACHE", "fonts/OFL.txt"],
+    ],
+    [
+      "node_modules/@effortlessmetrics/static-search",
+      "static-search",
+      ["LICENSE-MIT", "LICENSE-APACHE"],
+    ],
+    [
+      "node_modules/@effortlessmetrics/astro-offline",
+      "astro-offline",
+      ["LICENSE", "LICENSE-MIT", "LICENSE-APACHE", "WORKBOX-LICENSE"],
+    ],
+    ["node_modules/astro", "astro", ["LICENSE"]],
+  ];
+  for (const [source, scope, files] of groups) {
+    for (const file of files) {
+      const bytes = await readFile(join(root, source, file));
+      const target = join(root, "dist/licenses", scope, file);
+      if (outputMode === "--emit-output") {
+        await mkdir(dirname(target), { recursive: true });
+        await writeFile(target, bytes);
+      }
+      assert.deepEqual(
+        await readFile(target),
+        bytes,
+        `${scope}/${file} output notice must be retained`,
+      );
+    }
+  }
+  console.log(
+    "Bundled notices retained under dist/licenses by upstream scope; consumer terms unchanged.",
+  );
+}
 console.log(
-  "Active dependency identities verified; application UNLICENSED; upstream notices and dependency grants retained.",
+  `Active dependency identities verified; application license ${application.license}; scoped upstream, font and Workbox notices retained.`,
 );

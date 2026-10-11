@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/verify-licenses.mjs --emit-output",
     "preview": "astro preview",
     "check": "astro check",
     "lint": "vp lint src",

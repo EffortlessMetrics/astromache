@@ -19,6 +19,9 @@ test("active delivery and version-independent bundled/registry license fixtures"
   try {
     for (const file of ["package.json", "licenses"])
       await cp(join(source, file), join(root, file), { recursive: true, dereference: true });
+    await cp(join(source, "node_modules/astro/LICENSE"), join(root, "node_modules/astro/LICENSE"), {
+      recursive: true,
+    });
     const manifest = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
     const receipt = { archives: {} };
     const versions = {};
@@ -42,10 +45,59 @@ test("active delivery and version-independent bundled/registry license fixtures"
     const saveManifest = () => writeFile(join(root, "package.json"), JSON.stringify(manifest));
     const receiptPath = join(root, "STARTER-DELIVERY.json");
     const saveReceipt = () => writeFile(receiptPath, JSON.stringify(receipt));
-    const run = () => spawnSync(process.execPath, [guard], { cwd: root, encoding: "utf8" });
+    const run = (...args) =>
+      spawnSync(process.execPath, [guard, ...args], { cwd: root, encoding: "utf8" });
     await saveManifest();
     await saveReceipt();
     assert.equal(run().status, 0, "valid synthetic bundled consistency fixture");
+    manifest.license = "MIT";
+    await saveManifest();
+    await writeFile(
+      join(root, "LICENSE"),
+      "Consumer-owned additions only; reused upstream material retains its scoped notices.\n",
+    );
+    assert.equal(run().status, 0, "consumer licensing must not change upstream notice checks");
+    assert.equal(
+      run("--emit-output").status,
+      0,
+      "build retains scoped notices for consumer-owned terms",
+    );
+    assert.equal(run("--check-output").status, 0, "retained output notices match installed terms");
+    for (const file of ["LICENSE", "LICENSE-MIT", "LICENSE-APACHE"])
+      await assert.rejects(readFile(join(root, "dist", file)), { code: "ENOENT" });
+    for (const notice of [
+      "template/LICENSE-MIT",
+      "astromache/LICENSE-MIT",
+      "astromache/fonts/OFL.txt",
+      "static-search/LICENSE-MIT",
+      "astro-offline/WORKBOX-LICENSE",
+      "astro/LICENSE",
+    ]) {
+      const path = join(root, "dist/licenses", notice);
+      const bytes = await readFile(path);
+      await rm(path);
+      assert.notEqual(run("--check-output").status, 0, `missing output ${notice} must fail`);
+      await writeFile(path, Buffer.from("incorrect notice"));
+      assert.notEqual(run("--check-output").status, 0, `changed output ${notice} must fail`);
+      await writeFile(path, bytes);
+    }
+    assert.equal(JSON.parse(await readFile(join(root, "package.json"))).license, "MIT");
+    assert.match(await readFile(join(root, "LICENSE"), "utf8"), /Consumer-owned additions only/);
+    await rm(join(root, "LICENSE"));
+    manifest.license = "UNLICENSED";
+    await saveManifest();
+    for (const notice of [
+      "licenses/template/LICENSE-MIT",
+      "licenses/template/LICENSE-APACHE",
+      "node_modules/astromache/fonts/OFL.txt",
+      "node_modules/@effortlessmetrics/astro-offline/WORKBOX-LICENSE",
+    ]) {
+      const path = join(root, notice);
+      const bytes = await readFile(path);
+      await rm(path);
+      assert.notEqual(run().status, 0, `missing ${notice} must fail`);
+      await writeFile(path, bytes);
+    }
     const installedPath = join(root, "node_modules/astromache/package.json");
     const installedBytes = await readFile(installedPath);
     const installed = JSON.parse(installedBytes);
