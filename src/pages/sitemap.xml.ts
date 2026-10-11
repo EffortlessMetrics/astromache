@@ -1,5 +1,6 @@
 import type { APIContext } from "astro";
 import { notes, noteLink, taxonomyRoutes } from "../publication-content";
+import { canonicalURL, xml } from "../publication-urls";
 export async function GET({ site }: APIContext) {
   const entries = await notes();
   const paths = [
@@ -12,7 +13,9 @@ export async function GET({ site }: APIContext) {
   ];
   return new Response(
     '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +
-      paths.map((href) => "<url><loc>" + site?.origin + href + "</loc></url>").join("") +
+      paths
+        .map((href) => "<url><loc>" + xml(canonicalURL(href, site).href) + "</loc></url>")
+        .join("") +
       "</urlset>",
     { headers: { "Content-Type": "application/xml; charset=utf-8" } },
   );
