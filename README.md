@@ -1,6 +1,6 @@
 # AstroMache publication starter
 
-A neutral, standalone default with verified offline caching and connection-aware native intent prefetch enabled. Shared components keep their established npm names/imports; canonical static precache setup uses the unpublished astromache 0.2.7 core preset. Its Article action alignment repair preserves native controls and narrow-screen wrapping. Cache integrity and lifecycle remain owned by offline 0.1.4.
+A neutral, standalone default with verified offline caching and connection-aware native intent prefetch enabled. Shared components keep their established npm names/imports; canonical static precache setup uses the unpublished astromache 0.2.7 core preset. Its Article action alignment repair preserves native controls and narrow-screen wrapping. Cache integrity and lifecycle remain owned by offline 0.1.5, including explicit `index.html` navigation from verified directory precaches.
 
 Use Node 24.19.x. Run pnpm install --frozen-lockfile --ignore-scripts, then pnpm qualify, pnpm verify:licenses and pnpm dev. Exact active archive versions/hashes and core source identity are in STARTER-DELIVERY.json. verify:licenses checks the archive pins, hashes and installed versions along with the required notices. These expanded candidates are not yet registry releases.
 

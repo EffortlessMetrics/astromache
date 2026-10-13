@@ -1,27 +1,217 @@
 {
   "pass": true,
   "fixturePolicy": "canonical-pages variant; default recipe policy unchanged",
-  "revision": "e3c3419d8e7dcdd96aec",
+  "revision": "1326d323a13eb62cf2ec",
   "states": [
     {
+      "cycle": 1,
+      "path": "/",
+      "offline": true,
+      "build": "a",
+      "location": "/"
+    },
+    {
+      "cycle": 1,
+      "path": "/index.html",
+      "offline": true,
+      "build": "a",
+      "location": "/index.html"
+    },
+    {
+      "cycle": 1,
       "path": "/posts/",
-      "offlineBuild": "a",
-      "canonicalURL": "/posts/"
+      "offline": true,
+      "build": "a",
+      "location": "/posts/"
     },
     {
+      "cycle": 1,
       "path": "/posts",
-      "offlineBuild": "a",
-      "canonicalURL": "/posts/"
+      "offline": true,
+      "build": "a",
+      "location": "/posts/"
     },
     {
+      "cycle": 1,
+      "path": "/posts/index.html",
+      "offline": true,
+      "build": "a",
+      "location": "/posts/index.html"
+    },
+    {
+      "cycle": 1,
+      "path": "/",
+      "offline": false,
+      "build": "b",
+      "location": "/"
+    },
+    {
+      "cycle": 1,
+      "path": "/index.html",
+      "offline": false,
+      "build": "b",
+      "location": "/index.html"
+    },
+    {
+      "cycle": 1,
       "path": "/posts/",
-      "reconnectBuild": "b",
-      "canonicalURL": "/posts/"
+      "offline": false,
+      "build": "b",
+      "location": "/posts/"
     },
     {
+      "cycle": 1,
       "path": "/posts",
-      "reconnectBuild": "b",
-      "canonicalURL": "/posts/"
+      "offline": false,
+      "build": "b",
+      "location": "/posts/"
+    },
+    {
+      "cycle": 1,
+      "path": "/posts/index.html",
+      "offline": false,
+      "build": "b",
+      "location": "/posts/index.html"
+    },
+    {
+      "cycle": 2,
+      "path": "/",
+      "offline": true,
+      "build": "a",
+      "location": "/"
+    },
+    {
+      "cycle": 2,
+      "path": "/index.html",
+      "offline": true,
+      "build": "a",
+      "location": "/index.html"
+    },
+    {
+      "cycle": 2,
+      "path": "/posts/",
+      "offline": true,
+      "build": "a",
+      "location": "/posts/"
+    },
+    {
+      "cycle": 2,
+      "path": "/posts",
+      "offline": true,
+      "build": "a",
+      "location": "/posts/"
+    },
+    {
+      "cycle": 2,
+      "path": "/posts/index.html",
+      "offline": true,
+      "build": "a",
+      "location": "/posts/index.html"
+    },
+    {
+      "cycle": 2,
+      "path": "/",
+      "offline": false,
+      "build": "b",
+      "location": "/"
+    },
+    {
+      "cycle": 2,
+      "path": "/index.html",
+      "offline": false,
+      "build": "b",
+      "location": "/index.html"
+    },
+    {
+      "cycle": 2,
+      "path": "/posts/",
+      "offline": false,
+      "build": "b",
+      "location": "/posts/"
+    },
+    {
+      "cycle": 2,
+      "path": "/posts",
+      "offline": false,
+      "build": "b",
+      "location": "/posts/"
+    },
+    {
+      "cycle": 2,
+      "path": "/posts/index.html",
+      "offline": false,
+      "build": "b",
+      "location": "/posts/index.html"
+    },
+    {
+      "cycle": 3,
+      "path": "/",
+      "offline": true,
+      "build": "a",
+      "location": "/"
+    },
+    {
+      "cycle": 3,
+      "path": "/index.html",
+      "offline": true,
+      "build": "a",
+      "location": "/index.html"
+    },
+    {
+      "cycle": 3,
+      "path": "/posts/",
+      "offline": true,
+      "build": "a",
+      "location": "/posts/"
+    },
+    {
+      "cycle": 3,
+      "path": "/posts",
+      "offline": true,
+      "build": "a",
+      "location": "/posts/"
+    },
+    {
+      "cycle": 3,
+      "path": "/posts/index.html",
+      "offline": true,
+      "build": "a",
+      "location": "/posts/index.html"
+    },
+    {
+      "cycle": 3,
+      "path": "/",
+      "offline": false,
+      "build": "b",
+      "location": "/"
+    },
+    {
+      "cycle": 3,
+      "path": "/index.html",
+      "offline": false,
+      "build": "b",
+      "location": "/index.html"
+    },
+    {
+      "cycle": 3,
+      "path": "/posts/",
+      "offline": false,
+      "build": "b",
+      "location": "/posts/"
+    },
+    {
+      "cycle": 3,
+      "path": "/posts",
+      "offline": false,
+      "build": "b",
+      "location": "/posts/"
+    },
+    {
+      "cycle": 3,
+      "path": "/posts/index.html",
+      "offline": false,
+      "build": "b",
+      "location": "/posts/index.html"
     }
   ],
   "exclusions": true,
