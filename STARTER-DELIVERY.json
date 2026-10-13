@@ -2,9 +2,9 @@
   "scope": "Unpublished starter delivery candidate; exact vendored archives",
   "archives": {
     "@effortlessmetrics/astro-offline": {
-      "file": "vendor/effortlessmetrics-astro-offline-0.1.4.tgz",
-      "version": "0.1.4",
-      "sha256": "55d880bfa3fc9dcd650df94a1354040db899130edfb471d8caf45b6fa96e257e"
+      "file": "vendor/effortlessmetrics-astro-offline-0.1.5.tgz",
+      "version": "0.1.5",
+      "sha256": "e8cb8779d076896e437fb309a5c3ce2d15d5620a1e1d0508d614ff6f09d17a06"
     },
     "@effortlessmetrics/static-search": {
       "file": "vendor/effortlessmetrics-static-search-0.1.0-adversarial.tgz",
@@ -18,13 +18,14 @@
     }
   },
   "sourceCommits": {
-    "astromache-core": "7ffe28658a0e1fef83d9b640444c0aa02477242e"
+    "astromache-core": "7ffe28658a0e1fef83d9b640444c0aa02477242e",
+    "astro-offline": "26ad83656f19a73e84d294e87672cb949bf614e3"
   },
   "offline": true,
   "intentPrefetch": true,
   "applicationLicense": "UNLICENSED",
   "templateCodeLicense": "MIT OR Apache-2.0",
   "upstreamNotices": "licenses/template; replacement content remains owner-controlled",
-  "localBrowserAcceptance": "PASS 0.2.7 frozen standalone install/check/lint/format/build; installed Article desktop/mobile/wrapped geometry; navigation/search/gallery/BFCache/freshness/lifecycle/canonical offline acceptance",
+  "localBrowserAcceptance": "PASS offline 0.1.5 frozen install/check/lint/format/build and archive/installed identity; actual default-worker root/nested explicit-index aliases through three offline/reconnect cycles; directory-only fixture exact bytes and exclusions; actual 0.1.4-to-0.1.5 interrupted/rejected upgrade preservation, natural activation, exact offline current and reconnect; search/gallery/BFCache/freshness/lifecycle flows",
   "hostedAcceptance": "NOT RUN"
 }
