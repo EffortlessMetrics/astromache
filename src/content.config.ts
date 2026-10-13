@@ -5,7 +5,9 @@ export const collections = {
     loader: noteLoader(),
     schema: z.object({
       title: z.string(),
-      description: z.string(),
+      description: z.string().refine((value) => value.trim().length > 0, {
+        message: "Note description must contain non-whitespace text",
+      }),
       published: z.coerce.date(),
       tags: z.array(z.string()),
       category: z.string(),
