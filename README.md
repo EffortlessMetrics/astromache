@@ -35,7 +35,7 @@ Run `pnpm qualify` and `pnpm verify:licenses` after customization. License verif
 
 Note IDs must have distinct canonical paths. The content loader rejects duplicate IDs, including collisions from filename normalization and Unicode NFC normalization, before replacing collection entries. Nested paths, Unicode, spaces, ampersands, `?` and `#` are serialized consistently across note links, HTML canonicals, RSS and sitemap output. IDs containing percent signs, dot path segments, empty path segments, backslashes or control characters are rejected; use decoded slugs rather than percent escapes because Astro decodes escapes before matching static paths.
 
-Run `node --test scripts/publication-serialization.test.mjs` for disposable Markdown build fixtures and strict XML/canonical checks. These tests require Python 3 for its standard XML parser and use already installed dependencies. The description schema remains unchanged: it accepts empty strings, while the shared page metadata component requires nonempty descriptions. Use a nonempty description for a buildable note.
+Run `node --test scripts/publication-serialization.test.mjs` for disposable Markdown build fixtures and strict XML/canonical checks. These tests require Python 3 for its standard XML parser and use already installed dependencies. Note descriptions must contain non-whitespace text, matching the shared page metadata contract. Invalid descriptions are rejected during content sync with the note and field identified; valid text is preserved as authored.
 
 ## Upgrading shared libraries
 

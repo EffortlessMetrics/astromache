@@ -86,13 +86,13 @@ const withProject = async (entries, check) => {
 };
 const rejected = (result, message) => {
   assert.equal(result.error, undefined, `Build execution limit/error: ${result.error}`);
-  assert.notEqual(result.status, 0, "Ambiguous/unsupported note IDs must fail content sync");
+  assert.notEqual(result.status, 0, "Invalid note content must fail content sync");
   assert.match(result.stdout + result.stderr, message);
 };
 
 test("RSS, sitemap, HTML and copy links agree for XML text, Unicode and reserved slugs", async () => {
   const title = `<Lab> & "café" '東京' 😀`;
-  const description = `<tag> & "résumé" '雪'`;
+  const description = `  <tag> & "résumé" '雪'  `;
   const entries = {
     "text.md": fixture("xml-text", title, description),
     "amp.md": fixture("r&d", "Ampersand"),
@@ -170,6 +170,19 @@ print(json.dumps({'items': [{key: item.findtext(key) for key in ['title','descri
       new Set(output.items.map((entry) => entry.link)),
     );
   });
+});
+
+test("blank descriptions are rejected at content sync with the note and field identified", async () => {
+  for (const description of ["", " \t\n ", "\u00a0\u2003"]) {
+    await withProject({ "blank.md": fixture("blank", "Fixture", description) }, async (root) => {
+      const result = build(root);
+      const output = result.stdout + result.stderr;
+      rejected(result, /Note description must contain non-whitespace text/);
+      assert.match(output, /description/);
+      assert.match(output, /blank/);
+      assert.doesNotMatch(output, /generating static routes|Publication metadata requires/);
+    });
+  }
 });
 
 test("identical explicit duplicate slugs are rejected before collection overwrite", async () => {
