@@ -91,7 +91,7 @@ const rejected = (result, message) => {
 };
 
 test("RSS, sitemap, HTML and copy links agree for XML text, Unicode and reserved slugs", async () => {
-  const title = `<Lab> & "café" '東京' 😀`;
+  const title = `  <Lab> & "café" '東京' 😀  `;
   const description = `  <tag> & "résumé" '雪'  `;
   const entries = {
     "text.md": fixture("xml-text", title, description),
@@ -165,11 +165,25 @@ print(json.dumps({'items': [{key: item.findtext(key) for key in ['title','descri
     assert.equal(output.items.find((item) => item.title === title).description, description);
     assert.deepEqual(output.index, ["https://publication.example/sitemap.xml"]);
     const search = JSON.parse(await readFile(join(root, "dist/search-index.json"), "utf8"));
+    assert.equal(search.data.find((entry) => entry.url === "/notes/xml-text/").title, title);
     assert.deepEqual(
       new Set(search.data.map((entry) => "https://publication.example" + entry.url)),
       new Set(output.items.map((entry) => entry.link)),
     );
   });
+});
+
+test("blank titles are rejected at content sync before publishing unnamed links", async () => {
+  for (const title of ["", " \t\n ", "\u00a0\u2003"]) {
+    await withProject({ "blank-title.md": fixture("blank-title", title) }, async (root) => {
+      const result = build(root);
+      const output = result.stdout + result.stderr;
+      rejected(result, /Note title must contain non-whitespace text/);
+      assert.match(output, /title/);
+      assert.match(output, /blank-title/);
+      assert.doesNotMatch(output, /generating static routes|Publication metadata requires/);
+    });
+  }
 });
 
 test("blank descriptions are rejected at content sync with the note and field identified", async () => {
