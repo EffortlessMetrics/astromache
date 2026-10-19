@@ -137,6 +137,12 @@ test("a malformed index is rejected before caching so the next submission can re
     { version: "invalid-v1", data: [{ text: "alpha", url: "/notes/alpha/" }] },
     { version: "invalid-v1", data: [{ title: "Alpha", text: 7, url: "/notes/alpha/" }] },
     { version: "invalid-v1", data: [{ title: "Alpha", text: "first", url: null }] },
+    ...[
+      "javascript:globalThis.__searchExecuted=true;void 0",
+      "data:text/html,<script>alert(1)</script>",
+      "https://attacker.invalid/notes/alpha/",
+      "//attacker.invalid/notes/alpha/",
+    ].map((url) => ({ version: "invalid-v1", data: [{ title: "Alpha", text: "first", url }] })),
   ];
   for (const payload of invalid) {
     await t.test(JSON.stringify(payload), async (t) => {
@@ -154,6 +160,20 @@ test("a malformed index is rejected before caching so the next submission can re
       assert.equal(ui.list.children[0].children[0].href, "/notes/beta/");
     });
   }
+});
+
+test("serialized Unicode and reserved-character note links remain unchanged", async (t) => {
+  const note = {
+    title: "Café <note>",
+    text: "first",
+    url: "/notes/caf%C3%A9/%E6%9D%B1%E4%BA%AC/query%3Fx=1&y=2%23part/",
+  };
+  const ui = setup(t, () => Response.json({ version: "encoded-v1", data: [note] }));
+  ui.submit("café");
+  await settle(() => ui.form.getAttribute("aria-busy") === "false");
+  assert.equal(ui.status.textContent, "1 results");
+  assert.equal(ui.list.children[0].children[0].textContent, note.title);
+  assert.equal(ui.list.children[0].children[0].href, note.url);
 });
 
 test("valid indexes including an empty corpus remain cached across submissions", async (t) => {

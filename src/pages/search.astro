@@ -28,7 +28,10 @@ const index = createStaticIndexLoader<Note[]>({
           "text" in note &&
           typeof note.text === "string" &&
           "url" in note &&
-          typeof note.url === "string",
+          typeof note.url === "string" &&
+          // Generated links are root-relative note paths. This also excludes
+          // executable schemes and external/protocol-relative destinations.
+          note.url.startsWith("/notes/"),
       )
     )
       throw new Error("Invalid search index");
