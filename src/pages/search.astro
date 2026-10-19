@@ -11,7 +11,31 @@ const index = createStaticIndexLoader<Note[]>({
   load: async (signal) => {
     const response = await fetch("/search-index.json", { signal });
     if (!response.ok) throw new Error("Index unavailable");
-    return response.json();
+    const snapshot = await response.json();
+    // Validate the application's document contract before the shared loader
+    // caches it. An invalid snapshot must remain retryable on the next submit.
+    if (
+      !snapshot ||
+      typeof snapshot.version !== "string" ||
+      !snapshot.version ||
+      !Array.isArray(snapshot.data) ||
+      !snapshot.data.every(
+        (note: unknown) =>
+          note !== null &&
+          typeof note === "object" &&
+          "title" in note &&
+          typeof note.title === "string" &&
+          "text" in note &&
+          typeof note.text === "string" &&
+          "url" in note &&
+          typeof note.url === "string" &&
+          // Generated links are root-relative note paths. This also excludes
+          // executable schemes and external/protocol-relative destinations.
+          note.url.startsWith("/notes/"),
+      )
+    )
+      throw new Error("Invalid search index");
+    return snapshot;
   },
 });
 const backend = createStaticSearchBackend({
