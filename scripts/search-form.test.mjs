@@ -128,6 +128,53 @@ test("retry replaces a prior failure with progress, then recovers", async (t) =>
   assert.equal(ui.list.children[0].children[0].textContent, "Beta");
 });
 
+test("a malformed index is rejected before caching so the next submission can recover", async (t) => {
+  const invalid = [
+    null,
+    { version: "", data: [] },
+    { version: "invalid-v1", data: {} },
+    { version: "invalid-v1", data: [null] },
+    { version: "invalid-v1", data: [{ text: "alpha", url: "/notes/alpha/" }] },
+    { version: "invalid-v1", data: [{ title: "Alpha", text: 7, url: "/notes/alpha/" }] },
+    { version: "invalid-v1", data: [{ title: "Alpha", text: "first", url: null }] },
+  ];
+  for (const payload of invalid) {
+    await t.test(JSON.stringify(payload), async (t) => {
+      let requests = 0;
+      const ui = setup(t, () => (++requests === 1 ? Response.json(payload) : snapshot()));
+      ui.submit("alpha");
+      await settle(() => ui.form.getAttribute("aria-busy") === "false");
+      assert.equal(ui.status.textContent, "Search unavailable");
+      assert.equal(ui.list.children.length, 0);
+      ui.submit("beta");
+      await settle(() => ui.form.getAttribute("aria-busy") === "false");
+      assert.equal(requests, 2, "Retry must refetch after an invalid index");
+      assert.equal(ui.status.textContent, "1 results");
+      assert.equal(ui.list.children[0].children[0].textContent, "Beta");
+      assert.equal(ui.list.children[0].children[0].href, "/notes/beta/");
+    });
+  }
+});
+
+test("valid indexes including an empty corpus remain cached across submissions", async (t) => {
+  for (const empty of [false, true]) {
+    await t.test(empty ? "empty corpus" : "populated corpus", async (t) => {
+      let requests = 0;
+      const ui = setup(t, () => {
+        requests++;
+        return empty ? Response.json({ version: "empty-v1", data: [] }) : snapshot();
+      });
+      for (const query of ["alpha", "beta"]) {
+        ui.submit(query);
+        await settle(() => ui.form.getAttribute("aria-busy") === "false");
+        assert.equal(ui.status.textContent, empty ? "0 results" : "1 results");
+        assert.equal(ui.list.children.length, empty ? 0 : 1);
+      }
+      assert.equal(requests, 1, "A valid index must retain the existing shared cache behavior");
+    });
+  }
+});
+
 test("a superseded query cannot clear the current pending state", async (t) => {
   const response = deferred();
   const ui = setup(t, () => response.promise);
