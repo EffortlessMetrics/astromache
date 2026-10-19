@@ -4,7 +4,9 @@ export const collections = {
   notes: defineCollection({
     loader: noteLoader(),
     schema: z.object({
-      title: z.string(),
+      title: z.string().refine((value) => value.trim().length > 0, {
+        message: "Note title must contain non-whitespace text",
+      }),
       description: z.string().refine((value) => value.trim().length > 0, {
         message: "Note description must contain non-whitespace text",
       }),

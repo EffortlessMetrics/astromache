@@ -37,7 +37,7 @@ Run `node --test scripts/search-form.test.mjs` for search progress, failure/retr
 
 Note IDs must have distinct canonical paths. The content loader rejects duplicate IDs, including collisions from filename normalization and Unicode NFC normalization, before replacing collection entries. Nested paths, Unicode, spaces, ampersands, `?` and `#` are serialized consistently across note links, HTML canonicals, RSS and sitemap output. IDs containing percent signs, dot path segments, empty path segments, backslashes or control characters are rejected; use decoded slugs rather than percent escapes because Astro decodes escapes before matching static paths.
 
-Run `node --test scripts/publication-serialization.test.mjs` for disposable Markdown build fixtures and strict XML/canonical checks. These tests require Python 3 for its standard XML parser and use already installed dependencies. Note descriptions must contain non-whitespace text, matching the shared page metadata contract. Invalid descriptions are rejected during content sync with the note and field identified; valid text is preserved as authored.
+Run `node --test scripts/publication-serialization.test.mjs` for disposable Markdown build fixtures and strict XML/canonical checks. These tests require Python 3 for its standard XML parser and use already installed dependencies. Note titles must contain non-whitespace text so article headings and navigation links have readable names. Note descriptions must contain non-whitespace text, matching the shared page metadata contract. Invalid titles and descriptions are rejected during content sync with the note and field identified; valid text is preserved as authored.
 
 ## Upgrading shared libraries
 
