@@ -39,6 +39,8 @@ Note IDs must have distinct canonical paths. The content loader rejects duplicat
 
 Run `node --test scripts/publication-serialization.test.mjs` for disposable Markdown build fixtures and strict XML/canonical checks. These tests require Python 3 for its standard XML parser and use already installed dependencies. Note descriptions must contain non-whitespace text, matching the shared page metadata contract. Invalid descriptions are rejected during content sync with the note and field identified; valid text is preserved as authored.
 
+The search page validates fetched index data before caching it: each note needs string `title`, `text` and `url` fields, with a root-relative URL starting with `/notes/`. Malformed data or an unsupported link shows “Search unavailable” and a later submission retries the fetch. Valid indexes, including empty corpora, retain the shared cache. The focused search-form tests cover this recovery boundary.
+
 ## Upgrading shared libraries
 
 Upgrade each dependency independently when its relevant behavior changes. Preserve your application's routes, content, styling, site policy and scoped upstream notices. The application version is independent of library versions; copying a new starter over an existing site is not required.
