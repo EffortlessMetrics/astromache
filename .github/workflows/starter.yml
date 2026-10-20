@@ -23,6 +23,14 @@ jobs:
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: node --test scripts/search-form.test.mjs scripts/publication-navigation.test.mjs
       - run: pnpm qualify
+      - name: Install pinned headless Chromium
+        run: pnpm exec playwright install --with-deps --only-shell chromium
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.qualification/browsers
+      - name: Search keyboard and Escape controls against built output
+        run: pnpm test:search:keyboard
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.qualification/browsers
       - run: node scripts/verify-licenses.mjs
       - run: pnpm test:licenses
       - run: node --test scripts/publication-serialization.test.mjs
