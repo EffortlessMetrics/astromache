@@ -53,6 +53,7 @@ after(async () => {
   }
 });
 
+/** Run a built-page check with isolated storage and guaranteed browser-context cleanup. */
 async function withPage(width, run) {
   const context = await browser.newContext({
     viewport: { width, height: 800 },
@@ -96,15 +97,24 @@ for (const width of [1280, 390]) {
       await expect(input).toBeFocused();
       await page.keyboard.press("Tab");
       await expect(page.locator("#search-form button")).toBeFocused();
-      for (const note of index.data) {
+      const results = page.locator("#search-results a");
+      await expect(results).toHaveCount(index.data.length);
+      for (const [resultIndex, note] of index.data.entries()) {
         await page.keyboard.press("Tab");
-        await expect(page.locator("#search-results a", { hasText: note.title })).toBeFocused();
+        const result = results.nth(resultIndex);
+        await expect(result).toHaveText(note.title);
+        await expect(result).toHaveAttribute("href", note.url);
+        await expect(result).toBeFocused();
       }
       await page.keyboard.press("Tab");
       await expect(page.getByRole("link", { name: "RSS", exact: true })).toBeFocused();
-      for (const note of [...index.data].reverse()) {
+      for (let resultIndex = index.data.length - 1; resultIndex >= 0; resultIndex--) {
         await page.keyboard.press("Shift+Tab");
-        await expect(page.locator("#search-results a", { hasText: note.title })).toBeFocused();
+        const note = index.data[resultIndex];
+        const result = results.nth(resultIndex);
+        await expect(result).toHaveText(note.title);
+        await expect(result).toHaveAttribute("href", note.url);
+        await expect(result).toBeFocused();
       }
       await page.keyboard.press("Shift+Tab");
       await expect(page.locator("#search-form button")).toBeFocused();
