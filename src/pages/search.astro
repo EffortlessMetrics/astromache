@@ -107,10 +107,10 @@ window.addEventListener("pageshow", (event) => {
     try {
       submittedQuery = sessionStorage.getItem("field-notes-search-query");
     } catch {}
-    if (submittedQuery !== null) {
-      input.value = submittedQuery;
-      void search();
-    }
+  }
+  if (submittedQuery !== null) {
+    input.value = submittedQuery;
+    if (!event.persisted) void search();
   }
   // A retained document keeps its results (or failure). Reassert its own
   // submitted query after another listing or search changed the return context.

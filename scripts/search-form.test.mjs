@@ -276,6 +276,7 @@ test("history restoration refreshes search return context without replaying a co
   ui.submit("alpha");
   await settle(() => ui.status.textContent === "Search unavailable");
   for (let visit = 0; visit < 2; visit++) {
+    ui.input.value = "unsubmitted edit";
     ui.hide(true);
     ui.storage.set("field-notes-back", "/posts/");
     ui.storage.set("field-notes-search-query", "beta");
@@ -312,6 +313,7 @@ test("a restored search cancels a pending retry and admits only the latest query
   ui.storage.set("field-notes-search-query", "alpha");
   ui.show(true);
   assert.equal(ui.storage.get("field-notes-search-query"), "beta");
+  assert.equal(ui.input.value, "beta", "Restore the query that produced the retained results");
   assert.equal(ui.list.children[0].children[0].textContent, "Beta");
 });
 
