@@ -56,9 +56,18 @@ let request = 0;
 let abort: AbortController | undefined;
 let submittedQuery: string | null = null;
 const rememberReturn = () => {
+  if (submittedQuery !== null) {
+    try {
+      sessionStorage.setItem("field-notes-search-query", submittedQuery);
+    } catch {
+      // A failed replacement must not replay an older query on a fresh visit.
+      try {
+        sessionStorage.removeItem("field-notes-search-query");
+      } catch {}
+    }
+  }
   try {
     sessionStorage.setItem("field-notes-back", location.pathname + location.search);
-    if (submittedQuery !== null) sessionStorage.setItem("field-notes-search-query", submittedQuery);
   } catch {}
 };
 const search = async () => {

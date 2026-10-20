@@ -53,12 +53,11 @@ const snapshot = () =>
       { title: "Beta", text: "second", url: "/notes/beta/" },
     ],
   });
-const setup = (t, fetch, storageAvailable = true) => {
+const setup = (t, fetch, storageAvailable = true, storage = new Map()) => {
   const elements = Object.fromEntries(
     ["search-form", "query", "search-status", "search-results"].map((id) => [id, new Element()]),
   );
   const window = new EventTarget();
-  const storage = new Map();
   const lifecycle = (type, persisted) => {
     const event = new Event(type);
     event.persisted = persisted;
@@ -80,6 +79,10 @@ const setup = (t, fetch, storageAvailable = true) => {
       setItem: (key, value) => {
         if (!storageAvailable) throw new DOMException("Storage denied", "SecurityError");
         storage.set(key, value);
+      },
+      removeItem: (key) => {
+        if (!storageAvailable) throw new DOMException("Storage denied", "SecurityError");
+        storage.delete(key);
       },
     },
     fetch,
@@ -333,4 +336,43 @@ test("an initial visit stays idle and searching still works when session storage
   ui.submit("alpha");
   await settle(() => ui.status.textContent === "1 results");
   assert.equal(ui.list.children[0].children[0].textContent, "Alpha <note>");
+});
+
+test("a failed storage write cannot restore an older query on the next visit", async (t) => {
+  for (const key of ["field-notes-search-query", "field-notes-back"]) {
+    await t.test(key, async (t) => {
+      const storage = new Map([["field-notes-search-query", "alpha"]]);
+      const set = storage.set.bind(storage);
+      storage.set = (name, value) => {
+        if (name === key) throw new DOMException("Storage full", "QuotaExceededError");
+        return set(name, value);
+      };
+      const ui = setup(t, () => snapshot(), true, storage);
+      ui.submit("beta");
+      await settle(() => ui.status.textContent === "1 results");
+      assert.equal(ui.list.children[0].children[0].textContent, "Beta");
+      const saved = key === "field-notes-search-query" ? undefined : "beta";
+      assert.equal(storage.get("field-notes-search-query"), saved);
+      let requests = 0;
+      const fresh = setup(
+        t,
+        () => {
+          requests++;
+          return snapshot();
+        },
+        true,
+        storage,
+      );
+      fresh.show(false);
+      if (saved === undefined) {
+        assert.equal(requests, 0);
+        assert.equal(fresh.input.value, "");
+        assert.equal(fresh.status.textContent, "");
+      } else {
+        await settle(() => fresh.status.textContent === "1 results");
+        assert.equal(fresh.input.value, "beta");
+        assert.equal(fresh.list.children[0].children[0].textContent, "Beta");
+      }
+    });
+  }
 });
