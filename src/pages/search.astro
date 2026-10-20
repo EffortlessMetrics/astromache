@@ -54,12 +54,29 @@ const status = document.querySelector<HTMLElement>("#search-status")!;
 const list = document.querySelector<HTMLUListElement>("#search-results")!;
 let request = 0;
 let abort: AbortController | undefined;
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
+let submittedQuery: string | null = null;
+const rememberReturn = () => {
+  if (submittedQuery !== null) {
+    try {
+      sessionStorage.setItem("field-notes-search-query", submittedQuery);
+    } catch {
+      // A failed replacement must not replay an older query on a fresh visit.
+      try {
+        sessionStorage.removeItem("field-notes-search-query");
+      } catch {}
+    }
+  }
+  try {
+    sessionStorage.setItem("field-notes-back", location.pathname + location.search);
+  } catch {}
+};
+const search = async () => {
   abort?.abort();
   const controller = new AbortController();
   abort = controller;
   const query = input.value;
+  submittedQuery = query;
+  rememberReturn();
   const generation = ++request;
   list.replaceChildren();
   status.textContent = "Searching…";
@@ -89,6 +106,24 @@ form.addEventListener("submit", async (event) => {
       form.setAttribute("aria-busy", "false");
     }
   }
+};
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  void search();
+});
+window.addEventListener("pageshow", (event) => {
+  if (!event.persisted) {
+    try {
+      submittedQuery = sessionStorage.getItem("field-notes-search-query");
+    } catch {}
+  }
+  if (submittedQuery !== null) {
+    input.value = submittedQuery;
+    if (!event.persisted) void search();
+  }
+  // A retained document keeps its results (or failure). Reassert its own
+  // submitted query after another listing or search changed the return context.
+  rememberReturn();
 });
 window.addEventListener("pagehide", (event) => {
   if (abort) {

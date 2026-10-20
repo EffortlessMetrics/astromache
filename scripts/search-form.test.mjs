@@ -53,22 +53,38 @@ const snapshot = () =>
       { title: "Beta", text: "second", url: "/notes/beta/" },
     ],
   });
-const setup = (t, fetch) => {
+const setup = (t, fetch, storageAvailable = true, storage = new Map()) => {
   const elements = Object.fromEntries(
     ["search-form", "query", "search-status", "search-results"].map((id) => [id, new Element()]),
   );
   const window = new EventTarget();
-  const hide = (persisted) => {
-    const event = new Event("pagehide");
+  const lifecycle = (type, persisted) => {
+    const event = new Event(type);
     event.persisted = persisted;
     window.dispatchEvent(event);
   };
+  const hide = (persisted) => lifecycle("pagehide", persisted);
   runInNewContext(script, {
     document: {
       querySelector: (selector) => elements[selector.slice(1)],
       createElement: () => new Element(),
     },
     window,
+    location: { pathname: "/search/", search: "" },
+    sessionStorage: {
+      getItem: (key) => {
+        if (!storageAvailable) throw new DOMException("Storage denied", "SecurityError");
+        return storage.get(key) ?? null;
+      },
+      setItem: (key, value) => {
+        if (!storageAvailable) throw new DOMException("Storage denied", "SecurityError");
+        storage.set(key, value);
+      },
+      removeItem: (key) => {
+        if (!storageAvailable) throw new DOMException("Storage denied", "SecurityError");
+        storage.delete(key);
+      },
+    },
     fetch,
     AbortController,
     DOMException,
@@ -80,7 +96,10 @@ const setup = (t, fetch) => {
     form: elements["search-form"],
     status: elements["search-status"],
     list: elements["search-results"],
+    input: elements.query,
+    storage,
     hide,
+    show: (persisted) => lifecycle("pageshow", persisted),
     submit(query) {
       elements.query.value = query;
       const event = new Event("submit", { cancelable: true });
@@ -223,4 +242,137 @@ test("pagehide clears pending UI and a restored page can search again", async (t
   ui.submit("beta");
   await settle(() => ui.status.textContent === "1 results");
   assert.equal(ui.list.children[0].children[0].textContent, "Beta");
+});
+
+test("submitted queries retain literal text and the article return destination", async (t) => {
+  const ui = setup(t, () => snapshot());
+  for (const query of ["alpha", "Café & 東京 ? # + %", ""]) {
+    ui.submit(query);
+    await settle(() => ui.form.getAttribute("aria-busy") === "false");
+    assert.equal(ui.storage.get("field-notes-search-query"), query);
+    assert.equal(ui.storage.get("field-notes-back"), "/search/");
+  }
+});
+
+test("returning to search restores its literal query and recovers after an invalid index", async (t) => {
+  const query = "Café & 東京 ? # + %";
+  let requests = 0;
+  const ui = setup(t, () => (++requests === 1 ? Response.json(null) : snapshot()));
+  ui.storage.set("field-notes-search-query", query);
+  ui.show(false);
+  assert.equal(ui.input.value, query);
+  pending(ui);
+  await settle(() => ui.status.textContent === "Search unavailable");
+  ui.submit("beta");
+  await settle(() => ui.status.textContent === "1 results");
+  assert.equal(requests, 2);
+  assert.equal(ui.list.children[0].children[0].textContent, "Beta");
+  assert.equal(ui.storage.get("field-notes-search-query"), "beta");
+});
+
+test("history restoration refreshes search return context without replaying a completed failure", async (t) => {
+  let requests = 0;
+  const ui = setup(t, () => {
+    requests++;
+    return new Response("", { status: 503 });
+  });
+  ui.submit("alpha");
+  await settle(() => ui.status.textContent === "Search unavailable");
+  for (let visit = 0; visit < 2; visit++) {
+    ui.input.value = "unsubmitted edit";
+    ui.hide(true);
+    ui.storage.set("field-notes-back", "/posts/");
+    ui.storage.set("field-notes-search-query", "beta");
+    ui.show(true);
+    assert.equal(ui.storage.get("field-notes-back"), "/search/");
+    assert.equal(ui.storage.get("field-notes-search-query"), "alpha");
+    assert.equal(ui.input.value, "alpha");
+    assert.equal(ui.status.textContent, "Search unavailable");
+    assert.equal(ui.form.getAttribute("aria-busy"), "false");
+  }
+  assert.equal(requests, 1, "Retained failures wait for an explicit retry");
+});
+
+test("a restored search cancels a pending retry and admits only the latest query", async (t) => {
+  const response = deferred();
+  let requests = 0;
+  const ui = setup(t, () => (++requests === 1 ? Response.json(null) : response.promise));
+  ui.storage.set("field-notes-search-query", "alpha");
+  ui.show(false);
+  await settle(() => ui.status.textContent === "Search unavailable");
+  ui.submit("alpha");
+  pending(ui);
+  ui.hide(true);
+  ui.show(true);
+  assert.equal(ui.status.textContent, "");
+  assert.equal(ui.form.getAttribute("aria-busy"), "false");
+  ui.submit("beta");
+  response.resolve(snapshot());
+  await settle(() => ui.status.textContent === "1 results");
+  assert.equal(requests, 2, "Cancellation must retain the shared index load");
+  assert.equal(ui.list.children[0].children[0].textContent, "Beta");
+  ui.input.value = "unsubmitted edit";
+  ui.hide(true);
+  ui.storage.set("field-notes-search-query", "alpha");
+  ui.show(true);
+  assert.equal(ui.storage.get("field-notes-search-query"), "beta");
+  assert.equal(ui.input.value, "beta", "Restore the query that produced the retained results");
+  assert.equal(ui.list.children[0].children[0].textContent, "Beta");
+});
+
+test("an initial visit stays idle and searching still works when session storage is denied", async (t) => {
+  let requests = 0;
+  const ui = setup(
+    t,
+    () => {
+      requests++;
+      return snapshot();
+    },
+    false,
+  );
+  ui.show(false);
+  assert.equal(requests, 0);
+  assert.equal(ui.status.textContent, "");
+  ui.submit("alpha");
+  await settle(() => ui.status.textContent === "1 results");
+  assert.equal(ui.list.children[0].children[0].textContent, "Alpha <note>");
+});
+
+test("a failed storage write cannot restore an older query on the next visit", async (t) => {
+  for (const key of ["field-notes-search-query", "field-notes-back"]) {
+    await t.test(key, async (t) => {
+      const storage = new Map([["field-notes-search-query", "alpha"]]);
+      const set = storage.set.bind(storage);
+      storage.set = (name, value) => {
+        if (name === key) throw new DOMException("Storage full", "QuotaExceededError");
+        return set(name, value);
+      };
+      const ui = setup(t, () => snapshot(), true, storage);
+      ui.submit("beta");
+      await settle(() => ui.status.textContent === "1 results");
+      assert.equal(ui.list.children[0].children[0].textContent, "Beta");
+      const saved = key === "field-notes-search-query" ? undefined : "beta";
+      assert.equal(storage.get("field-notes-search-query"), saved);
+      let requests = 0;
+      const fresh = setup(
+        t,
+        () => {
+          requests++;
+          return snapshot();
+        },
+        true,
+        storage,
+      );
+      fresh.show(false);
+      if (saved === undefined) {
+        assert.equal(requests, 0);
+        assert.equal(fresh.input.value, "");
+        assert.equal(fresh.status.textContent, "");
+      } else {
+        await settle(() => fresh.status.textContent === "1 results");
+        assert.equal(fresh.input.value, "beta");
+        assert.equal(fresh.list.children[0].children[0].textContent, "Beta");
+      }
+    });
+  }
 });
