@@ -35,6 +35,8 @@ Run `pnpm qualify` and `pnpm verify:licenses` after customization. License verif
 
 Run `node --test scripts/search-form.test.mjs scripts/publication-navigation.test.mjs` for search progress, failure/retry, cancellation and page-restoration checks. Pending searches announce progress and clear previous results; completed counts and unavailable messages replace that progress.
 
+After `pnpm build`, run `pnpm test:search:keyboard` for Chromium checks of initial document focus, keyboard access to the form, result Tab order, native search-field Escape, and mobile-menu Escape focus return. Install the pinned headless browser once with `pnpm exec playwright install --with-deps --only-shell chromium`. Each check uses fresh storage and blocks service workers; query history and BFCache have separate coverage. The search page follows normal document focus and keyboard navigation, with no modal close behavior.
+
 Search participates in the article's “Go back” navigation. The latest submitted query is retained in per-tab session storage and restored on a fresh Search visit, preserving the precached `/search/` route. A page retained in browser history keeps its existing results or failure, restores the submitted query in the input and refreshes its own return context; failures wait for an explicit retry. Search still works when storage is unavailable, with query restoration omitted.
 
 Posts and tag listings also reclaim their article return destination when restored from browser history. If saving a search query fails, its older saved value is removed when storage permits, so a fresh visit does not replay an outdated query.
