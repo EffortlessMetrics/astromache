@@ -244,6 +244,20 @@ test("pagehide clears pending UI and a restored page can search again", async (t
   assert.equal(ui.list.children[0].children[0].textContent, "Beta");
 });
 
+test("history restoration resumes a search interrupted by navigation", async (t) => {
+  const response = deferred();
+  const ui = setup(t, () => response.promise);
+  ui.submit("alpha");
+  ui.hide(true);
+  ui.input.value = "unsubmitted edit";
+  ui.show(true);
+  assert.equal(ui.input.value, "alpha");
+  pending(ui);
+  response.resolve(snapshot());
+  await settle(() => ui.status.textContent === "1 results");
+  assert.equal(ui.list.children[0].children[0].textContent, "Alpha <note>");
+});
+
 test("submitted queries retain literal text and the article return destination", async (t) => {
   const ui = setup(t, () => snapshot());
   for (const query of ["alpha", "Café & 東京 ? # + %", ""]) {
@@ -304,8 +318,7 @@ test("a restored search cancels a pending retry and admits only the latest query
   pending(ui);
   ui.hide(true);
   ui.show(true);
-  assert.equal(ui.status.textContent, "");
-  assert.equal(ui.form.getAttribute("aria-busy"), "false");
+  pending(ui);
   ui.submit("beta");
   response.resolve(snapshot());
   await settle(() => ui.status.textContent === "1 results");

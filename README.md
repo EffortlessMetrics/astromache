@@ -35,7 +35,7 @@ Run `pnpm qualify` and `pnpm verify:licenses` after customization. License verif
 
 Run `node --test scripts/search-form.test.mjs scripts/publication-navigation.test.mjs` for search progress, failure/retry, cancellation and page-restoration checks. Pending searches announce progress and clear previous results; completed counts and unavailable messages replace that progress.
 
-Search participates in the article's “Go back” navigation. The latest submitted query is retained in per-tab session storage and restored on a fresh Search visit, preserving the precached `/search/` route. A page retained in browser history keeps its existing results or failure, restores the submitted query in the input and refreshes its own return context; failures wait for an explicit retry. Search still works when storage is unavailable, with query restoration omitted.
+Search participates in the article's “Go back” navigation. The latest submitted query is retained in per-tab session storage and restored on a fresh Search visit, preserving the precached `/search/` route. A page retained in browser history keeps its existing results or failure, restores the submitted query in the input and refreshes its own return context; failures wait for an explicit retry, while a search interrupted by navigation resumes on return. Search still works when storage is unavailable, with query restoration omitted.
 
 Posts and tag listings also reclaim their article return destination when restored from browser history. If saving a search query fails, its older saved value is removed when storage permits, so a fresh visit does not replay an outdated query.
 
