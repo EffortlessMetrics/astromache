@@ -11,7 +11,7 @@
     "check": "astro check",
     "lint": "vp lint src",
     "format:check": "vp fmt . --check",
-    "qualify": "vp run check && vp run lint && vp run format:check && vp run build",
+    "qualify": "node --test scripts/published-date.test.mjs && vp run check && vp run lint && vp run format:check && vp run build",
     "verify:licenses": "node scripts/verify-licenses.mjs",
     "test:licenses": "node --test scripts/verify-licenses.test.mjs"
   },

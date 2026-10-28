@@ -27,7 +27,7 @@ The application package starts as `UNLICENSED`. There is no blanket root site li
 ## Customizing your publication
 
 - Edit `site.config.mjs` for the origin and offline policy; change the worker path in `public/_headers` when renaming it.
-- Add Markdown under `src/content/notes/`, including nested folders. Each note needs `title`, `description`, `published`, `tags` and `category` frontmatter, as defined in `src/content.config.ts`. Categories and tags share `/tags/` routes; labels must produce distinct, nonempty URL slugs.
+- Add Markdown under `src/content/notes/`, including nested folders. Each note needs `title`, `description`, `published`, `tags` and `category` frontmatter, as defined in `src/content.config.ts`. Date-only values and ISO timestamps without an offset are interpreted in UTC; include an offset for a different instant. Categories and tags share `/tags/` routes; labels must produce distinct, nonempty URL slugs.
 - Replace branding and navigation in `src/layouts/Publication.astro`, page copy in `src/pages/`, and feed branding in `src/pages/rss.xml.ts`.
 - Replace gallery items in `src/pages/portfolio.astro`, assets in `public/`, and site styling in `src/styles/publication.css`.
 
