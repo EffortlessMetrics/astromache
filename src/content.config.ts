@@ -11,7 +11,10 @@ export const collections = {
       description: z.string().refine((value) => value.trim().length > 0, {
         message: "Note description must contain non-whitespace text",
       }),
-      published: z.preprocess(normalizePublished, z.coerce.date()),
+      published: z.preprocess(
+        normalizePublished,
+        z.union([z.string(), z.date()]).pipe(z.coerce.date()),
+      ),
       tags: z.array(z.string()),
       category: z.string(),
     }),
