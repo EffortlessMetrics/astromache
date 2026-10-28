@@ -49,13 +49,13 @@ const writeNote = async (root, file, data) => {
       "\n---\n\nDisposable fixture.\n",
   );
 };
-const build = (root) =>
+const build = (root, environment = {}) =>
   spawnSync(
     process.execPath,
     ["--max-old-space-size=1024", join(root, "node_modules/astro/bin/astro.mjs"), "build"],
     {
       cwd: root,
-      env,
+      env: { ...env, ...environment },
       encoding: "utf8",
       timeout: 90_000,
       maxBuffer: 2 * 1024 * 1024,
@@ -182,6 +182,60 @@ test("blank titles are rejected at content sync before publishing unnamed links"
       assert.match(output, /title/);
       assert.match(output, /blank-title/);
       assert.doesNotMatch(output, /generating static routes|Publication metadata requires/);
+    });
+  }
+});
+
+test("non-date published values fail content sync instead of becoming timestamps", async (t) => {
+  for (const published of [null, false, true, 0, 20261028, [0]]) {
+    await t.test(`published: ${JSON.stringify(published)}`, async () => {
+      await withProject(
+        { "invalid-date.md": { ...fixture("invalid-date"), published } },
+        async (root) => {
+          const result = build(root);
+          rejected(result, /published/);
+          assert.match(result.stdout + result.stderr, /invalid-date/);
+          assert.doesNotMatch(result.stdout + result.stderr, /generating static routes/);
+        },
+      );
+    });
+  }
+});
+
+test("valid quoted and YAML dates retain their instants in articles and RSS", async () => {
+  const dates = [
+    ["date-only", "2026-10-02", "2026-10-02T00:00:00.000Z"],
+    ["yaml-date", "2026-10-02", "2026-10-02T00:00:00.000Z"],
+    ["local-time", "2026-10-02T00:00:00", "2026-10-02T00:00:00.000Z"],
+    ["yaml-time", "2026-10-02T00:00:00Z", "2026-10-02T00:00:00.000Z"],
+    ["offset", "2026-10-02T00:00:00+09:00", "2026-10-01T15:00:00.000Z"],
+  ];
+  for (const TZ of ["America/Los_Angeles", "Asia/Tokyo"]) {
+    const entries = Object.fromEntries(
+      dates.map(([id, published]) => [id + ".md", { ...fixture(id, id), published }]),
+    );
+    await withProject(entries, async (root) => {
+      for (const id of ["yaml-date", "yaml-time"]) {
+        const file = join(root, "src/content/notes", id + ".md");
+        const text = await readFile(file, "utf8");
+        await writeFile(file, text.replace(/published: "([^"]+)"/, "published: $1"));
+      }
+      const result = build(root, { TZ });
+      assert.equal(result.error, undefined);
+      assert.equal(result.status, 0, result.stdout + result.stderr);
+      const rss = await readFile(join(root, "dist/rss.xml"), "utf8");
+      for (const [id, , instant] of dates) {
+        const html = await readFile(join(root, "dist/notes", id, "index.html"), "utf8");
+        assert.equal(
+          html.match(/<time\b[^>]*\bdatetime="([^"]+)"/)?.[1],
+          instant,
+          `${TZ}: ${id} article date`,
+        );
+        const item = rss.match(
+          new RegExp(`<item><title>${id}</title>.*?<pubDate>([^<]+)</pubDate>`),
+        );
+        assert.equal(item?.[1], new Date(instant).toUTCString(), `${TZ}: ${id} feed date`);
+      }
     });
   }
 });
