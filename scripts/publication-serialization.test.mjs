@@ -76,6 +76,7 @@ const withProject = async (entries, check) => {
     // Keep dependencies inside each fixture root for Astro virtual modules.
     // Tests run sequentially, so one private copy can move between roots.
     await rename(join(packagePool, "node_modules"), join(root, "node_modules"));
+    await rm(join(root, "node_modules/.astro"), { recursive: true, force: true });
     await rm(join(root, "src/content/notes"), { recursive: true });
     for (const [file, data] of Object.entries(entries)) await writeNote(root, file, data);
     await check(root);
@@ -207,10 +208,12 @@ test("valid quoted and YAML dates retain their instants in articles and RSS", as
     ["date-only", "2026-10-02", "2026-10-02T00:00:00.000Z"],
     ["yaml-date", "2026-10-02", "2026-10-02T00:00:00.000Z"],
     ["local-time", "2026-10-02T00:00:00", "2026-10-02T00:00:00.000Z"],
+    ["lowercase-time", "2024-03-10t02:30:00", "2024-03-10T02:30:00.000Z"],
+    ["lowercase-offset", "2024-03-10t02:30:00+09:00", "2024-03-09T17:30:00.000Z"],
     ["yaml-time", "2026-10-02T00:00:00Z", "2026-10-02T00:00:00.000Z"],
     ["offset", "2026-10-02T00:00:00+09:00", "2026-10-01T15:00:00.000Z"],
   ];
-  for (const TZ of ["America/Los_Angeles", "Asia/Tokyo"]) {
+  for (const TZ of ["UTC", "America/Los_Angeles", "Asia/Tokyo"]) {
     const entries = Object.fromEntries(
       dates.map(([id, published]) => [id + ".md", { ...fixture(id, id), published }]),
     );
@@ -231,6 +234,7 @@ test("valid quoted and YAML dates retain their instants in articles and RSS", as
           instant,
           `${TZ}: ${id} article date`,
         );
+        if (id === "lowercase-time") assert.match(html, />10 Mar 2024</);
         const item = rss.match(
           new RegExp(`<item><title>${id}</title>.*?<pubDate>([^<]+)</pubDate>`),
         );
