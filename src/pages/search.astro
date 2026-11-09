@@ -55,6 +55,7 @@ const list = document.querySelector<HTMLUListElement>("#search-results")!;
 let request = 0;
 let abort: AbortController | undefined;
 let submittedQuery: string | null = null;
+let interrupted = false;
 const rememberReturn = () => {
   if (submittedQuery !== null) {
     try {
@@ -71,6 +72,7 @@ const rememberReturn = () => {
   } catch {}
 };
 const search = async () => {
+  interrupted = false;
   abort?.abort();
   const controller = new AbortController();
   abort = controller;
@@ -119,7 +121,7 @@ window.addEventListener("pageshow", (event) => {
   }
   if (submittedQuery !== null) {
     input.value = submittedQuery;
-    if (!event.persisted) void search();
+    if (!event.persisted || interrupted) void search();
   }
   // A retained document keeps its results (or failure). Reassert its own
   // submitted query after another listing or search changed the return context.
@@ -127,6 +129,7 @@ window.addEventListener("pageshow", (event) => {
 });
 window.addEventListener("pagehide", (event) => {
   if (abort) {
+    interrupted = event.persisted;
     abort.abort();
     abort = undefined;
     status.textContent = "";
