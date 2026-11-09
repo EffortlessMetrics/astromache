@@ -15,6 +15,7 @@ export const collections = {
         normalizePublished,
         z.union([z.string(), z.date()]).pipe(z.coerce.date()),
       ),
+      draft: z.boolean().default(false),
       tags: z.array(z.string()),
       category: z.string(),
     }),
