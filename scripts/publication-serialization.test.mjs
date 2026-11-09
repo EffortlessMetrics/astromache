@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { constants } from "node:fs";
 import { after, before, test } from "node:test";
-import { cp, mkdtemp, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
+import { cp, mkdtemp, mkdir, readFile, readdir, rename, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -38,24 +38,25 @@ const fixture = (slug, title = "Fixture", description = "Fixture description") =
   category: "Serialization",
 });
 const writeNote = async (root, file, data) => {
+  const { fixtureBody = "Disposable fixture.", ...frontmatter } = data;
   const path = join(root, "src/content/notes", file);
   await mkdir(join(path, ".."), { recursive: true });
   await writeFile(
     path,
     "---\n" +
-      Object.entries(data)
+      Object.entries(frontmatter)
         .map(([key, value]) => `${key}: ${JSON.stringify(value)}`)
         .join("\n") +
-      "\n---\n\nDisposable fixture.\n",
+      `\n---\n\n${fixtureBody}\n`,
   );
 };
-const build = (root) =>
+const build = (root, environment = {}) =>
   spawnSync(
     process.execPath,
     ["--max-old-space-size=1024", join(root, "node_modules/astro/bin/astro.mjs"), "build"],
     {
       cwd: root,
-      env,
+      env: { ...env, ...environment },
       encoding: "utf8",
       timeout: 90_000,
       maxBuffer: 2 * 1024 * 1024,
@@ -76,6 +77,7 @@ const withProject = async (entries, check) => {
     // Keep dependencies inside each fixture root for Astro virtual modules.
     // Tests run sequentially, so one private copy can move between roots.
     await rename(join(packagePool, "node_modules"), join(root, "node_modules"));
+    await rm(join(root, "node_modules/.astro"), { recursive: true, force: true });
     await rm(join(root, "src/content/notes"), { recursive: true });
     for (const [file, data] of Object.entries(entries)) await writeNote(root, file, data);
     await check(root);
@@ -182,6 +184,63 @@ test("blank titles are rejected at content sync before publishing unnamed links"
       assert.match(output, /title/);
       assert.match(output, /blank-title/);
       assert.doesNotMatch(output, /generating static routes|Publication metadata requires/);
+    });
+  }
+});
+
+test("non-date published values fail content sync instead of becoming timestamps", async (t) => {
+  for (const published of [null, false, true, 0, 20261028, [0]]) {
+    await t.test(`published: ${JSON.stringify(published)}`, async () => {
+      await withProject(
+        { "invalid-date.md": { ...fixture("invalid-date"), published } },
+        async (root) => {
+          const result = build(root);
+          rejected(result, /published/);
+          assert.match(result.stdout + result.stderr, /invalid-date/);
+          assert.doesNotMatch(result.stdout + result.stderr, /generating static routes/);
+        },
+      );
+    });
+  }
+});
+
+test("valid quoted and YAML dates retain their instants in articles and RSS", async () => {
+  const dates = [
+    ["date-only", "2026-10-02", "2026-10-02T00:00:00.000Z"],
+    ["yaml-date", "2026-10-02", "2026-10-02T00:00:00.000Z"],
+    ["local-time", "2026-10-02T00:00:00", "2026-10-02T00:00:00.000Z"],
+    ["lowercase-time", "2024-03-10t02:30:00", "2024-03-10T02:30:00.000Z"],
+    ["lowercase-offset", "2024-03-10t02:30:00+09:00", "2024-03-09T17:30:00.000Z"],
+    ["yaml-time", "2026-10-02T00:00:00Z", "2026-10-02T00:00:00.000Z"],
+    ["offset", "2026-10-02T00:00:00+09:00", "2026-10-01T15:00:00.000Z"],
+  ];
+  for (const TZ of ["UTC", "America/Los_Angeles", "Asia/Tokyo"]) {
+    const entries = Object.fromEntries(
+      dates.map(([id, published]) => [id + ".md", { ...fixture(id, id), published }]),
+    );
+    await withProject(entries, async (root) => {
+      for (const id of ["yaml-date", "yaml-time"]) {
+        const file = join(root, "src/content/notes", id + ".md");
+        const text = await readFile(file, "utf8");
+        await writeFile(file, text.replace(/published: "([^"]+)"/, "published: $1"));
+      }
+      const result = build(root, { TZ });
+      assert.equal(result.error, undefined);
+      assert.equal(result.status, 0, result.stdout + result.stderr);
+      const rss = await readFile(join(root, "dist/rss.xml"), "utf8");
+      for (const [id, , instant] of dates) {
+        const html = await readFile(join(root, "dist/notes", id, "index.html"), "utf8");
+        assert.equal(
+          html.match(/<time\b[^>]*\bdatetime="([^"]+)"/)?.[1],
+          instant,
+          `${TZ}: ${id} article date`,
+        );
+        if (id === "lowercase-time") assert.match(html, />10 Mar 2024</);
+        const item = rss.match(
+          new RegExp(`<item><title>${id}</title>.*?<pubDate>([^<]+)</pubDate>`),
+        );
+        assert.equal(item?.[1], new Date(instant).toUTCString(), `${TZ}: ${id} feed date`);
+      }
     });
   }
 });
@@ -363,3 +422,82 @@ test("watchers survive full sync and preserve the accepted collection after reje
     await rm(root, { recursive: true, force: true });
   }
 });
+
+test("draft and future notes are absent from every published artifact", async () => {
+  const entries = {
+    "visible.md": { ...fixture("visible-note", "Visible published note"), draft: false },
+    "default.md": fixture("default-note", "Default published note"),
+    "draft.md": {
+      ...fixture("unpublished-draft-marker", "Unpublished draft marker"),
+      draft: true,
+      fixtureBody: "Unpublished draft body marker",
+      tags: ["Draft only marker"],
+      category: "Draft only marker",
+    },
+    "scheduled.md": {
+      ...fixture("unpublished-future-marker", "Unpublished future marker"),
+      published: "9999-01-01",
+      fixtureBody: "Unpublished future body marker",
+      tags: ["Future only marker"],
+      category: "Future only marker",
+    },
+  };
+  await withProject(entries, async (root) => {
+    const result = build(root);
+    assert.equal(result.error, undefined);
+    assert.equal(result.status, 0, result.stdout + result.stderr);
+    const output = join(root, "dist");
+    const walk = async (directory) => {
+      for (const entry of await readdir(directory, { withFileTypes: true })) {
+        const path = join(directory, entry.name);
+        if (entry.isDirectory()) await walk(path);
+        else {
+          const contents = await readFile(path, "utf8");
+          assert.doesNotMatch(
+            path + contents,
+            /unpublished-(draft|future)-marker|Unpublished (draft|future)( body)? marker|(Draft|Future) only marker|(?:draft|future)-only-marker/,
+            path,
+          );
+        }
+      }
+    };
+    await walk(output);
+    for (const route of [
+      "notes/visible-note/index.html",
+      "notes/default-note/index.html",
+      "index.html",
+      "posts/index.html",
+      "tags/serialization/index.html",
+      "rss.xml",
+      "sitemap.xml",
+      "search-index.json",
+    ]) {
+      assert.match(await readFile(join(output, route), "utf8"), /visible-note/, route);
+    }
+    const index = JSON.parse(await readFile(join(output, "search-index.json"), "utf8"));
+    assert.equal(index.data.length, 2);
+
+    // A later build must also remove formerly emitted routes and indexes.
+    for (const file of ["visible.md", "default.md"])
+      await rm(join(root, "src/content/notes", file));
+    const empty = build(root);
+    assert.equal(empty.error, undefined);
+    assert.equal(empty.status, 0, empty.stdout + empty.stderr);
+    await walk(output);
+    assert.deepEqual(
+      JSON.parse(await readFile(join(output, "search-index.json"), "utf8")).data,
+      [],
+    );
+    assert.doesNotMatch(await readFile(join(output, "rss.xml"), "utf8"), /<item>/);
+    assert.doesNotMatch(await readFile(join(output, "sitemap.xml"), "utf8"), /\/notes\//);
+    assert.equal((await readdir(output)).includes("notes"), false);
+  });
+});
+
+for (const draft of ["true", "false", 0, 1, null]) {
+  test(`invalid draft value ${JSON.stringify(draft)} fails content validation`, async () => {
+    await withProject({ "invalid.md": { ...fixture("invalid-draft"), draft } }, async (root) => {
+      rejected(build(root), /draft/);
+    });
+  });
+}
