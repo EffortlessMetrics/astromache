@@ -1,10 +1,11 @@
 import { getCollection } from "astro:content";
+import { isPublished } from "./publication-visibility.mjs";
 import { noteLink } from "./publication-urls";
 export { noteLink } from "./publication-urls";
 export const notes = async () =>
-  (await getCollection("notes")).sort(
-    (a, b) => b.data.published.getTime() - a.data.published.getTime(),
-  );
+  (await getCollection("notes"))
+    .filter((note) => isPublished(note.data))
+    .sort((a, b) => b.data.published.getTime() - a.data.published.getTime());
 export const tagSlug = (tag: string) =>
   tag
     .toLowerCase()
