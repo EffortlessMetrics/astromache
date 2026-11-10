@@ -1,6 +1,6 @@
 # AstroMache publication starter
 
-A neutral, standalone default with verified offline caching and connection-aware native intent prefetch enabled. Shared components keep their established npm names/imports; canonical static precache setup uses the unpublished astromache 0.2.7 core preset. Its Article action alignment repair preserves native controls and narrow-screen wrapping. Cache integrity and lifecycle remain owned by offline 0.1.5, including explicit `index.html` navigation from verified directory precaches.
+A neutral, standalone default with verified offline caching and connection-aware native intent prefetch enabled. Shared components keep their established npm names/imports; canonical static precache setup uses the unpublished astromache 0.3.0-publishing.1 core preset. Its Article action alignment repair preserves native controls and narrow-screen wrapping. Cache integrity and lifecycle remain owned by offline 0.1.5, including explicit `index.html` navigation from verified directory precaches.
 
 Use Node 24.19.x. Run pnpm install --frozen-lockfile --ignore-scripts, then pnpm qualify, pnpm verify:licenses and pnpm dev. Exact active archive versions/hashes and core source identity are in STARTER-DELIVERY.json. verify:licenses checks the archive pins, hashes and installed versions along with the required notices. These expanded candidates are not yet registry releases.
 
@@ -59,3 +59,15 @@ After a registry release is confirmed, verify its archive identity against the a
 Worker revisions follow emitted output digests. A package version change alone may leave output and revision unchanged. Build the worker and output together, preserve the site-owned worker/cache prefix, network budget, query policy and exclusions, and qualify natural activation, offline reading and reconnect on the actual host. Existing controlled clients may keep the old worker until they leave; a passing test must not depend on forced activation.
 
 To roll back, restore the prior manifest, lockfile and matching bundled archive/receipt, reinstall frozen and rebuild. Requalify the affected browser behavior and host byte/routing policy. Package or DNS rollback does not revert already controlled browsers; prove worker recovery separately. See the [core consumer upgrade guide](https://github.com/EffortlessMetrics/astromache-core/blob/main/docs/consumer-upgrades.md) for compatibility and optional offline peer requirements.
+
+## Native static publication output
+
+`publicationPolicy.markdown` in `site.config.mjs` controls both generated Markdown and alternate links. Articles use their rendered public body; the homepage, Posts and taxonomy pages use their main content. Search, gallery and recovery pages remain HTML-only. The existing draft/future selector applies to every public route.
+
+The shared core emits `/_markdown/<canonical-path>.md`, validates sitemap/RSS/search references, and replaces search text with the rendered article text before offline hashing. It does not publish raw source comments or frontmatter. The original HTML bytes are unchanged. `public/_headers` supplies the Markdown MIME type on compatible static hosts.
+
+Set the switch to `false` and rebuild to remove Markdown and its discovery links together. No Worker, Function, paid Cloudflare plan or account-level setting is required. Same-URL Accept negotiation is not enabled by this starter. The static HTML remains the baseline, and the original offline byte/resource budgets and activation policy remain unchanged. Markdown is network-only under this starter's unchanged precache globs.
+
+Supply public source attribution using `data-publication-source` and exclude only non-publication UI using `data-publication-exclude`. Rich media requiring a textual representation must use a faithful `data-publication-text` alternative. The core's `STATIC-PUBLICATION.md` documents supported formats, failure behavior and custom content adapters. Do not rely on CSS classes to hide private material.
+
+Run `pnpm verify:publication` after building. Its real-build controls verify static output, actual HTML hashes and rendered search, then exercise the single disabled setting and restore the enabled build. The existing serialization suite retains draft/future/clean-rebuild and URL fixtures. This candidate is not a registry release or production deployment.

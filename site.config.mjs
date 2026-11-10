@@ -15,3 +15,6 @@ export const offlinePolicy = {
     navigationFallback: "/offline/index.html",
   },
 };
+
+// One switch controls generated Markdown and its advertised alternatives.
+export const publicationPolicy = { markdown: true };

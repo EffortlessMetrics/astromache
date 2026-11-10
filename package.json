@@ -14,13 +14,14 @@
     "qualify": "node --test scripts/published-date.test.mjs scripts/publication-visibility.test.mjs && vp run check && vp run lint && vp run format:check && vp run build",
     "verify:licenses": "node scripts/verify-licenses.mjs",
     "test:licenses": "node --test scripts/verify-licenses.test.mjs",
-    "test:search:keyboard": "node --test scripts/search-keyboard.test.mjs"
+    "test:search:keyboard": "node --test scripts/search-keyboard.test.mjs",
+    "verify:publication": "node scripts/verify-static-publication.mjs"
   },
   "dependencies": {
     "@effortlessmetrics/astro-offline": "file:vendor/effortlessmetrics-astro-offline-0.1.5.tgz",
     "@effortlessmetrics/static-search": "file:vendor/effortlessmetrics-static-search-0.1.0-adversarial.tgz",
     "astro": "7.3.5",
-    "astromache": "file:vendor/astromache-0.2.7.tgz"
+    "astromache": "file:vendor/astromache-0.3.0-publishing.1.tgz"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",

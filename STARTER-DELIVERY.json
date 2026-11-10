@@ -12,13 +12,13 @@
       "sha256": "01989cda90ec846dabc7766c258a86742ad062d6bf2efbfd5cd1e5ccb7db7736"
     },
     "astromache": {
-      "file": "vendor/astromache-0.2.7.tgz",
-      "version": "0.2.7",
-      "sha256": "7f723170d181569263227bab692aa16155759c1317d8a9efd7d6f03cc4e38144"
+      "file": "vendor/astromache-0.3.0-publishing.1.tgz",
+      "version": "0.3.0-publishing.1",
+      "sha256": "cb0bd7bf6cd379237a267fe42a0af512c566bae1d56535c3a019ba7227948d0b"
     }
   },
   "sourceCommits": {
-    "astromache-core": "7ffe28658a0e1fef83d9b640444c0aa02477242e",
+    "astromache-core": "0b89706a6198f53e0e6e040d4a87d9dec8cc0145",
     "astro-offline": "26ad83656f19a73e84d294e87672cb949bf614e3"
   },
   "offline": true,
@@ -27,5 +27,20 @@
   "templateCodeLicense": "MIT OR Apache-2.0",
   "upstreamNotices": "licenses/template; replacement content remains owner-controlled",
   "localBrowserAcceptance": "PASS offline 0.1.5 frozen install/check/lint/format/build and archive/installed identity; actual default-worker root/nested explicit-index aliases through three offline/reconnect cycles; directory-only fixture exact bytes and exclusions; actual 0.1.4-to-0.1.5 interrupted/rejected upgrade preservation, natural activation, exact offline current and reconnect; search/gallery/BFCache/freshness/lifecycle flows",
-  "hostedAcceptance": "NOT RUN"
+  "hostedAcceptance": "NOT RUN",
+  "previousStaticPublicationDelivery": {
+    "archive": {
+      "file": "vendor/astromache-0.2.7.tgz",
+      "version": "0.2.7",
+      "sha256": "7f723170d181569263227bab692aa16155759c1317d8a9efd7d6f03cc4e38144"
+    },
+    "sourceCommit": "7ffe28658a0e1fef83d9b640444c0aa02477242e"
+  },
+  "staticPublication": {
+    "sourceCommit": "0b89706a6198f53e0e6e040d4a87d9dec8cc0145",
+    "coreQualificationRun": 42754582053,
+    "starterQualification": "PENDING; historical acceptance fields below retain their original scope",
+    "markdown": true,
+    "workerRequired": false
+  }
 }
