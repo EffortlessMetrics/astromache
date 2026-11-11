@@ -108,5 +108,13 @@
       "pnpm": "10.28.0"
     },
     "scope": "Comparison-only decoded lowercase output key; authored routes, accepted collection staging and percent validation retained. Archive and lock unchanged. Prior receipts retain original subjects; current unchanged output preserves lifecycle evidence applicability."
+  },
+  "canonicalAssertionQualification": {
+    "observedAt": "2026-11-11",
+    "baseCommit": "d33f0882371e230c872cf032610ce7aff251c54b",
+    "testFileSHA256": "68de1658a131fc89a23e814c48ab3811a55f936aaf94f4f45db74b52773d3b9d",
+    "result": "PASS 7 targeted derived-route and case-alias tests. Both valid-route controls parse the canonical link href directly. A real-build layout mutation with a wrong canonical and unchanged correct CopyLink is rejected by the same assertion.",
+    "checks": "PASS final formatting and diff checks; full hosted CI remains required for this test-only successor.",
+    "evidenceApplicability": "Production source, archives, lock and standard output unchanged. Earlier broader suite receipts retain their original test subjects and are not relabeled as fresh full-suite acceptance."
   }
 }
