@@ -14,11 +14,11 @@
     "astromache": {
       "file": "vendor/astromache-0.3.0.tgz",
       "version": "0.3.0",
-      "sha256": "b1239ede1e071ec83592fb8a025d5e707f2fdbb467d3f5b54037d14e64a19ebf"
+      "sha256": "4abb98b9b7ea09caeb2ee2c24edf0a6ad854d2b4d4d69f1165b09d5819e6919f"
     }
   },
   "sourceCommits": {
-    "astromache-core": "57bf94b721a19d11ad42e15b48ef34f22fd9bfdd",
+    "astromache-core": "b184cddbdc55aad86db76c9a23741d889a69fd80",
     "astro-offline": "26ad83656f19a73e84d294e87672cb949bf614e3"
   },
   "offline": true,
@@ -28,7 +28,7 @@
   "upstreamNotices": "licenses/template; replacement content remains owner-controlled",
   "localBrowserAcceptance": "PASS offline 0.1.5 frozen install/check/lint/format/build and archive/installed identity; actual default-worker root/nested explicit-index aliases through three offline/reconnect cycles; directory-only fixture exact bytes and exclusions; actual 0.1.4-to-0.1.5 interrupted/rejected upgrade preservation, natural activation, exact offline current and reconnect; search/gallery/BFCache/freshness/lifecycle flows",
   "hostedAcceptance": "NOT RUN",
-  "localBrowserAcceptanceScope": "Historical offline 0.1.5 receipt retained verbatim; not fresh acceptance of the active core archive. See coreUpgradeAcceptance for the current starter upgrade.",
+  "localBrowserAcceptanceScope": "Historical offline 0.1.5 receipt retained verbatim; not fresh acceptance of the active core archive. See coreUpgradeAcceptance for the prior upgrade and currentArchiveQualification for the active archive.",
   "coreUpgradeAcceptance": {
     "scope": "Local 0.2.7 to 0.3.0 starter upgrade; not registry release or deployment approval",
     "candidateCommit": "98d4ee34831e59e606182b9472647cd1117fc1eb",
@@ -58,6 +58,28 @@
       "publicCommit": "57bf94b721a19d11ad42e15b48ef34f22fd9bfdd",
       "tree": "6060eb2d83e23a819d49d880fee3f2e55be0b8ff",
       "equivalence": "Identical source tree and archive bytes; public candidate identity does not establish merge or registry publication."
-    }
+    },
+    "archiveSHA256": "b1239ede1e071ec83592fb8a025d5e707f2fdbb467d3f5b54037d14e64a19ebf"
+  },
+  "currentArchiveQualification": {
+    "status": "PASS local exact-archive qualification; registry publication pending",
+    "sha256": "4abb98b9b7ea09caeb2ee2c24edf0a6ad854d2b4d4d69f1165b09d5819e6919f",
+    "sourceCommit": "b184cddbdc55aad86db76c9a23741d889a69fd80",
+    "sourceTree": "77aa76d38bdb0fd133c44fcfec1ba12400ba5891",
+    "testedLocalSourceCommit": "4d4b838769bbfd43a00a76ad188dc5055ab24885",
+    "packageDifference": "Only package/CHANGELOG.md differs from the prior unpublished candidate; all runtime payload bytes unchanged.",
+    "observedAt": "2026-11-11",
+    "runtime": {
+      "node": "24.19.0",
+      "pnpm": "10.28.0",
+      "chromium": "145.0.7632.6"
+    },
+    "buildIdentity": {
+      "comparisonArchiveSHA256": "b1239ede1e071ec83592fb8a025d5e707f2fdbb467d3f5b54037d14e64a19ebf",
+      "filesCompared": 43,
+      "result": "Every rebuilt dist file has the same path and SHA256 as the prior qualified build."
+    },
+    "naturalWorkerUpgradeApplicability": "Retain coreUpgradeAcceptance original tested commit/tree/archive identities. Its natural worker adoption, rejected/interrupted install, exact offline bytes and reconnect evidence applies because all 43 rebuilt output files are byte-identical; no fresh lifecycle run claimed.",
+    "checks": "PASS frozen install, license guard and fixtures, qualify, 33 search/navigation tests, 13 Chromium keyboard tests, 25 serialization tests, installed changelog identity and dependency lock preservation"
   }
 }

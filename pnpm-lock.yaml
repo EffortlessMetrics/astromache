@@ -2145,7 +2145,7 @@ packages:
         optional: true
 
   astromache@file:vendor/astromache-0.3.0.tgz:
-    resolution: {integrity: sha512-Z4OqtlpLwZeMjXo8hq5AQEDsrjQA72Cqwn0HE/Nlv88338/B9ILbkv/AM86Qb+54ba9WkB0EC58jDUYqn8ZptA==, tarball: file:vendor/astromache-0.3.0.tgz}
+    resolution: {integrity: sha512-ZrW+Shyk8y/GGzYND1JWFZacZYc9kS1yPNc0ESe3/9narFkHGJGeq9n4Rjj3vR1UgKtAvUrYeVjFiwqUBCKVKw==, tarball: file:vendor/astromache-0.3.0.tgz}
     version: 0.3.0
     engines: {node: '>=24.19.0 <25'}
     peerDependencies:

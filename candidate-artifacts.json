@@ -1,10 +1,10 @@
 {
   "astromache": {
     "version": "0.3.0",
-    "sha256": "b1239ede1e071ec83592fb8a025d5e707f2fdbb467d3f5b54037d14e64a19ebf",
+    "sha256": "4abb98b9b7ea09caeb2ee2c24edf0a6ad854d2b4d4d69f1165b09d5819e6919f",
     "repository": "EffortlessMetrics/astromache-core",
-    "sourceCommit": "57bf94b721a19d11ad42e15b48ef34f22fd9bfdd",
-    "sourceTree": "6060eb2d83e23a819d49d880fee3f2e55be0b8ff",
+    "sourceCommit": "b184cddbdc55aad86db76c9a23741d889a69fd80",
+    "sourceTree": "77aa76d38bdb0fd133c44fcfec1ba12400ba5891",
     "scope": "Unpublished stable-version release candidate; public release/astromache-0.3.0-20261111 branch, pending upstream acceptance",
     "previous": {
       "version": "0.2.7",
@@ -50,6 +50,15 @@
         "sourceCommit": "321252a11fb487a58647487875257a0f95537bf0"
       },
       "archive": "vendor/astromache-0.2.7.tgz"
+    },
+    "supersededCandidate": {
+      "version": "0.3.0",
+      "sha256": "b1239ede1e071ec83592fb8a025d5e707f2fdbb467d3f5b54037d14e64a19ebf",
+      "repository": "EffortlessMetrics/astromache-core",
+      "sourceCommit": "57bf94b721a19d11ad42e15b48ef34f22fd9bfdd",
+      "sourceTree": "6060eb2d83e23a819d49d880fee3f2e55be0b8ff",
+      "scope": "Superseded unpublished 0.3.0 pre-review archive, retained as evidence only; not the release archive",
+      "archive": "vendor/astromache-0.3.0-pre-review.tgz"
     }
   },
   "staticSearch": {
