@@ -12,7 +12,7 @@ export const noteLoader = (): Loader => {
 
   const sync = async (context: LoaderContext) => {
     const entries = new Map<string, ReturnType<DataStore["values"]>[number]>();
-    const paths = new Map<string, string>();
+    const paths = new Map<string, { file: string; path: string }>();
     const store: DataStore = {
       // Every input file must be checked, including identical duplicate files
       // which the native loader's digest cache would otherwise skip.
@@ -28,14 +28,17 @@ export const noteLoader = (): Loader => {
       addModuleImport: () => {},
       set: (entry) => {
         const path = noteLink(entry.id);
-        const previous = paths.get(path);
+        // Compare decoded output names conservatively for case-insensitive hosts.
+        // Keep authored URL casing unchanged.
+        const outputKey = decodeURIComponent(path).toLowerCase();
+        const previous = paths.get(outputKey);
         const file = entry.filePath ?? entry.id;
         if (previous !== undefined) {
           throw new Error(
-            `Note path collision: ${JSON.stringify(previous)} and ${JSON.stringify(file)} both resolve to ${path}. Rename one note or slug.`,
+            `Note path collision: ${JSON.stringify(previous.file)} (${previous.path}) and ${JSON.stringify(file)} (${path}) share the output path ${outputKey}. Rename one note or slug.`,
           );
         }
-        paths.set(path, file);
+        paths.set(outputKey, { file, path });
         entries.set(entry.id, entry);
         return true;
       },
