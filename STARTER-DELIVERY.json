@@ -95,5 +95,18 @@
     },
     "evidenceApplicability": "Prior archive and lifecycle receipts retain their original identities. This change adds tests and evidence only; archive, dependencies and runtime source are unchanged.",
     "environmentLimit": "Initial additional fixture runs exhausted /tmp space. Complete final 29-test run passed using task-owned workspace temporary storage."
+  },
+  "portableCaseGuardQualification": {
+    "observedAt": "2026-11-11",
+    "baseCommit": "6bdcb9853f0c2aa7ef14fef952b609ab3a281758",
+    "sourceFileSHA256": "08205cd5c4f2a109c6192153117801434704a3248c1eedcd8d9dc563562793ab",
+    "testFileSHA256": "3828baed96c21603ab290d758917165cfd71a4470e4c50e9b29546a561d34ffd",
+    "result": "PASS 32 serialization tests, including real-build ASCII and Unicode case-alias rejection, distinct authored URL casing and watcher preservation/recovery after case-alias rejection.",
+    "checks": "PASS qualify, final test formatting, license verification and diff checks. All 43 rebuilt output files retain their prior SHA256.",
+    "runtime": {
+      "node": "24.19.0",
+      "pnpm": "10.28.0"
+    },
+    "scope": "Comparison-only decoded lowercase output key; authored routes, accepted collection staging and percent validation retained. Archive and lock unchanged. Prior receipts retain original subjects; current unchanged output preserves lifecycle evidence applicability."
   }
 }
