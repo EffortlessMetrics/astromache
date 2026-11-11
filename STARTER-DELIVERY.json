@@ -12,13 +12,13 @@
       "sha256": "01989cda90ec846dabc7766c258a86742ad062d6bf2efbfd5cd1e5ccb7db7736"
     },
     "astromache": {
-      "file": "vendor/astromache-0.2.7.tgz",
-      "version": "0.2.7",
-      "sha256": "7f723170d181569263227bab692aa16155759c1317d8a9efd7d6f03cc4e38144"
+      "file": "vendor/astromache-0.3.0.tgz",
+      "version": "0.3.0",
+      "sha256": "b1239ede1e071ec83592fb8a025d5e707f2fdbb467d3f5b54037d14e64a19ebf"
     }
   },
   "sourceCommits": {
-    "astromache-core": "7ffe28658a0e1fef83d9b640444c0aa02477242e",
+    "astromache-core": "57bf94b721a19d11ad42e15b48ef34f22fd9bfdd",
     "astro-offline": "26ad83656f19a73e84d294e87672cb949bf614e3"
   },
   "offline": true,
@@ -27,5 +27,37 @@
   "templateCodeLicense": "MIT OR Apache-2.0",
   "upstreamNotices": "licenses/template; replacement content remains owner-controlled",
   "localBrowserAcceptance": "PASS offline 0.1.5 frozen install/check/lint/format/build and archive/installed identity; actual default-worker root/nested explicit-index aliases through three offline/reconnect cycles; directory-only fixture exact bytes and exclusions; actual 0.1.4-to-0.1.5 interrupted/rejected upgrade preservation, natural activation, exact offline current and reconnect; search/gallery/BFCache/freshness/lifecycle flows",
-  "hostedAcceptance": "NOT RUN"
+  "hostedAcceptance": "NOT RUN",
+  "localBrowserAcceptanceScope": "Historical offline 0.1.5 receipt retained verbatim; not fresh acceptance of the active core archive. See coreUpgradeAcceptance for the current starter upgrade.",
+  "coreUpgradeAcceptance": {
+    "scope": "Local 0.2.7 to 0.3.0 starter upgrade; not registry release or deployment approval",
+    "candidateCommit": "98d4ee34831e59e606182b9472647cd1117fc1eb",
+    "candidateTree": "ff278ed5ecbd99c0ed24f727e7f0108f85bc4ff1",
+    "baselineCommit": "b1e2a5d95206ae3514a3231718dc12759fe46dbc",
+    "observedAt": "2026-11-11",
+    "runtime": {
+      "node": "24.19.0",
+      "pnpm": "10.28.0",
+      "chromium": "145.0.7632.6"
+    },
+    "checks": "PASS frozen install, license guard and fixtures, qualify, 33 search/navigation tests, 13 keyboard browser tests, 25 serialization tests; existing unrelated lock records preserved",
+    "naturalWorkerUpgrade": {
+      "oldRevision": "fe9e50ac66f1ece5bea0",
+      "newRevision": "beb9c4cff0cfd5d86097",
+      "interruptedInstallPreservesOld": true,
+      "interruptedPartialCacheRemoved": true,
+      "rejectedInstallPreservesOld": true,
+      "naturalActivation": true,
+      "unrelatedCachePreserved": true,
+      "exactOfflineCurrent": true
+    },
+    "reconnect": "PASS",
+    "evidenceApplicability": "Candidate code, dependencies and built output are unchanged by this receipt-only update; original checked commit/tree retained.",
+    "sourceIdentity": {
+      "testedLocalCommit": "89e35ad5cb87747285b36ad42b1cdb0343d7e14d",
+      "publicCommit": "57bf94b721a19d11ad42e15b48ef34f22fd9bfdd",
+      "tree": "6060eb2d83e23a819d49d880fee3f2e55be0b8ff",
+      "equivalence": "Identical source tree and archive bytes; public candidate identity does not establish merge or registry publication."
+    }
+  }
 }
