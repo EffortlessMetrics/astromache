@@ -81,5 +81,19 @@
     },
     "naturalWorkerUpgradeApplicability": "Retain coreUpgradeAcceptance original tested commit/tree/archive identities. Its natural worker adoption, rejected/interrupted install, exact offline bytes and reconnect evidence applies because all 43 rebuilt output files are byte-identical; no fresh lifecycle run claimed.",
     "checks": "PASS frozen install, license guard and fixtures, qualify, 33 search/navigation tests, 13 Chromium keyboard tests, 25 serialization tests, installed changelog identity and dependency lock preservation"
+  },
+  "routeGuardQualification": {
+    "observedAt": "2026-11-11",
+    "baseCommit": "6aa1f63fe46db0b71d2c0481d7801cef56d77e0c",
+    "testFile": "scripts/publication-serialization.test.mjs",
+    "testFileSHA256": "5c7d517102a996a57f539a43256da5dc39f222f6fc9431fb350a4198ff6661cb",
+    "result": "PASS 29 serialization tests, including real-build dot-segment, empty-segment and trailing-slash alias rejection before static routing; distinct root and nested note headings/canonicals preserved. Existing percent/NFC guards retained; no production source change warranted.",
+    "checks": "PASS qualify, final test formatting, and all 43 rebuilt output files byte-identical to prior qualified output.",
+    "runtime": {
+      "node": "24.19.0",
+      "pnpm": "10.28.0"
+    },
+    "evidenceApplicability": "Prior archive and lifecycle receipts retain their original identities. This change adds tests and evidence only; archive, dependencies and runtime source are unchanged.",
+    "environmentLimit": "Initial additional fixture runs exhausted /tmp space. Complete final 29-test run passed using task-owned workspace temporary storage."
   }
 }

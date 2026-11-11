@@ -286,6 +286,46 @@ test("dot-segment aliases are rejected clearly", async () => {
   );
 });
 
+test("derived output aliases fail before static routing while distinct nested notes remain valid", async (t) => {
+  for (const [alias, canonical] of [
+    ["branch/../leaf", "leaf"],
+    ["branch//leaf", "branch/leaf"],
+    ["branch/leaf/", "branch/leaf"],
+  ]) {
+    await t.test(alias, async () => {
+      await withProject(
+        { "alias.md": fixture(alias), "canonical.md": fixture(canonical) },
+        async (root) => {
+          const result = build(root);
+          rejected(result, /Invalid note ID.*nonempty path segments without dot segments/);
+          assert.doesNotMatch(result.stdout + result.stderr, /generating static routes/);
+        },
+      );
+    });
+  }
+  await withProject(
+    {
+      "left.md": fixture("branch/leaf", "Nested leaf"),
+      "right.md": fixture("other/leaf", "Other leaf"),
+      "root.md": fixture("leaf", "Root leaf"),
+    },
+    async (root) => {
+      const result = build(root);
+      assert.equal(result.error, undefined);
+      assert.equal(result.status, 0, result.stdout + result.stderr);
+      for (const [route, title] of [
+        ["branch/leaf", "Nested leaf"],
+        ["other/leaf", "Other leaf"],
+        ["leaf", "Root leaf"],
+      ]) {
+        const html = await readFile(join(root, "dist/notes", route, "index.html"), "utf8");
+        assert.match(html, new RegExp(`<h1[^>]*>${title}</h1>`));
+        assert.ok(html.includes(`https://publication.example/notes/${route}/`));
+      }
+    },
+  );
+});
+
 test("literal percent slugs fail at validation rather than Astro route matching", async () => {
   await withProject({ "percent.md": fixture("literal%25") }, async (root) => {
     const result = build(root);
