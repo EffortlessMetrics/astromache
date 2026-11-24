@@ -206,7 +206,6 @@ test("390px: menu Escape returns focus to its toggle and releases the search fie
   });
 });
 
-
 test("shared palette uses the exact bound note index and preserves explicit search", async () => {
   await withPage(1280, async (page) => {
     await page.goto(origin + "/");
@@ -227,6 +226,8 @@ test("shared palette uses the exact bound note index and preserves explicit sear
     assert.equal(new URL(page.url()).searchParams.has("q"), false);
     await page.goto(origin + "/offline/");
     await page.locator("#recovery-query").fill(index.data[0].title);
-    await expect(page.locator(".recovery-results a[href=" + JSON.stringify(index.data[0].url) + "]")).toBeVisible();
+    await expect(
+      page.locator(".recovery-results a[href=" + JSON.stringify(index.data[0].url) + "]"),
+    ).toBeVisible();
   });
 });

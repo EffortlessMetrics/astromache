@@ -72,10 +72,15 @@ assert.match(
   "Preserve packaged Workbox MIT terms independently",
 );
 for (const name of ["preact", "tailwindcss"]) {
-  const installed = JSON.parse(await readFile(join(root, "node_modules", name, "package.json"), "utf8"));
+  const installed = JSON.parse(
+    await readFile(join(root, "node_modules", name, "package.json"), "utf8"),
+  );
   assert.equal(installed.name, name);
   assert.equal(installed.license, "MIT");
-  assert.match(await readFile(join(root, "node_modules", name, "LICENSE"), "utf8"), /Permission is hereby granted/i);
+  assert.match(
+    await readFile(join(root, "node_modules", name, "LICENSE"), "utf8"),
+    /Permission is hereby granted/i,
+  );
 }
 if (outputMode) {
   const groups = [

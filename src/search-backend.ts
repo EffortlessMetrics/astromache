@@ -1,4 +1,7 @@
-import { createStaticIndexLoader, createStaticSearchBackend } from "@effortlessmetrics/static-search";
+import {
+  createStaticIndexLoader,
+  createStaticSearchBackend,
+} from "@effortlessmetrics/static-search";
 import { versionedSearchIndexPath } from "astromache/search-index-path";
 import {
   getSearchMatchTerms,
