@@ -1,0 +1,275 @@
+diff --git a/package.json b/package.json
+--- a/package.json
++++ b/package.json
+@@ -27,6 +27,10 @@
+     "src/navigation.ts",
+     "src/Publication.astro",
+     "src/Profile.astro",
++    "src/Directory.astro",
++    "src/LinkGroup.astro",
++    "src/ContentSection.astro",
++    "src/directory.ts",
+     "src/profile.ts",
+     "src/Header.astro",
+     "src/Footer.astro",
+@@ -63,6 +67,9 @@
+     "./portfolio": "./src/Portfolio.astro",
+     "./publication": "./src/Publication.astro",
+     "./profile": "./src/Profile.astro",
++    "./directory": "./src/Directory.astro",
++    "./link-group": "./src/LinkGroup.astro",
++    "./content-section": "./src/ContentSection.astro",
+     "./header": "./src/Header.astro",
+     "./footer": "./src/Footer.astro",
+     "./article": "./src/Article.astro",
+diff --git a/src/Directory.astro b/src/Directory.astro
+new file mode 100644
+--- /dev/null
++++ b/src/Directory.astro
+@@ -0,0 +1,33 @@
++---
++import { directoryTitle, type DirectoryProps } from "./directory";
++
++export type Props = DirectoryProps;
++const title = directoryTitle(Astro.props.title);
++---
++
++<div class="directory-home">
++  <h1 class="directory-title">{title}</h1>
++  <div class="directory-groups"><slot /></div>
++</div>
++
++<style>
++  .directory-home {
++    min-width: 0;
++    margin-block: 1.75rem 2rem;
++    padding-bottom: 1.5rem;
++    border-bottom: 1px solid var(--border, currentColor);
++  }
++  .directory-title {
++    margin: 0 0 1.25rem;
++    font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.25rem);
++    line-height: 1.3;
++    font-weight: 750;
++    color: var(--accent, currentColor);
++  }
++  .directory-groups {
++    display: grid;
++    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
++    align-items: start;
++    gap: 1.25rem 2rem;
++  }
++</style>
+diff --git a/src/LinkGroup.astro b/src/LinkGroup.astro
+new file mode 100644
+--- /dev/null
++++ b/src/LinkGroup.astro
+@@ -0,0 +1,95 @@
++---
++import { linkGroupProps, type LinkGroupProps } from "./directory";
++
++export type Props = LinkGroupProps;
++const { id, title, layout, links } = linkGroupProps(Astro.props);
++---
++
++<section id={id} aria-labelledby={id + "-title"} class="directory-link-group">
++  <h2 id={id + "-title"}>{title}</h2>
++  <ul class:list={["directory-links", { "directory-links-stack": layout === "stack" }]}>
++    {links.map(link => <li>
++      <a href={link.href} rel={link.rel}>
++        {link.iconSrc && <span class="directory-icon" aria-hidden="true" style={`mask-image:url("${link.iconSrc}")`}></span>}
++        <span class="directory-link-copy">
++          <span class="directory-link-label">{link.label}</span>
++          {link.description && <small>{link.description}</small>}
++        </span>
++        {link.external && <span class="directory-external" aria-hidden="true">↗</span>}
++      </a>
++    </li>)}
++  </ul>
++</section>
++
++<style>
++  .directory-link-group {
++    min-width: 0;
++  }
++  .directory-link-group h2 {
++    margin: 0 0 0.5rem;
++    font-size: 1.25rem;
++    font-weight: 650;
++    color: var(--accent, currentColor);
++  }
++  .directory-links {
++    display: flex;
++    flex-wrap: wrap;
++    gap: 0.25rem 1rem;
++    margin: 0;
++    padding: 0;
++    list-style: none;
++  }
++  .directory-links-stack {
++    display: grid;
++    gap: 0.125rem;
++  }
++  .directory-links li {
++    min-width: 0;
++    max-width: 100%;
++    margin: 0;
++  }
++  .directory-links a {
++    display: flex;
++    align-items: center;
++    gap: 0.5rem;
++    min-height: 2rem;
++    font-size: 1rem;
++    font-weight: 550;
++    text-decoration: none;
++    overflow-wrap: anywhere;
++  }
++  .directory-links a:hover .directory-link-label,
++  .directory-links a:focus-visible .directory-link-label {
++    text-decoration: underline;
++    text-underline-offset: 0.2em;
++  }
++  .directory-link-copy {
++    min-width: 0;
++    flex: 1;
++  }
++  .directory-link-copy small {
++    display: inline-block;
++    margin-inline-start: 0.5rem;
++    color: var(--secondary, currentColor);
++    font-size: 0.8125rem;
++    font-weight: 400;
++  }
++  .directory-icon {
++    display: inline-block;
++    flex: 0 0 1.25rem;
++    height: 1.25rem;
++    background: currentColor;
++    mask-position: center;
++    mask-repeat: no-repeat;
++    mask-size: contain;
++  }
++  .directory-external {
++    flex: none;
++    font-size: 1.125rem;
++  }
++  @media (max-width: 640px) {
++    .directory-links a {
++      min-height: 2.75rem;
++    }
++  }
++</style>
+diff --git a/src/ContentSection.astro b/src/ContentSection.astro
+new file mode 100644
+--- /dev/null
++++ b/src/ContentSection.astro
+@@ -0,0 +1,41 @@
++---
++import { sectionProps, type SectionProps } from "./directory";
++
++export type Props = SectionProps;
++const { id, title } = sectionProps(Astro.props);
++---
++
++<section class="content-section" id={id} aria-labelledby={id + "-title"}>
++  <div class="content-section-heading">
++    <h2 id={id + "-title"}>{title}</h2>
++    {Astro.slots.has("actions") && <div class="content-section-actions"><slot name="actions" /></div>}
++  </div>
++  <slot />
++</section>
++
++<style>
++  .content-section {
++    min-width: 0;
++    margin-block: 2rem;
++  }
++  .content-section-heading {
++    display: flex;
++    flex-wrap: wrap;
++    align-items: baseline;
++    justify-content: space-between;
++    gap: 0.5rem 1rem;
++    margin-bottom: 1rem;
++  }
++  .content-section-heading h2 {
++    margin: 0;
++    color: var(--accent, currentColor);
++  }
++  .content-section-actions {
++    display: flex;
++    flex-wrap: wrap;
++    align-items: center;
++    gap: 0.5rem 1rem;
++    min-width: 0;
++    font-size: 0.875rem;
++  }
++</style>
+diff --git a/src/directory.ts b/src/directory.ts
+new file mode 100644
+--- /dev/null
++++ b/src/directory.ts
+@@ -0,0 +1,62 @@
++import { profileProps, type ProfileLink } from "./profile.js";
++
++export interface DirectoryProps {
++  title: string;
++}
++
++export interface SectionProps {
++  id: string;
++  title: string;
++}
++
++export interface DirectoryLink extends ProfileLink {
++  description?: string;
++  /** Decorative, locally served icon. The visible label is the accessible name. */
++  iconSrc?: string;
++  /** Show a decorative external-link arrow without changing navigation behavior. */
++  external?: boolean;
++}
++
++export interface LinkGroupProps extends SectionProps {
++  links: ReadonlyArray<DirectoryLink>;
++  layout?: "inline" | "stack";
++}
++
++export function directoryTitle(title: string): string {
++  return profileProps({ title }).title;
++}
++
++export function sectionProps(input: SectionProps): SectionProps {
++  if (typeof input.id !== "string" || !/^[a-zA-Z][a-zA-Z0-9_-]*$/.test(input.id)) {
++    throw new TypeError("Directory section id must be a nonempty HTML identifier");
++  }
++  return { id: input.id, title: directoryTitle(input.title) };
++}
++
++export function linkGroupProps(input: LinkGroupProps) {
++  const { id, title } = sectionProps(input);
++  const layout = input.layout ?? "inline";
++  if (layout !== "inline" && layout !== "stack") {
++    throw new TypeError("Directory link group layout must be inline or stack");
++  }
++  if (!Array.isArray(input.links) || !input.links.length) {
++    throw new TypeError("Directory link group requires at least one link");
++  }
++  const links = profileProps({ title, links: input.links }).links.map((link, index) => {
++    const { description, iconSrc, external } = input.links[index];
++    if (description !== undefined && (typeof description !== "string" || !description.trim())) {
++      throw new TypeError("Directory link description must contain non-whitespace text");
++    }
++    if (
++      iconSrc !== undefined &&
++      (typeof iconSrc !== "string" || !/^\/(?!\/)[a-zA-Z0-9._~%/-]+$/.test(iconSrc))
++    ) {
++      throw new TypeError("Directory icon must be a root-relative local asset path");
++    }
++    if (external !== undefined && typeof external !== "boolean") {
++      throw new TypeError("Directory external indicator must be a boolean");
++    }
++    return { ...link, description, iconSrc, external };
++  });
++  return { id, title, layout, links };
++}

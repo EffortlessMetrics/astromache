@@ -32,6 +32,12 @@ The shared TypeAnywhereSearch palette is available through the header and keyboa
 
 `/profile/` demonstrates the shared flowing portrait and Follow-before-Speaking composition with neutral content. Use it as an example for a personal landing page, or remove the route if it is not needed. The publication starter remains the default.
 
+## Optional directory homepage
+
+`/directory/` demonstrates a compact identity and grouped links followed by the ordinary note collection. To use it as the homepage, replace the contents of `src/pages/index.astro` with that composition and remove the demonstration route if desired. Keep `/profile/` for biography and portrait. No runtime mode or new site schema is required; the default publication homepage is unchanged.
+
+The demonstration is a provisional exact-source overlay of core PR #53 on the existing site.1 archive. `DIRECTORY-CANDIDATE.json` and qualification verify the installed files; replace this carrier with the qualified core archive before final acceptance.
+
 ## Customizing your publication
 
 - Edit `site.config.mjs` for the origin and offline policy; change the worker path in `public/_headers` when renaming it.

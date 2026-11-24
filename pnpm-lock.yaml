@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  astromache@0.4.0-site.1:
+    hash: 7f93967c267f9f7165bf773454824342ff86f8c6cff09bc6e5492d5486d12998
+    path: patches/astromache@0.4.0-site.1.patch
+
 importers:
 
   .:
@@ -19,7 +24,7 @@ importers:
         version: 7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)
       astromache:
         specifier: file:vendor/astromache-0.4.0-site.1.tgz
-        version: file:vendor/astromache-0.4.0-site.1.tgz(@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.5.tgz(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)))(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        version: file:vendor/astromache-0.4.0-site.1.tgz(patch_hash=7f93967c267f9f7165bf773454824342ff86f8c6cff09bc6e5492d5486d12998)(@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.5.tgz(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)))(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       preact:
         specifier: 10.29.8
         version: 10.29.8
@@ -6449,7 +6454,7 @@ snapshots:
       - uploadthing
       - yaml
 
-  astromache@file:vendor/astromache-0.4.0-site.1.tgz(@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.5.tgz(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)))(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)):
+  astromache@file:vendor/astromache-0.4.0-site.1.tgz(patch_hash=7f93967c267f9f7165bf773454824342ff86f8c6cff09bc6e5492d5486d12998)(@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.5.tgz(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)))(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)):
     dependencies:
       astro: 7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)
       bcp-47: 2.1.1

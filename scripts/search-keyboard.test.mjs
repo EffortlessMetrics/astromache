@@ -231,3 +231,28 @@ test("shared palette uses the exact bound note index and preserves explicit sear
     ).toBeVisible();
   });
 });
+
+for (const width of [1280, 390]) {
+  test(`${width}px: optional directory uses native links before the content collection`, async () => {
+    await withPage(width, async (page) => {
+      await page.goto(`${origin}/directory/`);
+      await expect(page.getByRole("heading", { level: 1, name: "Example author" })).toBeVisible();
+      assert.deepEqual(await page.locator("main h2").allTextContents(), [
+        "Follow Me",
+        "Websites",
+        "Notes",
+      ]);
+      await expect(page.locator("#work .article-cards li")).toHaveCount(index.data.length);
+      const links = page.locator("#follow a, #websites a, #work .content-section-actions a");
+      await links.first().focus();
+      for (const link of (await links.all()).slice(1)) {
+        await page.keyboard.press("Tab");
+        await expect(link).toBeFocused();
+      }
+      assert.equal(
+        await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+        true,
+      );
+    });
+  });
+}

@@ -1,0 +1,27 @@
+---
+import Publication from "../layouts/Publication.astro";
+import Directory from "astromache/directory";
+import LinkGroup from "astromache/link-group";
+import ContentSection from "astromache/content-section";
+import PostList from "astromache/post-list";
+import { notes, card } from "../publication-content";
+const entries = await notes();
+const follow = [
+  { label: "About", href: "/profile/" },
+  { label: "Subscribe", href: "/rss.xml" },
+];
+const websites = [
+  { label: "Field Notes", href: "/", description: "Publication" },
+  { label: "Gallery", href: "/portfolio/", description: "Selected work" },
+];
+---
+<Publication title="Example directory — Field Notes" description="Optional links-first homepage with a consumer-owned content collection.">
+  <Directory title="Example author">
+    <LinkGroup id="follow" title="Follow Me" links={follow} />
+    <LinkGroup id="websites" title="Websites" links={websites} layout="stack" />
+  </Directory>
+  <ContentSection id="work" title="Notes">
+    <a slot="actions" href="/posts/">All posts →</a>
+    <PostList items={entries.map(card)} headingLevel={3} />
+  </ContentSection>
+</Publication>

@@ -1,0 +1,22 @@
+{
+  "scope": "Temporary exact-source package overlay for directory composition. Replace with qualified producer archive before release acceptance.",
+  "producer": "EffortlessMetrics/astromache-core",
+  "producerPR": 53,
+  "sourceCommit": "69be801e26e16cef65c545f3afff8288796ebee9",
+  "baseArchive": "vendor/astromache-0.4.0-site.1.tgz",
+  "baseArchiveSha256": "3336d3bc72efa69552eb817c33e016e3a488b76ce7d8aa06cec8fe36068782a3",
+  "patchFile": "patches/astromache@0.4.0-site.1.patch",
+  "patchSha256": "7f93967c267f9f7165bf773454824342ff86f8c6cff09bc6e5492d5486d12998",
+  "sourceFiles": {
+    "src/Directory.astro": "be4e0cb6982027e435b2c6b4d191b25b24209e11260970edc620a6c87b015d74",
+    "src/LinkGroup.astro": "6642d5066c6e4fdf74675aa4075d9dbf93287ef5c2ba37f71a5ab223b7b0a6fe",
+    "src/ContentSection.astro": "4fdc4c6420a7c90f778e38ae216c4c9b40304100cd79b0e77db0743596c15be5",
+    "src/directory.ts": "ae1ede69881eebbb98702b8f9adf385deae15ff0e524f049ebd634127732503e"
+  },
+  "exports": {
+    "./directory": "./src/Directory.astro",
+    "./link-group": "./src/LinkGroup.astro",
+    "./content-section": "./src/ContentSection.astro"
+  },
+  "producerQualification": "PENDING; not an accepted archive delivery"
+}

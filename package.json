@@ -11,7 +11,7 @@
     "check": "astro check",
     "lint": "vp lint src",
     "format:check": "vp fmt . --check",
-    "qualify": "node --test scripts/published-date.test.mjs scripts/publication-visibility.test.mjs && vp run check && vp run lint && vp run format:check && vp run build",
+    "qualify": "node scripts/verify-directory-candidate.mjs && node --test scripts/published-date.test.mjs scripts/publication-visibility.test.mjs && vp run check && vp run lint && vp run format:check && vp run build",
     "verify:licenses": "node scripts/verify-licenses.mjs",
     "test:licenses": "node --test scripts/verify-licenses.test.mjs",
     "test:search:keyboard": "node --test scripts/search-keyboard.test.mjs"
@@ -36,5 +36,10 @@
   "engines": {
     "node": ">=24.19.0 <25"
   },
-  "packageManager": "pnpm@10.28.0"
+  "packageManager": "pnpm@10.28.0",
+  "pnpm": {
+    "patchedDependencies": {
+      "astromache@0.4.0-site.1": "patches/astromache@0.4.0-site.1.patch"
+    }
+  }
 }
