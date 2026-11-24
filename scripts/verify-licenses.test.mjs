@@ -11,6 +11,7 @@ const names = [
   "astromache",
   "@effortlessmetrics/static-search",
   "@effortlessmetrics/astro-offline",
+  "type-anywhere-search",
 ];
 test("active delivery and version-independent bundled/registry license fixtures", async () => {
   const actual = spawnSync(process.execPath, [guard], { cwd: source, encoding: "utf8" });
@@ -22,6 +23,12 @@ test("active delivery and version-independent bundled/registry license fixtures"
     await cp(join(source, "node_modules/astro/LICENSE"), join(root, "node_modules/astro/LICENSE"), {
       recursive: true,
     });
+    for (const name of ["preact", "tailwindcss"]) {
+      await cp(join(source, "node_modules", name), join(root, "node_modules", name), {
+        recursive: true,
+        dereference: true,
+      });
+    }
     const manifest = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
     const receipt = { archives: {} };
     const versions = {};
@@ -72,6 +79,9 @@ test("active delivery and version-independent bundled/registry license fixtures"
       "static-search/LICENSE-MIT",
       "astro-offline/WORKBOX-LICENSE",
       "astro/LICENSE",
+      "type-anywhere-search/LICENSE-MIT",
+      "preact/LICENSE",
+      "tailwindcss/LICENSE",
     ]) {
       const path = join(root, "dist/licenses", notice);
       const bytes = await readFile(path);

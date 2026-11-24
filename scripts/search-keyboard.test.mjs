@@ -205,3 +205,28 @@ test("390px: menu Escape returns focus to its toggle and releases the search fie
     await expect(page.getByRole("searchbox", { name: "Search", exact: true })).toBeFocused();
   });
 });
+
+
+test("shared palette uses the exact bound note index and preserves explicit search", async () => {
+  await withPage(1280, async (page) => {
+    await page.goto(origin + "/");
+    await expect(page.locator("html")).toHaveAttribute("data-search-hydrated", "1");
+    await page.getByRole("button", { name: "Open search palette" }).click();
+    const dialog = page.getByRole("dialog", { name: "Search notes" });
+    const input = dialog.getByRole("searchbox");
+    await expect(input).toBeEnabled();
+    await input.fill(index.data[0].title);
+    const result = dialog.locator("a[href=" + JSON.stringify(index.data[0].url) + "]");
+    await expect(result).toBeVisible();
+    await expect(dialog.getByRole("checkbox", { name: "Type-anywhere search" })).toBeVisible();
+    await expect(input).toHaveAccessibleDescription(
+      "Use arrow keys to navigate, enter to select, escape to close.",
+    );
+    await input.press("Escape");
+    await expect(dialog).toHaveCount(0);
+    assert.equal(new URL(page.url()).searchParams.has("q"), false);
+    await page.goto(origin + "/offline/");
+    await page.locator("#recovery-query").fill(index.data[0].title);
+    await expect(page.locator(".recovery-results a[href=" + JSON.stringify(index.data[0].url) + "]")).toBeVisible();
+  });
+});

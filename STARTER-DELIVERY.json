@@ -24,11 +24,24 @@
       "qualificationRun": 45382194075,
       "artifactId": 14914977719,
       "registryPublication": false
+    },
+    "type-anywhere-search": {
+      "file": "vendor/type-anywhere-search-0.1.3-search-close-aria.tgz",
+      "version": "0.1.3",
+      "sha256": "23e0bfc6beedfaebe6ec460a2337a29d690aca4d4610355e881225ad018fe402",
+      "sourceCommit": "6568c82a7a0b7e9ff201174b9229fd424ccd600e",
+      "sourcePrHead": "9a2f79d3638c98f62a365e0c9a6ecfacf0d8ad79",
+      "deliveryCommit": "dd8bd99ced55bcead891345c7ef76bea5ce9519d",
+      "qualificationRun": 45415260325,
+      "artifactId": 14929949896,
+      "gitBlob": "8e34d2cf72bf997cb3865cd2232d57cb7c6d5b37",
+      "registryPublication": false
     }
   },
   "sourceCommits": {
     "astromache-core": "d325a7404a95c17606f885876622001399f9c03b",
-    "astro-offline": "26ad83656f19a73e84d294e87672cb949bf614e3"
+    "astro-offline": "26ad83656f19a73e84d294e87672cb949bf614e3",
+    "type-anywhere-search": "6568c82a7a0b7e9ff201174b9229fd424ccd600e"
   },
   "offline": true,
   "intentPrefetch": true,
@@ -230,5 +243,11 @@
       "naturalWorkerUpgradeApplicability": "Retain coreUpgradeAcceptance original tested commit/tree/archive identities. Its natural worker adoption, rejected/interrupted install, exact offline bytes and reconnect evidence applies because all 43 rebuilt output files are byte-identical; no fresh lifecycle run claimed.",
       "checks": "PASS frozen install, license guard and fixtures, qualify, 33 search/navigation tests, 13 Chromium keyboard tests, 25 serialization tests, installed changelog identity and dependency lock preservation"
     }
+  },
+  "searchIntegration": {
+    "scope": "Shared palette and recovery with version-bound existing note snapshot. Explicit-submit standalone form retained as a distinct qualified surface.",
+    "qualification": "Pending fresh standalone qualification",
+    "dependencyResolutionRun": 45417587159,
+    "lockNotes": "Added Preact/Tailwind/search; pnpm added jiti peer context to Astro/Vite/Vitest without changing existing package versions. Restored only three registry deprecation annotations to previous exact records."
   }
 }
