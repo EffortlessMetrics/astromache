@@ -24,6 +24,10 @@ The application package starts as `UNLICENSED`. There is no blanket root site li
 
 `pnpm build` also retains and verifies notices under `dist/licenses/`, grouped by upstream template, library, font and dependency scope. Deploy that directory with the build. These notices do not license your replacement content; `node scripts/verify-licenses.mjs --check-output` checks their retention without rewriting them.
 
+## Search integration
+
+The shared TypeAnywhereSearch palette is available through the header and keyboard; the reader can disable character-only activation inside the dialog. The palette and shared 404/offline recovery use the same admitted notes as the dedicated explicit-submit search form, with hash-bound snapshot delivery and the shared relevance policy. The original form retains its submit, cancellation and history restoration contract. Tailwind utilities are generated from the installed search distribution and scoped theme integration; no separate theme is introduced.
+
 ## Optional personal profile
 
 `/profile/` demonstrates the shared flowing portrait and Follow-before-Speaking composition with neutral content. Use it as an example for a personal landing page, or remove the route if it is not needed. The publication starter remains the default.

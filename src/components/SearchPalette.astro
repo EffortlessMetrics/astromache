@@ -1,0 +1,36 @@
+---
+import { searchIndex } from "../search-index";
+const { version } = await searchIndex();
+---
+<div id="note-search-palette" data-index-version={version}></div>
+<script>
+  import { h, render } from "preact";
+  import { TypeAnywhereSearch, createLocalStorageHistoryPort, type PaletteEntry } from "type-anywhere-search";
+  import { mountSearchPalette } from "astromache/search-client";
+  import { createNoteSearch } from "../search-backend";
+  const mount = document.querySelector<HTMLElement>("#note-search-palette");
+  if (mount) {
+    const backend = createNoteSearch(mount.dataset.indexVersion);
+    const destinations: PaletteEntry[] = [
+      { id: "posts", kind: "destination", title: "Posts", href: "/posts/", suggested: true },
+      { id: "gallery", kind: "destination", title: "Gallery", href: "/portfolio/" },
+      { id: "profile", kind: "destination", title: "Example profile", href: "/profile/" },
+    ];
+    const dispose = mountSearchPalette(mount, target => {
+      render(h(TypeAnywhereSearch, {
+        backend,
+        history: createLocalStorageHistoryPort(),
+        getPaletteEntries: () => destinations,
+        labels: { dialogLabel: "Search notes", inputPlaceholder: "Search notes, pages or actions..." },
+        syncQueryToUrl: !/^\/search\/?$/.test(location.pathname),
+        navigation: { getResultHref: result => result.slug, navigate: href => location.assign(href) },
+        getFullText: async slug => {
+          await backend.init();
+          return (await backend.getAllDocuments()).find(doc => doc.slug === slug)?.body ?? "";
+        },
+      }), target);
+      return () => { render(null, target); backend.dispose(); };
+    }, document.querySelector("#search-toggle"));
+    window.addEventListener("pagehide", event => { if (!event.persisted) dispose(); });
+  }
+</script>

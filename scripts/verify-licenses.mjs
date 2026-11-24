@@ -21,6 +21,7 @@ for (const name of [
   "astromache",
   "@effortlessmetrics/astro-offline",
   "@effortlessmetrics/static-search",
+  "type-anywhere-search",
 ]) {
   assert.ok(name in application.dependencies, `${name} dependency is required by this starter`);
   const dependency = JSON.parse(
@@ -70,6 +71,17 @@ assert.match(
   /Permission is hereby granted, free of charge/,
   "Preserve packaged Workbox MIT terms independently",
 );
+for (const name of ["preact", "tailwindcss"]) {
+  const installed = JSON.parse(
+    await readFile(join(root, "node_modules", name, "package.json"), "utf8"),
+  );
+  assert.equal(installed.name, name);
+  assert.equal(installed.license, "MIT");
+  assert.match(
+    await readFile(join(root, "node_modules", name, "LICENSE"), "utf8"),
+    /Permission is hereby granted/i,
+  );
+}
 if (outputMode) {
   const groups = [
     ["licenses/template", "template", ["README.md", "LICENSE", "LICENSE-MIT", "LICENSE-APACHE"]],
@@ -89,6 +101,13 @@ if (outputMode) {
       ["LICENSE", "LICENSE-MIT", "LICENSE-APACHE", "WORKBOX-LICENSE"],
     ],
     ["node_modules/astro", "astro", ["LICENSE"]],
+    [
+      "node_modules/type-anywhere-search",
+      "type-anywhere-search",
+      ["LICENSE-MIT", "LICENSE-APACHE"],
+    ],
+    ["node_modules/preact", "preact", ["LICENSE"]],
+    ["node_modules/tailwindcss", "tailwindcss", ["LICENSE"]],
   ];
   for (const [source, scope, files] of groups) {
     for (const file of files) {

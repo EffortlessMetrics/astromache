@@ -1,0 +1,10 @@
+@import "tailwindcss/theme.css";
+@import "tailwindcss/utilities.css" source(none);
+@source "../../node_modules/type-anywhere-search/dist";
+@theme inline {
+  --color-ocean-deep: var(--accent);
+  --color-ocean-top: var(--accent);
+  --color-ocean-light: var(--accent);
+  --color-ocean-dark: var(--accent-hover);
+}
+@import "astromache/search.css";

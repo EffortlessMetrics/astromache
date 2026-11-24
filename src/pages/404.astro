@@ -1,4 +1,7 @@
 ---
-import Publication from '../layouts/Publication.astro';
+import Publication from "../layouts/Publication.astro";
+import NoteRecovery from "../components/NoteRecovery.astro";
 ---
-<Publication title="Page not found / Field Notes" description="The requested page is not in this notebook."><h1>Page not found</h1><p>The notebook has moved on. <a href="/posts/">Browse all posts</a> or <a href="/">return home</a>.</p></Publication>
+<Publication title="Page not found / Field Notes" description="The requested page is not in this notebook.">
+  <NoteRecovery kind="404" />
+</Publication>

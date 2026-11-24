@@ -1,13 +1,6 @@
-import { createHash } from "node:crypto";
-import { notes, noteLink } from "../publication-content";
+import { searchIndex } from "../search-index";
 export async function GET() {
-  const data = (await notes()).map((note) => ({
-    title: note.data.title,
-    text: note.body ?? "",
-    url: noteLink(note.id),
-  }));
-  const version = createHash("sha256").update(JSON.stringify(data)).digest("hex");
-  return new Response(JSON.stringify({ version, data }), {
+  return new Response((await searchIndex()).json, {
     headers: { "Content-Type": "application/json" },
   });
 }

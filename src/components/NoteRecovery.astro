@@ -1,0 +1,27 @@
+---
+import SearchRecovery from "astromache/search-recovery";
+import { searchIndex } from "../search-index";
+interface Props { kind: "404" | "offline" }
+const { kind } = Astro.props;
+const { version } = await searchIndex();
+---
+<SearchRecovery {kind} {version} label="Search notes" idleMessage="Start typing to search notes">
+  <a href="/">Return home</a><a href="/posts/">Browse posts</a>
+</SearchRecovery>
+<script>
+  import { bindSearchSurface } from "astromache/search-surface";
+  import { createNoteSearch } from "../search-backend";
+  const root = document.querySelector<HTMLElement>('[data-search-surface="recovery"]');
+  if (root) {
+    const backend = createNoteSearch(root.dataset.indexVersion);
+    bindSearchSurface(root, {
+      async execute(query, signal, limit) {
+        await backend.init({ signal });
+        signal.throwIfAborted();
+        const { results } = await backend.search(query, { tags: [], limit });
+        return results.map(result => ({ href: result.slug, title: result.title, summary: result.summary, tags: result.tags }));
+      },
+      disposeBackend: () => backend.dispose(),
+    });
+  }
+</script>
