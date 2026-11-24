@@ -101,7 +101,11 @@ if (outputMode) {
       ["LICENSE", "LICENSE-MIT", "LICENSE-APACHE", "WORKBOX-LICENSE"],
     ],
     ["node_modules/astro", "astro", ["LICENSE"]],
-    ["node_modules/type-anywhere-search", "type-anywhere-search", ["LICENSE-MIT", "LICENSE-APACHE"]],
+    [
+      "node_modules/type-anywhere-search",
+      "type-anywhere-search",
+      ["LICENSE-MIT", "LICENSE-APACHE"],
+    ],
     ["node_modules/preact", "preact", ["LICENSE"]],
     ["node_modules/tailwindcss", "tailwindcss", ["LICENSE"]],
   ];
