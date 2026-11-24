@@ -1,0 +1,26 @@
+name: Resolve starter search dependency additions
+on:
+  push:
+    branches: [qualification/starter-search-lock-20261124]
+permissions:
+  contents: read
+jobs:
+  resolve:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: "24.19.0"
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1
+        with:
+          version: 10.28.0
+      - name: Resolve only newly needed dependencies
+        run: |
+          pnpm install --lockfile-only --ignore-scripts
+          git diff --stat -- pnpm-lock.yaml
+          printf 'LOCK_SHA:%s\n' "$(sha256sum pnpm-lock.yaml | cut -d' ' -f1)"
+          base64 -w 512 pnpm-lock.yaml | sed 's/^/LOCK_B64:/'
