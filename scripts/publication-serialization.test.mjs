@@ -92,6 +92,36 @@ const rejected = (result, message) => {
   assert.match(result.stdout + result.stderr, message);
 };
 
+// Match the existing independent HTMLParser coverage, not URL text that may
+// also occur in CopyLink, navigation or Open Graph metadata.
+const pageLinks = (html) => {
+  const parsed = spawnSync(
+    "python3",
+    [
+      "-c",
+      `
+import json, sys
+from html.parser import HTMLParser
+class Links(HTMLParser):
+ def __init__(self):
+  super().__init__(); self.canonicals = []; self.copies = []
+ def handle_starttag(self, tag, attrs):
+  a = dict(attrs)
+  if tag == 'link' and 'canonical' in a.get('rel', '').split(): self.canonicals.append(a.get('href'))
+  if tag == 'button' and 'copy-link-btn' in a.get('class', '').split(): self.copies.append(a.get('data-url'))
+p = Links(); p.feed(sys.stdin.read())
+print(json.dumps({'canonicals': p.canonicals, 'copies': p.copies}))
+`,
+    ],
+    { input: html, encoding: "utf8", timeout: 10_000 },
+  );
+  assert.equal(parsed.error, undefined);
+  assert.equal(parsed.status, 0, parsed.stderr);
+  return JSON.parse(parsed.stdout);
+};
+const assertCanonical = (html, expected) =>
+  assert.deepEqual(pageLinks(html).canonicals, [expected], "exact canonical link href");
+
 test("RSS, sitemap, HTML and copy links agree for XML text, Unicode and reserved slugs", async () => {
   const title = `  <Lab> & "café" '東京' 😀  `;
   const description = `  <tag> & "résumé" '雪'  `;
@@ -286,6 +316,94 @@ test("dot-segment aliases are rejected clearly", async () => {
   );
 });
 
+test("derived output aliases fail before static routing while distinct nested notes remain valid", async (t) => {
+  for (const [alias, canonical] of [
+    ["branch/../leaf", "leaf"],
+    ["branch//leaf", "branch/leaf"],
+    ["branch/leaf/", "branch/leaf"],
+  ]) {
+    await t.test(alias, async () => {
+      await withProject(
+        { "alias.md": fixture(alias), "canonical.md": fixture(canonical) },
+        async (root) => {
+          const result = build(root);
+          rejected(result, /Invalid note ID.*nonempty path segments without dot segments/);
+          assert.doesNotMatch(result.stdout + result.stderr, /generating static routes/);
+        },
+      );
+    });
+  }
+  await withProject(
+    {
+      "left.md": fixture("branch/leaf", "Nested leaf"),
+      "right.md": fixture("other/leaf", "Other leaf"),
+      "root.md": fixture("leaf", "Root leaf"),
+    },
+    async (root) => {
+      const result = build(root);
+      assert.equal(result.error, undefined);
+      assert.equal(result.status, 0, result.stdout + result.stderr);
+      for (const [route, title] of [
+        ["branch/leaf", "Nested leaf"],
+        ["other/leaf", "Other leaf"],
+        ["leaf", "Root leaf"],
+      ]) {
+        const html = await readFile(join(root, "dist/notes", route, "index.html"), "utf8");
+        assert.match(html, new RegExp(`<h1[^>]*>${title}</h1>`));
+        assertCanonical(html, `https://publication.example/notes/${route}/`);
+      }
+    },
+  );
+});
+
+test("case-insensitive output aliases are rejected without changing distinct URL casing", async (t) => {
+  for (const [left, right] of [
+    ["Alpha", "alpha"],
+    ["É", "é"],
+  ]) {
+    await t.test(`${left} / ${right}`, async () => {
+      await withProject({ "left.md": fixture(left), "right.md": fixture(right) }, async (root) => {
+        const result = build(root);
+        rejected(result, /Note path collision:/);
+        assert.match(result.stdout + result.stderr, /left\.md/);
+        assert.match(result.stdout + result.stderr, /right\.md/);
+        assert.doesNotMatch(result.stdout + result.stderr, /generating static routes/);
+      });
+    });
+  }
+  await withProject({ "unique.md": fixture("UniqueCase", "Unique case") }, async (root) => {
+    const result = build(root);
+    assert.equal(result.error, undefined);
+    assert.equal(result.status, 0, result.stdout + result.stderr);
+    const html = await readFile(join(root, "dist/notes/UniqueCase/index.html"), "utf8");
+    assert.match(html, /<h1[^>]*>Unique case<\/h1>/);
+    assertCanonical(html, "https://publication.example/notes/UniqueCase/");
+    const index = JSON.parse(await readFile(join(root, "dist/search-index.json"), "utf8"));
+    assert.equal(index.data[0].url, "/notes/UniqueCase/");
+    // Change only the layout canonical; the independently computed CopyLink
+    // still carries the correct note URL and must not mask this regression.
+    const layout = join(root, "src/layouts/Publication.astro");
+    const original = await readFile(layout, "utf8");
+    const mutated = original.replace(
+      "canonicalURL(Astro.url.pathname,Astro.site)",
+      'canonicalURL("/wrong-canonical/",Astro.site)',
+    );
+    assert.notEqual(mutated, original, "mutation must change the layout canonical");
+    await writeFile(layout, mutated);
+    const mutantBuild = build(root);
+    assert.equal(mutantBuild.error, undefined);
+    assert.equal(mutantBuild.status, 0, mutantBuild.stdout + mutantBuild.stderr);
+    const mutantHTML = await readFile(join(root, "dist/notes/UniqueCase/index.html"), "utf8");
+    assert.deepEqual(pageLinks(mutantHTML).copies, [
+      "https://publication.example/notes/UniqueCase/",
+    ]);
+    assert.throws(
+      () => assertCanonical(mutantHTML, "https://publication.example/notes/UniqueCase/"),
+      /exact canonical link href/,
+    );
+  });
+});
+
 test("literal percent slugs fail at validation rather than Astro route matching", async () => {
   await withProject({ "percent.md": fixture("literal%25") }, async (root) => {
     const result = build(root);
@@ -402,6 +520,11 @@ test("watchers survive full sync and preserve the accepted collection after reje
     emitter.emit("add", duplicate);
     await waitFor(() => errors.length === 1);
     assert.match(errors[0], /Note path collision:/);
+    assert.deepEqual(store.keys(), ["after"]);
+    await writeFile(duplicate, JSON.stringify({ slug: "AFTER" }));
+    emitter.emit("change", duplicate);
+    await waitFor(() => errors.length === 2);
+    assert.match(errors[1], /Note path collision:/);
     assert.deepEqual(store.keys(), ["after"]);
     await rm(duplicate);
     emitter.emit("unlink", duplicate);

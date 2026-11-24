@@ -7,6 +7,7 @@ export async function GET({ site }: APIContext) {
     "/",
     "/posts/",
     "/portfolio/",
+    "/profile/",
     "/search/",
     ...entries.map((note) => noteLink(note.id)),
     ...taxonomyRoutes(entries).map(({ params }) => "/tags/" + params.tag + "/"),
