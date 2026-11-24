@@ -1,8 +1,8 @@
 # AstroMache publication starter
 
-A neutral, standalone default with verified offline caching and connection-aware native intent prefetch enabled. Shared components keep their established npm names/imports; canonical static precache setup uses the released astromache 0.3.0 core preset through an exact registry pin. Its verified registry archive matches the retained final vendor archive. Cache integrity and lifecycle remain owned by offline 0.1.5, including explicit `index.html` navigation from verified directory precaches.
+A neutral, standalone default with verified offline caching and connection-aware native intent prefetch enabled. Shared components keep their established npm names/imports; canonical static precache setup uses the exact qualified AstroMaché 0.4.0-site.1 core archive. The released 0.3.0 archive and its registry provenance remain available as historical delivery evidence. Cache integrity and lifecycle remain owned by offline 0.1.5, including explicit `index.html` navigation from verified directory precaches.
 
-Use Node 24.19.x. Run pnpm install --frozen-lockfile --ignore-scripts, then pnpm qualify, pnpm verify:licenses and pnpm dev. Exact dependency versions, retained archive hashes, registry release evidence and core source identities are in STARTER-DELIVERY.json. verify:licenses checks the archive pins, hashes and installed versions along with the required notices. Core 0.3.0 is released; the independently vendored offline and static-search candidates remain unpublished.
+Use Node 24.19.x. Run pnpm install --frozen-lockfile --ignore-scripts, then pnpm qualify, pnpm verify:licenses and pnpm dev. Exact dependency versions, retained archive hashes, registry release evidence and core source identities are in STARTER-DELIVERY.json. verify:licenses checks the archive pins, hashes and installed versions along with the required notices. Core 0.4.0-site.1 is an unpublished qualified candidate, as are the independently vendored offline and static-search candidates.
 
 Replace neutral content/branding and edit site.config.mjs. Keep API and host redirect URLs out of the precache using excludedPages and excludedPrefixes. Query policy is explicitly stripQuery:false. Registration follows offlinePolicy.workerFile at root scope; edit that setting to rename the generated and registered worker together, and update the worker path in public/_headers to preserve its no-cache policy. Scope remains configured in the small layout registration call. Natural activation waits for existing clients; no forced reload or activation occurs.
 
@@ -23,6 +23,10 @@ When creating your application, choose its package metadata and code/content lic
 The application package starts as `UNLICENSED`. There is no blanket root site license. Required upstream template notices are retained under `licenses/template/`; those terms license upstream template material only.
 
 `pnpm build` also retains and verifies notices under `dist/licenses/`, grouped by upstream template, library, font and dependency scope. Deploy that directory with the build. These notices do not license your replacement content; `node scripts/verify-licenses.mjs --check-output` checks their retention without rewriting them.
+
+## Optional personal profile
+
+`/profile/` demonstrates the shared flowing portrait and Follow-before-Speaking composition with neutral content. Use it as an example for a personal landing page, or remove the route if it is not needed. The publication starter remains the default.
 
 ## Customizing your publication
 

@@ -1,0 +1,16 @@
+---
+import Publication from "../layouts/Publication.astro";
+import Profile from "astromache/profile";
+const links = [{ label: "Publication", href: "/" }, { label: "Posts", href: "/posts/" }];
+---
+<Publication title="Example profile — Field Notes" description="Optional neutral profile composition.">
+  <Profile title="Example author" portraitLayout="flow" sectionOrder="follow-first" links={links}>
+    <svg slot="portrait" viewBox="0 0 192 192" width="192" height="192" role="img" aria-label="Neutral geometric portrait placeholder">
+      <rect width="192" height="192" rx="24" fill="var(--muted)" />
+      <circle cx="96" cy="70" r="29" fill="var(--accent)" />
+      <path d="M40 154c0-63 112-63 112 0" fill="var(--accent)" />
+    </svg>
+    <p>Author of Field Notes. Replace this example with your own biography.</p>
+    <Fragment slot="speaking"><p>Talks and recordings can be supplied through this slot.</p><a href="/posts/">Read the notes</a></Fragment>
+  </Profile>
+</Publication>

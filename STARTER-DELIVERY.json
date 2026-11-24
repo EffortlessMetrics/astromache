@@ -1,5 +1,5 @@
 {
-  "scope": "Starter consuming exact registry astromache 0.3.0 with independently vendored unpublished offline/static-search archives",
+  "scope": "Standalone starter consuming exact qualified unpublished site.1 core, independent offline and static-search archives",
   "archives": {
     "@effortlessmetrics/astro-offline": {
       "file": "vendor/effortlessmetrics-astro-offline-0.1.5.tgz",
@@ -12,13 +12,22 @@
       "sha256": "01989cda90ec846dabc7766c258a86742ad062d6bf2efbfd5cd1e5ccb7db7736"
     },
     "astromache": {
-      "file": "vendor/astromache-0.3.0.tgz",
-      "version": "0.3.0",
-      "sha256": "4abb98b9b7ea09caeb2ee2c24edf0a6ad854d2b4d4d69f1165b09d5819e6919f"
+      "file": "vendor/astromache-0.4.0-site.1.tgz",
+      "version": "0.4.0-site.1",
+      "sha256": "3336d3bc72efa69552eb817c33e016e3a488b76ce7d8aa06cec8fe36068782a3",
+      "integrity": "sha512-35WYeLEJ+shyfUZS3tFMkEpCNxbUtG2RI+mTt2D9qQD3gOARx92Mnjtjkv1N9V16R1A3TeUXuPEDAMbRvaPd8w==",
+      "gitBlob": "dee4415fb8e8459a5a2179d98d11db1f3c7c5b85",
+      "bytes": 168888,
+      "sourceCommit": "d325a7404a95c17606f885876622001399f9c03b",
+      "mergedCoreCommit": "159560b2032c7407026fdf4f19c09e7fa3b5a2cc",
+      "deliveryCommit": "1e7ac5b91588ccb5f5ed9c4f4edec778be5dd7a6",
+      "qualificationRun": 45382194075,
+      "artifactId": 14914977719,
+      "registryPublication": false
     }
   },
   "sourceCommits": {
-    "astromache-core": "b184cddbdc55aad86db76c9a23741d889a69fd80",
+    "astromache-core": "d325a7404a95c17606f885876622001399f9c03b",
     "astro-offline": "26ad83656f19a73e84d294e87672cb949bf614e3"
   },
   "offline": true,
@@ -28,7 +37,7 @@
   "upstreamNotices": "licenses/template; replacement content remains owner-controlled",
   "localBrowserAcceptance": "PASS offline 0.1.5 frozen install/check/lint/format/build and archive/installed identity; actual default-worker root/nested explicit-index aliases through three offline/reconnect cycles; directory-only fixture exact bytes and exclusions; actual 0.1.4-to-0.1.5 interrupted/rejected upgrade preservation, natural activation, exact offline current and reconnect; search/gallery/BFCache/freshness/lifecycle flows",
   "hostedAcceptance": "NOT RUN",
-  "localBrowserAcceptanceScope": "Historical offline 0.1.5 receipt retained verbatim; not fresh acceptance of the active core archive. See coreUpgradeAcceptance for the prior upgrade and currentArchiveQualification for the active archive.",
+  "localBrowserAcceptanceScope": "Historical 0.3.0 and offline 0.1.5 evidence retained; fresh site.1 starter evidence required.",
   "coreUpgradeAcceptance": {
     "scope": "Local 0.2.7 to 0.3.0 starter upgrade; not registry release or deployment approval",
     "candidateCommit": "98d4ee34831e59e606182b9472647cd1117fc1eb",
@@ -62,25 +71,19 @@
     "archiveSHA256": "b1239ede1e071ec83592fb8a025d5e707f2fdbb467d3f5b54037d14e64a19ebf"
   },
   "currentArchiveQualification": {
-    "status": "PASS local exact-archive qualification; registry publication pending",
-    "sha256": "4abb98b9b7ea09caeb2ee2c24edf0a6ad854d2b4d4d69f1165b09d5819e6919f",
-    "sourceCommit": "b184cddbdc55aad86db76c9a23741d889a69fd80",
-    "sourceTree": "77aa76d38bdb0fd133c44fcfec1ba12400ba5891",
-    "testedLocalSourceCommit": "4d4b838769bbfd43a00a76ad188dc5055ab24885",
-    "packageDifference": "Only package/CHANGELOG.md differs from the prior unpublished candidate; all runtime payload bytes unchanged.",
-    "observedAt": "2026-11-11",
-    "runtime": {
-      "node": "24.19.0",
-      "pnpm": "10.28.0",
-      "chromium": "145.0.7632.6"
-    },
-    "buildIdentity": {
-      "comparisonArchiveSHA256": "b1239ede1e071ec83592fb8a025d5e707f2fdbb467d3f5b54037d14e64a19ebf",
-      "filesCompared": 43,
-      "result": "Every rebuilt dist file has the same path and SHA256 as the prior qualified build."
-    },
-    "naturalWorkerUpgradeApplicability": "Retain coreUpgradeAcceptance original tested commit/tree/archive identities. Its natural worker adoption, rejected/interrupted install, exact offline bytes and reconnect evidence applies because all 43 rebuilt output files are byte-identical; no fresh lifecycle run claimed.",
-    "checks": "PASS frozen install, license guard and fixtures, qualify, 33 search/navigation tests, 13 Chromium keyboard tests, 25 serialization tests, installed changelog identity and dependency lock preservation"
+    "status": "Producer qualification passed; fresh starter candidate qualification pending",
+    "file": "vendor/astromache-0.4.0-site.1.tgz",
+    "version": "0.4.0-site.1",
+    "sha256": "3336d3bc72efa69552eb817c33e016e3a488b76ce7d8aa06cec8fe36068782a3",
+    "integrity": "sha512-35WYeLEJ+shyfUZS3tFMkEpCNxbUtG2RI+mTt2D9qQD3gOARx92Mnjtjkv1N9V16R1A3TeUXuPEDAMbRvaPd8w==",
+    "gitBlob": "dee4415fb8e8459a5a2179d98d11db1f3c7c5b85",
+    "bytes": 168888,
+    "sourceCommit": "d325a7404a95c17606f885876622001399f9c03b",
+    "mergedCoreCommit": "159560b2032c7407026fdf4f19c09e7fa3b5a2cc",
+    "deliveryCommit": "1e7ac5b91588ccb5f5ed9c4f4edec778be5dd7a6",
+    "qualificationRun": 45382194075,
+    "artifactId": 14914977719,
+    "registryPublication": false
   },
   "routeGuardQualification": {
     "observedAt": "2026-11-11",
@@ -199,5 +202,33 @@
       "acceptance": "Fresh actual historical 0.2.7-to-registry 0.3.0 lifecycle and offline byte checks passed; prior lifecycle evidence is not substituted for this result."
     },
     "evidenceApplicability": "This receipt-only addition does not change the tested code, dependency graph or build output. Original checked candidate commit/tree are retained; final-head Ubuntu CI and review remain required."
+  },
+  "previousRegistryDelivery": {
+    "file": "vendor/astromache-0.3.0.tgz",
+    "version": "0.3.0",
+    "sha256": "4abb98b9b7ea09caeb2ee2c24edf0a6ad854d2b4d4d69f1165b09d5819e6919f",
+    "sourceCommit": "b184cddbdc55aad86db76c9a23741d889a69fd80",
+    "scope": "Starter consuming exact registry astromache 0.3.0 with independently vendored unpublished offline/static-search archives",
+    "qualification": {
+      "status": "PASS local exact-archive qualification; registry publication pending",
+      "sha256": "4abb98b9b7ea09caeb2ee2c24edf0a6ad854d2b4d4d69f1165b09d5819e6919f",
+      "sourceCommit": "b184cddbdc55aad86db76c9a23741d889a69fd80",
+      "sourceTree": "77aa76d38bdb0fd133c44fcfec1ba12400ba5891",
+      "testedLocalSourceCommit": "4d4b838769bbfd43a00a76ad188dc5055ab24885",
+      "packageDifference": "Only package/CHANGELOG.md differs from the prior unpublished candidate; all runtime payload bytes unchanged.",
+      "observedAt": "2026-11-11",
+      "runtime": {
+        "node": "24.19.0",
+        "pnpm": "10.28.0",
+        "chromium": "145.0.7632.6"
+      },
+      "buildIdentity": {
+        "comparisonArchiveSHA256": "b1239ede1e071ec83592fb8a025d5e707f2fdbb467d3f5b54037d14e64a19ebf",
+        "filesCompared": 43,
+        "result": "Every rebuilt dist file has the same path and SHA256 as the prior qualified build."
+      },
+      "naturalWorkerUpgradeApplicability": "Retain coreUpgradeAcceptance original tested commit/tree/archive identities. Its natural worker adoption, rejected/interrupted install, exact offline bytes and reconnect evidence applies because all 43 rebuilt output files are byte-identical; no fresh lifecycle run claimed.",
+      "checks": "PASS frozen install, license guard and fixtures, qualify, 33 search/navigation tests, 13 Chromium keyboard tests, 25 serialization tests, installed changelog identity and dependency lock preservation"
+    }
   }
 }
