@@ -18,8 +18,8 @@ importers:
         specifier: 7.3.5
         version: 7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)
       astromache:
-        specifier: file:vendor/astromache-0.4.0-site.1.tgz
-        version: file:vendor/astromache-0.4.0-site.1.tgz(@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.5.tgz(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)))(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
+        specifier: file:vendor/astromache-0.4.0-directory.2.tgz
+        version: file:vendor/astromache-0.4.0-directory.2.tgz(@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.5.tgz(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)))(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1))
       preact:
         specifier: 10.29.8
         version: 10.29.8
@@ -2246,9 +2246,9 @@ packages:
       '@astrojs/markdown-remark':
         optional: true
 
-  astromache@file:vendor/astromache-0.4.0-site.1.tgz:
-    resolution: {integrity: sha512-35WYeLEJ+shyfUZS3tFMkEpCNxbUtG2RI+mTt2D9qQD3gOARx92Mnjtjkv1N9V16R1A3TeUXuPEDAMbRvaPd8w==, tarball: file:vendor/astromache-0.4.0-site.1.tgz}
-    version: 0.4.0-site.1
+  astromache@file:vendor/astromache-0.4.0-directory.2.tgz:
+    resolution: {integrity: sha512-S0d9y5rZVF7liFpNcLdyxrfDLF1F1Wuke/z19K+5kJ2mQs2YyNOjT1eNL6pGvRe4BGcXZDgscikDpSSDWZN0EA==, tarball: file:vendor/astromache-0.4.0-directory.2.tgz}
+    version: 0.4.0-directory.2
     engines: {node: '>=24.19.0 <25'}
     peerDependencies:
       '@effortlessmetrics/astro-offline': '>=0.1.4 <0.2.0'
@@ -6449,7 +6449,7 @@ snapshots:
       - uploadthing
       - yaml
 
-  astromache@file:vendor/astromache-0.4.0-site.1.tgz(@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.5.tgz(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)))(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)):
+  astromache@file:vendor/astromache-0.4.0-directory.2.tgz(@effortlessmetrics/astro-offline@file:vendor/effortlessmetrics-astro-offline-0.1.5.tgz(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)))(astro@7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)):
     dependencies:
       astro: 7.3.5(@types/node@24.10.1)(jiti@2.7.0)(terser@5.51.2)(yaml@2.9.1)
       bcp-47: 2.1.1
