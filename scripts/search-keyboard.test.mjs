@@ -32,6 +32,7 @@ before(async () => {
           ".js": "text/javascript",
           ".css": "text/css",
           ".json": "application/json",
+          ".svg": "image/svg+xml",
         }[extname(file)] ?? "application/octet-stream",
       );
       response.end(await readFile(file));
@@ -239,6 +240,11 @@ for (const width of [1280, 390]) {
       await expect(page.getByRole("heading", { level: 1, name: "Example author" })).toBeVisible();
       assert.deepEqual(await page.locator("main h2").allTextContents(), ["Notes"]);
       await expect(page.getByRole("region", { name: "Profile links" })).toBeVisible();
+      for (const path of ["/icons/profile.svg", "/icons/rss.svg"]) {
+        const response = await page.request.get(origin + path);
+        assert.equal(response.status(), 200);
+        assert.equal(response.headers()["content-type"], "image/svg+xml");
+      }
       for (const name of ["About", "Subscribe"]) {
         const link = page.locator("#follow").getByRole("link", { name, exact: true });
         await expect(link).toHaveAttribute("aria-label", name);
