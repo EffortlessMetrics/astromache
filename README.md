@@ -1,8 +1,8 @@
 # AstroMache publication starter
 
-A neutral, standalone default with verified offline caching and connection-aware native intent prefetch enabled. Shared components keep their established npm names/imports; canonical static precache setup uses the exact qualified AstroMaché 0.4.0-site.1 core archive. The released 0.3.0 archive and its registry provenance remain available as historical delivery evidence. Cache integrity and lifecycle remain owned by offline 0.1.5, including explicit `index.html` navigation from verified directory precaches.
+A neutral, standalone default with verified offline caching and connection-aware native intent prefetch enabled. Shared components keep their established npm names/imports; canonical static precache setup uses the exact qualified AstroMaché 0.4.0-directory.1 core archive. The released 0.3.0 archive and its registry provenance remain available as historical delivery evidence. Cache integrity and lifecycle remain owned by offline 0.1.5, including explicit `index.html` navigation from verified directory precaches.
 
-Use Node 24.19.x. Run pnpm install --frozen-lockfile --ignore-scripts, then pnpm qualify, pnpm verify:licenses and pnpm dev. Exact dependency versions, retained archive hashes, registry release evidence and core source identities are in STARTER-DELIVERY.json. verify:licenses checks the archive pins, hashes and installed versions along with the required notices. Core 0.4.0-site.1 is an unpublished qualified candidate, as are the independently vendored offline and static-search candidates.
+Use Node 24.19.x. Run pnpm install --frozen-lockfile --ignore-scripts, then pnpm qualify, pnpm verify:licenses and pnpm dev. Exact dependency versions, retained archive hashes, registry release evidence and core source identities are in STARTER-DELIVERY.json. verify:licenses checks the archive pins, hashes and installed versions along with the required notices. Core 0.4.0-directory.1 is an unpublished qualified candidate, as are the independently vendored offline and static-search candidates.
 
 Replace neutral content/branding and edit site.config.mjs. Keep API and host redirect URLs out of the precache using excludedPages and excludedPrefixes. Query policy is explicitly stripQuery:false. Registration follows offlinePolicy.workerFile at root scope; edit that setting to rename the generated and registered worker together, and update the worker path in public/_headers to preserve its no-cache policy. Scope remains configured in the small layout registration call. Natural activation waits for existing clients; no forced reload or activation occurs.
 
@@ -36,7 +36,7 @@ The shared TypeAnywhereSearch palette is available through the header and keyboa
 
 `/directory/` demonstrates a compact identity and grouped links followed by the ordinary note collection. To use it as the homepage, replace the contents of `src/pages/index.astro` with that composition and remove the demonstration route if desired. Keep `/profile/` for biography and portrait. No runtime mode or new site schema is required; the default publication homepage is unchanged.
 
-The demonstration is a provisional exact-source overlay of core PR #53 on the existing site.1 archive. `DIRECTORY-CANDIDATE.json` and qualification verify the installed files; replace this carrier with the qualified core archive before final acceptance.
+The demonstration consumes the exact independently qualified directory.1 archive. The delivery receipt and qualification verify the installed files and their exports.
 
 ## Customizing your publication
 
