@@ -61,7 +61,7 @@
   "upstreamNotices": "licenses/template; replacement content remains owner-controlled",
   "localBrowserAcceptance": "PASS offline 0.1.5 frozen install/check/lint/format/build and archive/installed identity; actual default-worker root/nested explicit-index aliases through three offline/reconnect cycles; directory-only fixture exact bytes and exclusions; actual 0.1.4-to-0.1.5 interrupted/rejected upgrade preservation, natural activation, exact offline current and reconnect; search/gallery/BFCache/freshness/lifecycle flows",
   "hostedAcceptance": "NOT RUN",
-  "localBrowserAcceptanceScope": "Historical 0.3.0 and offline 0.1.5 evidence retained; fresh directory.2 starter evidence required.",
+  "localBrowserAcceptanceScope": "Earlier receipts preserved; current directory.2 source and archive passed standalone build/browser qualification on the named consumer head.",
   "coreUpgradeAcceptance": {
     "scope": "Local 0.2.7 to 0.3.0 starter upgrade; not registry release or deployment approval",
     "candidateCommit": "98d4ee34831e59e606182b9472647cd1117fc1eb",
@@ -95,7 +95,7 @@
     "archiveSHA256": "b1239ede1e071ec83592fb8a025d5e707f2fdbb467d3f5b54037d14e64a19ebf"
   },
   "currentArchiveQualification": {
-    "status": "Producer qualification passed; fresh starter qualification pending",
+    "status": "PASS producer and standalone consumer qualification",
     "file": "vendor/astromache-0.4.0-directory.2.tgz",
     "version": "0.4.0-directory.2",
     "sha256": "dd5902c678cd1d216b9075ca6058b2f858271b35e4bdfa44f45126e98d4d5035",
@@ -118,7 +118,14 @@
       "./link-group": "./src/LinkGroup.astro",
       "./content-section": "./src/ContentSection.astro"
     },
-    "mergedCoreCommit": "b39bdd14b8403d94d9511876bf1d768d13f4320a"
+    "mergedCoreCommit": "b39bdd14b8403d94d9511876bf1d768d13f4320a",
+    "consumerQualification": {
+      "head": "ed7098182937d36ab594b022b4470df803465b7b",
+      "tree": "7413aa0bcfd87f51a553f8fde79d78b59d3fb1d3",
+      "run": 45604062367,
+      "result": "success",
+      "scope": "Frozen install, package/source/export identity, static build, native icon link/keyboard behavior, exact registry pin synthetic fixture, license and publication serialization controls; not hosted acceptance."
+    }
   },
   "routeGuardQualification": {
     "observedAt": "2026-11-11",

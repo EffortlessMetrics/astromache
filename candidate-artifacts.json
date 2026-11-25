@@ -24,7 +24,7 @@
     },
     "mergedCoreCommit": "b39bdd14b8403d94d9511876bf1d768d13f4320a",
     "repository": "EffortlessMetrics/astromache-core",
-    "scope": "Exact qualified unpublished directory.2 archive, integrated producer; standalone consumer qualification pending",
+    "scope": "Exact qualified unpublished directory.2 archive, integrated producer and standalone consumer qualification passed",
     "previous": {
       "file": "vendor/astromache-0.4.0-directory.1.tgz",
       "version": "0.4.0-directory.1",
@@ -140,6 +140,13 @@
           }
         }
       }
+    },
+    "consumerQualification": {
+      "head": "ed7098182937d36ab594b022b4470df803465b7b",
+      "tree": "7413aa0bcfd87f51a553f8fde79d78b59d3fb1d3",
+      "run": 45604062367,
+      "result": "success",
+      "scope": "Frozen install, package/source/export identity, static build, native icon link/keyboard behavior, exact registry pin synthetic fixture, license and publication serialization controls; not hosted acceptance."
     }
   },
   "staticSearch": {
