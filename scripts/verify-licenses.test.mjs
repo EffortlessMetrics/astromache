@@ -147,3 +147,29 @@ test("active delivery and version-independent bundled/registry license fixtures"
     await rm(root, { recursive: true, force: true });
   }
 });
+
+test("directory delivery admits an exact future registry pin without a bundled receipt", async () => {
+  const root = await mkdtemp(join(tmpdir(), "astro-directory-registry-"));
+  const directoryGuard = resolve(source, "scripts/verify-directory-delivery.mjs");
+  try {
+    const manifestPath = join(root, "package.json");
+    const installedPath = join(root, "node_modules/astromache/package.json");
+    await cp(join(source, "node_modules/astromache/package.json"), installedPath);
+    const installed = JSON.parse(await readFile(installedPath, "utf8"));
+    const run = () =>
+      spawnSync(process.execPath, [directoryGuard], { cwd: root, encoding: "utf8" });
+    const pin = (version) =>
+      writeFile(manifestPath, JSON.stringify({ dependencies: { astromache: version } }));
+    await pin(installed.version);
+    assert.equal(run().status, 0, "exact installed registry identity");
+    await pin("^" + installed.version);
+    assert.notEqual(run().status, 0, "floating registry pin");
+    await pin("999.0.0");
+    assert.notEqual(run().status, 0, "mismatched installed version");
+    await pin(installed.version);
+    await writeFile(installedPath, JSON.stringify({ ...installed, name: "different-library" }));
+    assert.notEqual(run().status, 0, "mismatched installed name");
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
