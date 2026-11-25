@@ -2248,7 +2248,7 @@ packages:
 
   astromache@file:vendor/astromache-0.4.0-directory.1.tgz:
     resolution: {integrity: sha512-0A5XNwTwdgPe9I3lOF3K+D3sWgLUvjRvzl1h53PCJKW7dZhwQk3zeG02fQaZqTn1XfSRGkfdrgkunZ1NBfnXnA==, tarball: file:vendor/astromache-0.4.0-directory.1.tgz}
-    version: 0.4.0-site.1
+    version: 0.4.0-directory.1
     engines: {node: '>=24.19.0 <25'}
     peerDependencies:
       '@effortlessmetrics/astro-offline': '>=0.1.4 <0.2.0'

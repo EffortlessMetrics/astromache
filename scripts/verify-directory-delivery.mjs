@@ -16,6 +16,8 @@ for (const [path, expected] of Object.entries(receipt.sourceFiles)) {
 }
 const installed = JSON.parse(await readFile("node_modules/astromache/package.json", "utf8"));
 assert.equal(installed.version, receipt.version);
+const lock = await readFile("pnpm-lock.yaml", "utf8");
+assert.ok(lock.includes("    version: " + receipt.version + "\n"));
 for (const [name, path] of Object.entries(receipt.exports)) {
   assert.equal(installed.exports[name], path);
 }
