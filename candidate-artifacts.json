@@ -24,7 +24,7 @@
     },
     "mergedCoreCommit": "b39bdd14b8403d94d9511876bf1d768d13f4320a",
     "repository": "EffortlessMetrics/astromache-core",
-    "scope": "Exact qualified unpublished directory.2 archive, integrated producer and standalone consumer qualification passed",
+    "scope": "Exact qualified unpublished directory.2 archive; producer and initial standalone archive adoption passed; subsequent directory navigation changes have separate qualification",
     "previous": {
       "file": "vendor/astromache-0.4.0-directory.1.tgz",
       "version": "0.4.0-directory.1",
@@ -146,7 +146,25 @@
       "tree": "7413aa0bcfd87f51a553f8fde79d78b59d3fb1d3",
       "run": 45604062367,
       "result": "success",
-      "scope": "Frozen install, package/source/export identity, static build, native icon link/keyboard behavior, exact registry pin synthetic fixture, license and publication serialization controls; not hosted acceptance."
+      "scope": "Frozen install, package/source/export identity, static build, native icon link/keyboard behavior, exact registry pin synthetic fixture, license and publication serialization controls; not hosted acceptance.",
+      "observedAt": "2026-11-25T11:26:29Z",
+      "runtime": {
+        "node": "24.19.0",
+        "pnpm": "10.28.0",
+        "os": "ubuntu-24.04",
+        "chromium": "145.0.7632.6"
+      },
+      "commands": [
+        "pnpm install --frozen-lockfile --ignore-scripts",
+        "node --test scripts/search-form.test.mjs scripts/publication-navigation.test.mjs",
+        "pnpm qualify",
+        "pnpm exec playwright install --with-deps --only-shell chromium",
+        "pnpm test:search:keyboard",
+        "node scripts/verify-licenses.mjs",
+        "pnpm test:licenses",
+        "node --test scripts/publication-serialization.test.mjs"
+      ],
+      "evidenceApplicability": "Archive and original standalone candidate qualified on the named head; later directory return-navigation/route-selection changes require their own source qualification."
     }
   },
   "staticSearch": {

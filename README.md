@@ -34,7 +34,7 @@ The shared TypeAnywhereSearch palette is available through the header and keyboa
 
 ## Optional directory homepage
 
-`/directory/` demonstrates a compact identity and grouped links followed by the ordinary note collection. To use it as the homepage, replace the contents of `src/pages/index.astro` with that composition and remove the demonstration route if desired. Keep `/profile/` for biography and portrait. No runtime mode or new site schema is required; the default publication homepage is unchanged.
+`/directory/` demonstrates a compact identity and grouped links followed by the ordinary note collection. To use it as the homepage, replace the contents of `src/pages/index.astro` with that composition and remove the demonstration route if desired. The neutral browser checks follow the rendered directory at either route; the note list retains the reader's actual return destination. If you replace the neutral content, adjust its example-specific checks accordingly. Keep `/profile/` for biography and portrait. No runtime mode or new site schema is required; the default publication homepage is unchanged.
 
 The demonstration consumes the exact independently qualified directory.2 archive. The delivery receipt and qualification verify the installed files and their exports. The example demonstrates headingless and icon-only link groups; ordinary link labels and visible group headings remain available.
 

@@ -624,3 +624,26 @@ for (const draft of ["true", "false", 0, 1, null]) {
     });
   });
 }
+
+test("directory composition can replace the publication index and remove the demo route", async () => {
+  // A consumer that removed the optional example has no neutral demo to move.
+  const example = await readFile(join(source, "src/pages/directory.astro"), "utf8").catch(
+    (error) => {
+      if (error.code !== "ENOENT") throw error;
+      return null;
+    },
+  );
+  if (example === null) return;
+  await withProject({ "directory-note.md": fixture(undefined, "Directory note") }, async (root) => {
+    await writeFile(join(root, "src/pages/index.astro"), example);
+    await rm(join(root, "src/pages/directory.astro"));
+    const result = build(root);
+    assert.equal(result.status, 0, result.stdout + result.stderr);
+    const html = await readFile(join(root, "dist/index.html"), "utf8");
+    assert.match(html, /class="directory-home/);
+    assert.match(html, /data-publication-return-key="field-notes-back"/);
+    assert.match(html, /Directory note/);
+    assertCanonical(html, "https://publication.example/");
+    await assert.rejects(readFile(join(root, "dist/directory/index.html")), { code: "ENOENT" });
+  });
+});

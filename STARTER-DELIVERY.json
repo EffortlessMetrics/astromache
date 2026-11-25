@@ -95,7 +95,7 @@
     "archiveSHA256": "b1239ede1e071ec83592fb8a025d5e707f2fdbb467d3f5b54037d14e64a19ebf"
   },
   "currentArchiveQualification": {
-    "status": "PASS producer and standalone consumer qualification",
+    "status": "PASS producer and initial standalone archive adoption qualification",
     "file": "vendor/astromache-0.4.0-directory.2.tgz",
     "version": "0.4.0-directory.2",
     "sha256": "dd5902c678cd1d216b9075ca6058b2f858271b35e4bdfa44f45126e98d4d5035",
@@ -124,7 +124,25 @@
       "tree": "7413aa0bcfd87f51a553f8fde79d78b59d3fb1d3",
       "run": 45604062367,
       "result": "success",
-      "scope": "Frozen install, package/source/export identity, static build, native icon link/keyboard behavior, exact registry pin synthetic fixture, license and publication serialization controls; not hosted acceptance."
+      "scope": "Frozen install, package/source/export identity, static build, native icon link/keyboard behavior, exact registry pin synthetic fixture, license and publication serialization controls; not hosted acceptance.",
+      "observedAt": "2026-11-25T11:26:29Z",
+      "runtime": {
+        "node": "24.19.0",
+        "pnpm": "10.28.0",
+        "os": "ubuntu-24.04",
+        "chromium": "145.0.7632.6"
+      },
+      "commands": [
+        "pnpm install --frozen-lockfile --ignore-scripts",
+        "node --test scripts/search-form.test.mjs scripts/publication-navigation.test.mjs",
+        "pnpm qualify",
+        "pnpm exec playwright install --with-deps --only-shell chromium",
+        "pnpm test:search:keyboard",
+        "node scripts/verify-licenses.mjs",
+        "pnpm test:licenses",
+        "node --test scripts/publication-serialization.test.mjs"
+      ],
+      "evidenceApplicability": "Archive and original standalone candidate qualified on the named head; later directory return-navigation/route-selection changes require their own source qualification."
     }
   },
   "routeGuardQualification": {

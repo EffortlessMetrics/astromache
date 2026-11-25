@@ -41,7 +41,7 @@ const setup = (pathname, keys, storageAvailable = true) => {
   };
 };
 
-for (const path of ["/posts/", "/tags/practice/"]) {
+for (const path of ["/posts/", "/tags/practice/", "/directory/", "/"]) {
   test(`history-restored ${path} reclaims its article return destination`, () => {
     const ui = setup(path, ["field-notes-back"]);
     for (let visit = 0; visit < 2; visit++) {

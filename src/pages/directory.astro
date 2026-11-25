@@ -21,6 +21,6 @@ const websites = [
     <LinkGroup id="websites" title="Websites" links={websites} layout="stack" showHeading={false} />
   </Directory>
   <ContentSection id="work" title="Notes">
-    <PostList items={entries.map(card)} headingLevel={3} />
+    <PostList items={entries.map(card)} headingLevel={3} returnStorageKey="field-notes-back" />
   </ContentSection>
 </Publication>

@@ -14,6 +14,29 @@ const dist = resolve(
 );
 const index = JSON.parse(await readFile(resolve(dist, "search-index.json"), "utf8"));
 assert.ok(index.data.length > 0, "Keyboard navigation requires a nonempty search corpus");
+// The optional example may be the homepage, a separate route, or removed.
+const directoryRoutes = [];
+for (const [route, file] of [
+  ["/", "index.html"],
+  ["/directory/", "directory/index.html"],
+]) {
+  try {
+    const html = await readFile(resolve(dist, file), "utf8");
+    if (/class="directory-home(?:\s|")/.test(html)) directoryRoutes.push(route);
+  } catch (error) {
+    if (error.code !== "ENOENT" || route === "/") throw error;
+  }
+}
+const exampleSource = await readFile(
+  new URL("../src/pages/directory.astro", import.meta.url),
+  "utf8",
+).catch((error) => {
+  if (error.code !== "ENOENT") throw error;
+  return null;
+});
+if (exampleSource !== null) {
+  assert.ok(directoryRoutes.includes("/directory/"), "Existing directory example must be built");
+}
 let browser, server, origin;
 
 before(async () => {
@@ -233,38 +256,60 @@ test("shared palette uses the exact bound note index and preserves explicit sear
   });
 });
 
-for (const width of [1280, 390]) {
-  test(`${width}px: optional directory uses native links before the content collection`, async () => {
-    await withPage(width, async (page) => {
-      await page.goto(`${origin}/directory/`);
-      await expect(page.getByRole("heading", { level: 1, name: "Example author" })).toBeVisible();
-      assert.deepEqual(await page.locator("main h2").allTextContents(), ["Notes"]);
-      await expect(page.getByRole("region", { name: "Profile links" })).toBeVisible();
-      for (const path of ["/icons/profile.svg", "/icons/rss.svg"]) {
-        const response = await page.request.get(origin + path);
-        assert.equal(response.status(), 200);
-        assert.equal(response.headers()["content-type"], "image/svg+xml");
-      }
-      for (const name of ["About", "Subscribe"]) {
-        const link = page.locator("#follow").getByRole("link", { name, exact: true });
-        await expect(link).toHaveAttribute("aria-label", name);
-        await expect(link.locator(".directory-icon")).toBeVisible();
-        await expect(link.locator(".directory-link-copy")).toHaveCount(0);
-        const hit = await link.boundingBox();
-        assert.ok(hit && hit.width >= 44 && hit.height >= 44);
-      }
-      await expect(page.locator("#work .article-cards li")).toHaveCount(index.data.length);
-      const links = await page.locator("#follow a, #websites a").all();
-      links.push(page.locator("#work .article-cards a").first());
-      await links[0].focus();
-      for (const link of links.slice(1)) {
-        await page.keyboard.press("Tab");
-        await expect(link).toBeFocused();
-      }
-      assert.equal(
-        await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
-        true,
-      );
+test("optional directory route selection", (context) => {
+  if (!directoryRoutes.length) {
+    context.skip("Optional directory example removed; publication remains the homepage");
+  } else {
+    assert.ok(directoryRoutes.every((route) => route === "/" || route === "/directory/"));
+  }
+});
+
+for (const route of directoryRoutes) {
+  for (const width of [1280, 390]) {
+    test(`${width}px: ${route} directory links and note return destination`, async () => {
+      await withPage(width, async (page) => {
+        await page.goto(origin + route);
+        await expect(page.getByRole("heading", { level: 1, name: "Example author" })).toBeVisible();
+        assert.deepEqual(await page.locator("main h2").allTextContents(), ["Notes"]);
+        await expect(page.getByRole("region", { name: "Profile links" })).toBeVisible();
+        for (const path of ["/icons/profile.svg", "/icons/rss.svg"]) {
+          const response = await page.request.get(origin + path);
+          assert.equal(response.status(), 200);
+          assert.equal(response.headers()["content-type"], "image/svg+xml");
+        }
+        for (const name of ["About", "Subscribe"]) {
+          const link = page.locator("#follow").getByRole("link", { name, exact: true });
+          await expect(link).toHaveAttribute("aria-label", name);
+          await expect(link.locator(".directory-icon")).toBeVisible();
+          await expect(link.locator(".directory-link-copy")).toHaveCount(0);
+          const hit = await link.boundingBox();
+          assert.ok(hit && hit.width >= 44 && hit.height >= 44);
+        }
+        await expect(page.locator("#work .article-cards li")).toHaveCount(index.data.length);
+        const note = page.locator("#work .article-cards a").first();
+        const links = await page.locator("#follow a, #websites a").all();
+        links.push(note);
+        await links[0].focus();
+        for (const link of links.slice(1)) {
+          await page.keyboard.press("Tab");
+          await expect(link).toBeFocused();
+        }
+        assert.equal(
+          await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
+          true,
+        );
+        await expect(page.locator("[data-publication-return-key]")).toHaveAttribute(
+          "data-publication-return-key",
+          "field-notes-back",
+        );
+        const href = await note.getAttribute("href");
+        await note.press("Enter");
+        await expect(page).toHaveURL(origin + href);
+        const back = page.getByRole("link", { name: "Go back", exact: true });
+        await expect(back).toHaveAttribute("href", route);
+        await back.click();
+        await expect(page).toHaveURL(origin + route);
+      });
     });
-  });
+  }
 }
