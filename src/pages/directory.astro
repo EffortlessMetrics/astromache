@@ -7,21 +7,20 @@ import PostList from "astromache/post-list";
 import { notes, card } from "../publication-content";
 const entries = await notes();
 const follow = [
-  { label: "About", href: "/profile/" },
-  { label: "Subscribe", href: "/rss.xml" },
+  { label: "About", href: "/profile/", iconSrc: "/icons/profile.svg" },
+  { label: "Subscribe", href: "/rss.xml", iconSrc: "/icons/rss.svg" },
 ];
 const websites = [
-  { label: "Field Notes", href: "/", description: "Publication" },
-  { label: "Gallery", href: "/portfolio/", description: "Selected work" },
+  { label: "Field Notes", href: "/" },
+  { label: "Gallery", href: "/portfolio/" },
 ];
 ---
 <Publication title="Example directory — Field Notes" description="Optional links-first homepage with a consumer-owned content collection.">
   <Directory title="Example author">
-    <LinkGroup id="follow" title="Follow Me" links={follow} />
-    <LinkGroup id="websites" title="Websites" links={websites} layout="stack" />
+    <LinkGroup id="follow" title="Profile links" links={follow} showHeading={false} iconOnly />
+    <LinkGroup id="websites" title="Websites" links={websites} layout="stack" showHeading={false} />
   </Directory>
   <ContentSection id="work" title="Notes">
-    <a slot="actions" href="/posts/">All posts →</a>
     <PostList items={entries.map(card)} headingLevel={3} />
   </ContentSection>
 </Publication>

@@ -237,15 +237,21 @@ for (const width of [1280, 390]) {
     await withPage(width, async (page) => {
       await page.goto(`${origin}/directory/`);
       await expect(page.getByRole("heading", { level: 1, name: "Example author" })).toBeVisible();
-      assert.deepEqual(await page.locator("main h2").allTextContents(), [
-        "Follow Me",
-        "Websites",
-        "Notes",
-      ]);
+      assert.deepEqual(await page.locator("main h2").allTextContents(), ["Notes"]);
+      await expect(page.getByRole("region", { name: "Profile links" })).toBeVisible();
+      for (const name of ["About", "Subscribe"]) {
+        const link = page.locator("#follow").getByRole("link", { name, exact: true });
+        await expect(link).toHaveAttribute("aria-label", name);
+        await expect(link.locator(".directory-icon")).toBeVisible();
+        await expect(link.locator(".directory-link-copy")).toHaveCount(0);
+        const hit = await link.boundingBox();
+        assert.ok(hit && hit.width >= 44 && hit.height >= 44);
+      }
       await expect(page.locator("#work .article-cards li")).toHaveCount(index.data.length);
-      const links = page.locator("#follow a, #websites a, #work .content-section-actions a");
-      await links.first().focus();
-      for (const link of (await links.all()).slice(1)) {
+      const links = await page.locator("#follow a, #websites a").all();
+      links.push(page.locator("#work .article-cards a").first());
+      await links[0].focus();
+      for (const link of links.slice(1)) {
         await page.keyboard.press("Tab");
         await expect(link).toBeFocused();
       }

@@ -14,7 +14,8 @@ if (declared.startsWith("file:")) {
   assert.equal(declared, "file:" + receipt.file);
   assert.equal(sha(archive), receipt.sha256);
   assert.equal(archive.length, receipt.bytes);
-  assert.equal("sha512-" + createHash("sha512").update(archive).digest("base64"), receipt.integrity);
+  const integrity = "sha512-" + createHash("sha512").update(archive).digest("base64");
+  assert.equal(integrity, receipt.integrity);
   assert.equal(manifest.pnpm?.patchedDependencies?.["astromache@" + receipt.version], undefined);
   for (const [path, expected] of Object.entries(receipt.sourceFiles)) {
     assert.equal(sha(await readFile("node_modules/astromache/" + path)), expected, path);
